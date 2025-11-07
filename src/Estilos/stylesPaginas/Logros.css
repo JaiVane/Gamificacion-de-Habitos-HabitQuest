@@ -1,0 +1,377 @@
+.pagina-logros {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #ffffff;
+  overflow-x: hidden;
+  /* Firefox scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: #1aab21 #f3f4f6;
+}
+
+/* Estilos generales de scrollbar para toda la página de logros */
+.pagina-logros::-webkit-scrollbar {
+  width: 12px;
+}
+
+.pagina-logros::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 10px;
+}
+
+.pagina-logros::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #1aab21 0%, #107205 100%);
+  border-radius: 10px;
+  border: 2px solid #f3f4f6;
+  transition: background 0.3s ease;
+}
+
+.pagina-logros::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #107205 0%, #0a5a0a 100%);
+}
+
+.logros-encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0;
+  flex-wrap: wrap;
+}
+
+.logros-header-izquierda {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 2rem 2rem 0;
+}
+
+.logros-titulo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.logros-titulo h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #000000;
+  margin: 0;
+}
+
+.logros-subtitulo {
+  font-size: 1rem;
+  color: #000000;
+  margin: 0;
+  font-weight: normal;
+}
+
+.logros-contador {
+  display: flex !important;
+  align-items: flex-start;
+  flex-shrink: 0;
+  margin: 2rem 2rem 0;
+}
+
+.contador-box {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120px;
+}
+
+.contador-label {
+  font-size: 0.875rem;
+  color: #000000;
+  margin-bottom: 0.25rem;
+  font-weight: normal;
+}
+
+.contador-numero {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: #000000;
+}
+
+.logros-botones {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0;
+  margin-top: 0.5rem;
+  padding: 0;
+}
+.configuracion {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(to bottom, #e6f7ef 3%, #ffffff 97%);
+  gap: 0;
+  padding: 1rem 1.5rem 0.5rem 1.5rem;
+  margin-bottom: -15rem;
+}
+
+.boton-categoria {
+  flex: 1; /* ← cada botón ocupa el mismo espacio */
+  text-align: center;
+  padding: 0.6rem 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-radius: 8px;
+  background-color: #1aab21;
+  color: white; 
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+
+.boton-categoria:hover {
+  background-color: #107205;
+  border: none;
+}
+
+.categoria-activa {
+  background-color: #107205;
+}
+
+/* Contenedor principal del grid de columnas */
+.logros-grid-columnas {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 1rem;
+  padding: 0.5rem 1.5rem 2rem 1.5rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  align-items: start;
+  grid-auto-flow: row;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: calc(100vh - 250px);
+  /* Firefox scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: #1aab21 #f1f1f1;
+}
+
+/* Estilos personalizados para el scrollbar del grid */
+.logros-grid-columnas::-webkit-scrollbar {
+  width: 10px;
+}
+
+.logros-grid-columnas::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+.logros-grid-columnas::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #1aab21 0%, #107205 100%);
+  border-radius: 10px;
+  border: 2px solid #f1f1f1;
+  transition: background 0.3s ease;
+}
+
+.logros-grid-columnas::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #107205 0%, #0a5a0a 100%);
+}
+
+/* Cada columna vertical */
+.columna-logros {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1rem;
+  min-height: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Media queries para diseño responsivo */
+@media (max-width: 1024px) {
+  .logros-grid-columnas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .logros-grid-columnas {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+.logro-tarjeta {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 0.75rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+.logro-tarjeta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.logro-tarjeta.bloqueado {
+  opacity: 1;
+}
+
+.logro-estado {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.logro-icono {
+  width: 45px;
+  height: 45px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+.logro-icono.desbloqueado {
+  background-color: #10b981;
+}
+
+.logro-contenido {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.logro-contenido h3 {
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #000000;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.logro-contenido p {
+  font-size: 0.8rem;
+  color: #4b5563;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.logro-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}
+
+
+.rareza {
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: #000000;
+}
+
+.rareza-comun {
+  background-color: #e5e7eb;
+  color: #000000;
+}
+
+.rareza-rara {
+  background-color: #bfdbfe;
+  color: #000000;
+}
+
+.rareza-epica {
+  background-color: #e9d5ff;
+  color: #000000;
+}
+
+.rareza-legendaria {
+  background-color: #fed7aa;
+  color: #000000;
+}
+
+.xp {
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+.logro-progreso {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.progreso-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progreso-label {
+  font-size: 0.75rem;
+  color: #000000;
+  font-weight: 500;
+}
+
+.progreso-numero {
+  font-size: 0.75rem;
+  color: #000000;
+  font-weight: 500;
+}
+
+.barra-progreso {
+  width: 100%;
+  height: 6px;
+  background-color: #e0e7ff;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.barra-interna {
+  height: 100%;
+  background-color: #10b981;
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+/* Responsive para el header */
+@media (max-width: 768px) {
+  .logros-encabezado {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .logros-contador {
+    align-self: flex-end;
+  }
+}
+

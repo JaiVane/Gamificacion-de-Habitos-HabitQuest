@@ -1,0 +1,147 @@
+/* SIDEBAR BASE: colapsado por defecto */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 60px; /* colapsado por defecto */
+  background-color: #ffffff;
+  border-right: 1px solid #e5e5e5;
+  transition: width 0.3s ease;
+  overflow: hidden;
+  z-index: 100;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+}
+
+/* EXPANSIÓN AUTOMÁTICA AL HOVER */
+.sidebar:hover {
+  width: 230px;
+}
+
+/* --- CABECERA DEL SIDEBAR --- */
+.sidebar-header {
+  border-bottom: 1px solid #ddd;
+  padding: 36px;
+  margin-left: -40px;
+}
+
+/* Centrado del header cuando sidebar está colapsado */
+.sidebar:not(:hover) .sidebar-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 35px 0;
+}
+
+/* LOGO: horizontal por defecto */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+/* LOGO: vertical y centrado cuando sidebar está colapsado */
+.sidebar:not(:hover) .logo {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* ÍCONO DEL LOGO */
+.icono-logo {
+  background: linear-gradient(135deg, #4caf50, #4caf50);
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.icono-logo .icono {
+  color: white;
+  width: 40px;
+  height: 30px;
+}
+
+/* TEXTO DEL LOGO: oculto por defecto */
+.titulo-logo h1,
+.titulo-logo p {
+  display: none;
+  text-align: center;
+}
+
+/* Mostrar texto solo cuando sidebar está expandido */
+.sidebar:hover .titulo-logo h1,
+.sidebar:hover .titulo-logo p {
+  display: block;
+}
+
+/* Estilos del texto del logo */
+.titulo-logo h1 {
+  font-size: 1.5rem;
+  margin: 0;
+  font-weight: bold;
+}
+
+.titulo-logo p {
+  font-size: 0.75rem;
+  color: #666;
+  margin: 0;
+}
+
+/* --- NAVEGACIÓN --- */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 12px;
+  text-decoration: none;
+  color: #333333;
+  border-radius: 6px;
+  transition: background 0.3s;
+  justify-content: center; /* centrado por defecto */
+}
+
+/* Al hacer hover, justificar a la izquierda */
+.sidebar:hover .nav-item {
+  justify-content: flex-start;
+}
+
+.nav-item:hover {
+  background-color: #f0fff3;
+  color: #4caf50;
+}
+
+.nav-item.activo {
+  background-color: #e0ffe6;
+  color: #4caf50;
+  font-weight: 600;
+}
+
+.icono-nav {
+  width: 30px;
+  height: 20px;
+  color: #4caf50;
+}
+
+.texto-nav {
+  font-size: 1rem;
+  display: none;
+}
+
+/* Mostrar texto del ítem solo cuando sidebar está expandido */
+.sidebar:hover .texto-nav {
+  display: inline;
+}
+  

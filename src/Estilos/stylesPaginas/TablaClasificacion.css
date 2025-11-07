@@ -1,0 +1,330 @@
+.contenedor-principal {
+  display: flex;
+  min-height: 100vh;
+  background: white;
+}
+
+.contenido-dashboard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.contenido-tabla {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.header-seccion {
+  margin-bottom: 2rem;
+}
+
+.titulo-seccion {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 2rem;
+  font-weight: 900;
+  color: #1a1a1a;
+  margin: 0 0 1.5rem;
+}
+
+.icono-titulo {
+  color: #FF9800;
+}
+
+.subtitulo {
+  color: #6b6b6b;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Top 3 Tarjetas */
+.tarjetas-top {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.tarjeta-top {
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  position: relative;
+}
+
+.jugador-1 {
+  border: 4px solid #FF9800;
+  background: #FFF8E1;
+}
+
+.jugador-2 {
+  border: 2px solid #737982;
+  background: #F5F5F5;
+}
+
+.jugador-3 {
+  border: 2px solid #fa2a23;
+  background: #ffe4e0;
+}
+
+.tarjeta-icono {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.icono {
+  width: 40px;
+  height: 40px;
+}
+
+.icono-oro {
+  color: #FF9800;
+}
+
+.icono-plata {
+  color: #9ca3af;
+}
+
+.icono-bronce {
+  color: #FF6B35;
+}
+
+.tarjeta-nombre {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 0.25rem 0;
+}
+
+.tarjeta-usuario {
+  font-size: 0.85rem;
+  color: #6b6b6b;
+  margin: 0 0 1rem 0;
+}
+
+.tarjeta-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-width: 80px;
+}
+
+.stat-label {
+  font-size: 1rem;
+  color: #6b6b6b;
+}
+
+.badge-nivel {
+  display: inline-block;
+  background: #FF9800;
+  color: white;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin: 0 auto;
+}
+
+.stat-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.stat-racha {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #4CAF50;
+}
+
+/* Tabla General */
+.tabla-general {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.titulo-tabla {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 1rem 0;
+}
+
+.titulo-tabla svg {
+  color: #4CAF50;
+}
+
+.tabla-contenedor {
+  max-height: 600px;
+  overflow-y: auto;
+  border-radius: 8px;
+}
+
+/* Estilos de scrollbar */
+.tabla-contenedor::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tabla-contenedor::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+
+.tabla-contenedor::-webkit-scrollbar-thumb {
+  background: #d0d0d0;
+  border-radius: 10px;
+}
+
+.tabla-contenedor::-webkit-scrollbar-thumb:hover {
+  background: #b0b0b0;
+}
+
+.tabla-contenedor {
+  scrollbar-width: thin;
+  scrollbar-color: #d0d0d0 transparent;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 10;
+}
+
+th {
+  padding: 1rem 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #1a1a1a;
+  border-bottom: 2px solid #e0e0e0;
+  background: white;
+}
+
+td {
+  padding: 1rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 0.9rem;
+}
+
+.fila-par {
+  background: white;
+}
+
+.fila-impar {
+  background: #fafafa;
+}
+
+.columna-rank {
+  text-align: center;
+  width: 60px;
+}
+
+.puesto-numero {
+  font-weight: 600;
+  color: #6b6b6b;
+}
+
+.usuario-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #4CAF50;
+  color: white;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.usuario-datos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.usuario-nombre {
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.usuario-username {
+  font-size: 0.8rem;
+  color: #6b6b6b;
+}
+
+.badge-nivel-tabla {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.nivel-1 {
+  background: #FFE0B2;
+  color: #E65100;
+}
+
+.nivel-2 {
+  background: #E0E0E0;
+  color: #424242;
+}
+
+.nivel-3 {
+  background: #FFCCBC;
+  color: #BF360C;
+}
+
+.nivel-normal {
+  background: #E0E0E0;
+  color: #424242;
+}
+
+.columna-xp {
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.columna-racha {
+  color: #4CAF50;
+  font-weight: 600;
+}

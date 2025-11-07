@@ -1,0 +1,324 @@
+.pagina-perfil {
+    display: flex;
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #e6f7ef 3%, #ffffff 97%);
+  }
+  
+  .contenido-principal {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  
+  .perfil-encabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .titulo-pagina {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: black;
+  }
+  
+  .boton-editar,
+  .boton-guardar {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    background: linear-gradient(to right,   #31df39, #4ac951);
+  }
+  
+  /* Estado visualización */
+  .boton-editar {
+    background-color: #f3f4f6;
+    color: #ffffff;
+  }
+  
+  .boton-editar:hover {
+    background-color: #e5e7eb;
+    transform: scale(1.02);
+  }
+  
+  /* Estado edición */
+  .boton-guardar {
+    background: linear-gradient(to right,   #31df39, #4ac951);
+    color: white;
+  }
+  
+  .boton-guardar:hover {
+    background-color: #e5e7eb;
+    transform: scale(1.02);
+  }
+  .boton-editar:focus,
+.boton-editar:active,
+.boton-guardar:focus,
+.boton-guardar:active {
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+
+
+  
+  .tarjeta-perfil,
+  .tarjeta-logros {
+    background-color: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  }
+  .titulo-seccion {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 1rem;
+  }
+  
+  
+  .perfil-detalles {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .avatar {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .avatar-fondo {
+    background: linear-gradient(to bottom right, #1bb910, #059669);
+    color: white;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  
+  .nombre-perfil {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+  }
+  
+  .usuario-perfil {
+    font-size: 0.95rem;
+    color: #6b7280;
+    margin-top: 0.2rem;
+  }
+  
+  
+  .perfil-info {
+    flex: 1;
+  }
+  
+  .etiqueta-rol {
+    background-color: #f59e0b;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 0.3rem;
+  }
+  
+  .descripcion{
+    display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;  
+  width: 100%;
+  }
+  
+  .descripcion .campo{
+    flex: 1;
+    min-width: 200px;
+  }
+  .campos-perfil{
+    width: 100%;
+  }
+  .campos-perfil .campo {
+    margin-top: 1rem;
+  }
+  
+  .campo label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #374151;
+    margin-bottom: 0.3rem;
+  }
+  
+  
+  .campo-texto {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: #f9fafb;
+    transition: border-color 0.3s ease;
+    
+  }
+  .campo-texto.modo-edicion {
+    color: #111827; /* texto negro elegante */
+    background-color: #ffffff; /* fondo blanco para contraste */
+  }
+  
+  
+  .campo-texto:focus {
+    border-color: #10b981;
+    outline: none;
+    background-color: #ffffff;
+  }
+  
+  
+
+  .logro {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border-left: 6px solid #10b981;
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
+  }
+  
+  .logro:hover {
+    transform: scale(1.01);
+  }
+  .logro-info {
+    margin-bottom: 0.5rem;
+  }
+  
+  .logro-info h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0;
+  }
+  
+  .logro-info p {
+    font-size: 0.9rem;
+    color: #4b5563;
+    margin-top: 0.2rem;
+  }
+  
+  
+  
+  .etiqueta {
+    align-self: flex-start;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: capitalize;
+  }
+  .lista-logros {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.2rem;
+    margin-top: 1rem;
+  }
+  
+  .logro-tarjeta {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    transition: transform 0.2s ease;
+  }
+  
+  .logro-tarjeta:hover {
+    transform: scale(1.02);
+  }
+  
+  .icono-logro {
+    background-color: #f3f4f6;
+    border-radius: 50%;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  
+  .contenido-logro h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+    color: #1f2937;
+  }
+  
+  .contenido-logro p {
+    font-size: 0.85rem;
+    color: #4b5563;
+    margin: 0.3rem 0;
+  }
+  
+  .rareza {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    padding: 0.3rem 0.6rem;
+    border-radius: 999px;
+    display: inline-block;
+  }
+  
+  /* Rareza visual */
+  .etiqueta-comun {
+    border-left: 4px solid #9ca3af;
+  }
+  .etiqueta-rara {
+    border-left: 4px solid #3b82f6;
+  }
+  .etiqueta-epica {
+    border-left: 4px solid #8b5cf6;
+  }
+  .etiqueta-legendaria {
+    border-left: 4px solid #f59e0b;
+  }
+  
+  .icono-Trofeo{
+    color: #f59e0b;
+  }
+  .icono-logro {
+    background-color: #1bb910;
+    border-radius: 50%;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: white;
+  }
+  
+  
+  

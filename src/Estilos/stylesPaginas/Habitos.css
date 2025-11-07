@@ -1,0 +1,304 @@
+.pagina-habitos {
+    display: flex;
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #e6f7ef 3%, #ffffff 97%);
+  }
+  
+  .contenido-principal {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .contenido {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .alerta-pendientes {
+    background: #ffebee;
+    border: 1px solid #ef5350;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .icono-alerta {
+    color: #ef5350;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .alerta-contenido {
+    flex: 1;
+  }
+
+  .alerta-titulo {
+    color: #ef5350;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .alerta-mensaje {
+    color: #1a1a1a;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+  
+  .encabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+  }
+  
+  .titulo {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #1a1a1a;
+    margin: 0 0 1.5rem;
+    letter-spacing: -0.02em;
+  }
+  
+  .subtitulo {
+    color: #6b6b6b;
+    margin: 0;
+    font-size: 0.95rem;
+  }
+  
+  .boton-nuevo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(to right,   #31df39, #4ac951);
+    color: white;
+    padding: 0.75rem 1.25rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease;
+  }
+  
+  .boton-nuevo:hover {
+    background-color: #45a049;
+  }
+  
+  /* MODAL */
+  .modal-fondo {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 1rem;
+  }
+  
+  .modal {
+    background: white;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    position: relative;
+    overflow-y: visible;
+  }
+
+  /* Estilos personalizados para la barra de scroll */
+  .modal::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .modal::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+  }
+
+  .modal::-webkit-scrollbar-thumb {
+    background: #d0d0d0;
+    border-radius: 10px;
+    border: 2px solid #fafafa;
+  }
+
+  .modal::-webkit-scrollbar-thumb:hover {
+    background: #b0b0b0;
+  }
+
+  /* Para Firefox */
+  .modal {
+    scrollbar-width: thin;
+    scrollbar-color: #d0d0d0 transparent;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1.25rem 1.5rem 1rem 1.5rem;
+    border-bottom: 1px solid #e8e8e8;
+    background: white;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .modal-titulo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2a2a2a;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .modal-subtitulo {
+    font-size: 0.9rem;
+    color: #888;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .modal-cerrar {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #888;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .modal-cerrar:hover {
+    background: #f0f0f0;
+    color: #2a2a2a;
+  }
+
+  .modal-formulario {
+    padding: 1.25rem 1.5rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .modal-label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #2a2a2a;
+  }
+  
+  .modal-input,
+  .modal-textarea,
+  .modal-select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    color: #2a2a2a;
+    background: white;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+  }
+
+  .modal-input::placeholder,
+  .modal-textarea::placeholder {
+    color: #b0b0b0;
+  }
+
+  /* Ocultar flechas de los inputs numéricos */
+  .modal-input[type="number"]::-webkit-inner-spin-button,
+  .modal-input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    background: transparent;
+  }
+
+  .modal-input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  .modal-input:focus,
+  .modal-textarea:focus,
+  .modal-select:focus {
+    outline: none;
+    border-color: #66bb6a;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+  }
+
+
+  .modal-textarea {
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+  }
+
+  .modal-select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    padding-right: 2.5rem;
+  }
+
+  .modal-boton-crear {
+    background: #4caf50;
+    color: white;
+    border: none;
+    padding: 0.875rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 0.25rem;
+    align-self: flex-end;
+    min-width: 150px;
+  }
+
+  .modal-boton-crear:hover {
+    background: #45a049;
+  }
+
+  .modal-boton-crear:active {
+    transform: scale(0.98);
+  }
+  
+  .lista-habitos {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .mensaje-vacio {
+    text-align: center;
+    color: #777;
+    padding: 2rem;
+    background: white;
+    border-radius: 12px;
+  }
+
+  .modal select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+  }
+  

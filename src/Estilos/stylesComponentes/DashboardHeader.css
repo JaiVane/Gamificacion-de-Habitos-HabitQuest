@@ -1,0 +1,125 @@
+.dashboard-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: #ffffff;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.saludo-rpg {
+  font-family: 'Uncial Antiqua', cursive;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2c2c2c;
+  margin: 0;
+}
+
+.usuario {
+  color: #4caf50;
+}
+
+.frase {
+  font-size: 0.85rem;
+  color: rgba(56, 56, 56, 0.6);
+  margin: 0;
+}
+
+.fecha-hora {
+  font-size: 0.75rem;
+  color: rgba(53, 53, 53, 0.5);
+  margin: 0;
+}
+
+.header-right {
+  position: relative;
+}
+
+.avatar-menu {
+  position: relative;
+  cursor: pointer;
+}
+
+.avatar-imagen {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar-letras {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: #4caf50;
+  color: white;
+  font-weight: bold;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+.menu-cuenta {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+  z-index: 10;
+}
+
+.menu-titulo {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+.menu-cuenta button {
+  background: none;
+  border: none;
+  padding: 0.5rem 0.8rem;
+  text-align: left;
+  font-size: 0.9rem;
+  color: #111827;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.menu-cuenta button:hover {
+  background-color: #f3f4f6;
+}
+
+.menu-icono {
+  font-size: 1rem;
+}
+
+.menu-cuenta .cerrar-sesion {
+  color: #dc2626;
+}

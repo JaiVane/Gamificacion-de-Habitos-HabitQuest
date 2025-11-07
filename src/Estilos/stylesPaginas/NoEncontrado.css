@@ -1,0 +1,44 @@
+.pagina-no-encontrada {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f5f6fa;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  .contenedor-error {
+    text-align: center;
+    background: white;
+    padding: 2rem 3rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .codigo-error {
+    font-size: 5rem;
+    color: #ff5555;
+    margin-bottom: 0.5rem;
+  }
+  
+  .mensaje-error {
+    font-size: 1.3rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+  }
+  
+  .boton-volver {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .boton-volver:hover {
+    background-color: #0056b3;
+  }
+  

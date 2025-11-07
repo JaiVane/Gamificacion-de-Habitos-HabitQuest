@@ -1,0 +1,362 @@
+.pagina-configuracion {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #e6f7ef 3%, #ffffff 97%);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.configuracion-contenido {
+  background: linear-gradient(to bottom, #e6f7ef 3%, #ffffff 97%);
+  padding: 2rem;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  animation: aparecer 0.3s ease-in-out;
+}
+
+/* Header */
+.configuracion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.configuracion-titulo {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.configuracion-titulo h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #222;
+}
+
+.icono-config {
+  color: black;
+}
+
+.btn-guardar {
+  background-color: #16a34a;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-guardar:hover {
+  background-color: #15803d;
+}
+
+/* Subtítulo */
+.configuracion-subtitulo {
+  color: #555;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  margin-top: -2rem;
+}
+
+.configuracion-subtitulo .marca {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+/* Tabs */
+.configuracion-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.configuracion-tabs .tab {
+  display: flex;
+  align-items: center; /* ✅ Alinea verticalmente ícono y texto */
+  justify-content: center;
+  gap: 8px; /* espacio entre ícono y texto */
+  font-weight: 600;
+  padding: 10px 24px;
+  border-radius: 50px;
+  border: 2px solid #16a34a;
+  background-color: #f7f7f7;
+  color: #000;
+  transition: all 0.3s ease;
+}
+
+.configuracion-tabs .tab svg {
+  position: relative;
+  top: 1px; /* ✅ ajusta ligeramente la posición del ícono */
+}
+
+.configuracion-tabs .tab.active {
+  background-color: #16a34a;
+  color: white;
+  border-color: #16a34a;
+}
+
+.configuracion-tabs .tab.active svg {
+  color: white;
+}
+
+.tab {
+  background: #f3f4f6;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 9999px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: black;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid #16a34a;
+}
+
+.tab:hover {
+  background: #e5e7eb;
+  border: solid #16a34a;
+}
+
+.tab.active {
+  background: #16a34a;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+/* Cuerpo */
+.configuracion-cuerpo {
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  padding-bottom: 100px; 
+  min-height: 200px;
+  color: #444;
+}
+
+/* Animación */
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.config-contenido {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.config-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card-titulo {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #212121;
+  margin: 0 0 0.25rem 0;
+}
+
+.card-descripcion {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.config-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.config-item:last-child {
+  border-bottom: none;
+}
+
+.item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.item-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #212121;
+  margin: 0;
+}
+
+.item-descripcion {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Toggle Switch */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+  cursor: pointer;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #d1d5db;
+  transition: 0.3s;
+  border-radius: 34px;
+}
+
+.toggle-switch .slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+.toggle-switch input:checked + .slider {
+  background-color: #22c55e;
+}
+
+.toggle-switch input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+.toggle-switch.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.toggle-switch.disabled .slider {
+  cursor: not-allowed;
+}
+
+/* Select Input */
+.select-input {
+  width: 100%;
+  max-width: 300px;
+  padding: 0.75rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background-color: #ffffff;
+  font-size: 0.95rem;
+  color: #212121;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 12px;
+  padding-right: 2.5rem;
+}
+
+.select-input:focus {
+  outline: none;
+  border-color: #1aab21;
+  box-shadow: 0 0 0 3px rgba(26, 171, 33, 0.1);
+}
+
+/* Zona de Peligro */
+.zona-peligro {
+  border-top: 3px solid #dc2626;
+}
+
+.peligro-titulo {
+  color: #dc2626 !important;
+}
+
+.boton-reset,
+.boton-eliminar {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 0.75rem;
+}
+
+.boton-reset {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.boton-reset:hover {
+  background-color: #e5e7eb;
+}
+
+.boton-eliminar {
+  background-color: #dc2626;
+  color: white;
+}
+
+.boton-eliminar:hover {
+  background-color: #b91c1c;
+}
+@media (max-width: 768px) {
+  .config-header {
+    gap: 1rem;
+  }
+
+  .header-derecha {
+    justify-content: center;
+  }
+
+  .boton-guardar {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .tabs-config {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tab-boton {
+    width: 100%;
+  }
+}

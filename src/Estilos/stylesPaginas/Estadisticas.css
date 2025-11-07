@@ -1,0 +1,211 @@
+.estadisticas {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #e6f7ef 3%, #ffffff 97%);
+}
+
+.contenedor {
+  flex: 1;
+  display: flex;
+}
+
+.encabezado-esta{
+  margin: 1rem ;
+  padding:1rem ;
+}
+
+.titulo-principal {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 2.5rem;
+  color: black;
+  font-weight: bold;
+}
+
+.subtitulo {
+  margin-top: -1rem;
+  color: #6b7280;
+}
+
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 2rem 2rem 0;
+}
+
+.card {
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.card-header {
+  font-weight: 600;
+  display: flex;
+  align-items: center;  
+  gap: 0.5rem;
+  color: black;
+}
+
+.card-content {
+  margin-left: 2rem;
+}
+
+.card-content .valor {
+  color: black;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.card-content .detalle {
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+/* Colores personalizados por tarjeta */
+.card-exito {
+  border-left: 6px solid #10b981;
+}
+.iconoExito{
+  color: #10b981;
+}
+
+.card-activos {
+  border-left: 6px solid #3b82f6;
+}
+.iconoActivos{
+  color: #3b82f6;
+}
+
+.card-xp {
+  border-left: 6px solid #f59e0b;
+}
+.iconoXp{
+  color: #f59e0b;
+}
+
+.card-racha {
+  border-left: 6px solid #ef4444;
+}
+.iconoRacha{
+  color: #ef4444;
+}
+.reporte{
+  color: black;
+  font-size: 1.5rem;
+  font-weight: 600;
+  display: flex;
+  gap: 1rem;
+}
+.card-evolucion {
+  margin: 2rem 2rem 2.2rem;
+}
+.encabezado-repo{
+  color: #21b910;
+}
+.grafico-evolucion {
+  padding: 1rem;
+  background: #fff;
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+.vista-toggle {
+  margin-left: auto;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.vista-toggle button {
+  background: #f3f4f6;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: #374151;
+  box-shadow: none;
+}
+.vista-toggle button:focus,
+.vista-toggle button:active {
+  outline: none;
+  box-shadow: none;
+}
+
+.vista-toggle button:hover {
+  background: #e5e7eb;
+  border: none;
+}
+
+.vista-toggle button.activo {
+  background: #21b910;
+  color: #fff;
+  font-weight: 400;
+  border: none;
+}
+
+.card-barras {
+  margin-top: 2rem;
+}
+
+.grafico-barras {
+  padding: 1rem;
+  background-color: transparent;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.card-circular {
+  margin-top: 2rem;
+}
+
+.grafico-circular {
+  padding: 1rem;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+.card-categorias {
+  margin: 2rem 2rem 2rem;
+}
+
+.grafico-categorias {
+  padding: 1rem;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
+  border-radius: 0 0 0.5rem 0.5rem;
+  color: black;
+}
+
+.categoria {
+  margin-bottom: 1rem;
+}
+
+.categoria-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+}
+
+.barra-categoria {
+  background: #e5e7eb;
+  border-radius: 999px;
+  height: 10px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.relleno-categoria {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+.graficas{
+  display: flex;
+  gap: 2rem;
+  margin: 2rem 2rem 2.2rem;
+}
+.header{
+  color: black;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
