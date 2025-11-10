@@ -1,0 +1,64 @@
+.notificaciones-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 300px;
+  }
+  
+  .notificacion {
+    background-color: #fff;
+    color: #1e1e2f;
+    border-left: 6px solid #6c63ff;
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    animation: aparecer 0.3s ease-out, desaparecer 0.3s ease-in 4.7s forwards;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    opacity: 1;
+  }
+  
+  .notificacion.success {
+    border-left-color: #4caf50;
+  }
+  
+  .notificacion.error {
+    border-left-color: #f44336;
+  }
+  
+  .notificacion.info {
+    border-left-color: #2196f3;
+  }
+  
+  .notificacion strong {
+    font-size: 16px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  
+  .notificacion p {
+    font-size: 14px;
+    margin: 0;
+  }
+  
+  @keyframes aparecer {
+    from {
+      opacity: 0;
+      transform: translateX(20px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+  }
+  
+  @keyframes desaparecer {
+    to {
+      opacity: 0;
+      transform: translateX(20px) scale(0.95);
+    }
+  }
+  

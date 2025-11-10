@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const LIMITE_NOTIFICACIONES = 1;
-const TIEMPO_ELIMINAR = 5000; // 5 segundos
+const TIEMPO_ELIMINAR = 3000; // 3 segundos
 
 let contador = 0;
 

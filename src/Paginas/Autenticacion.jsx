@@ -3,46 +3,75 @@ import { useNavigate } from "react-router-dom";
 import { useNotificacion } from "../Hooks/useNotificacion";
 import { Sparkles } from "lucide-react";
 import "../Estilos/stylesPaginas/Autenticacion.css";
+import {postData} from "../Api/api";
 
 const Autenticacion = () => {
   const navegar = useNavigate();
-  const { toast } = useNotificacion();
+  const { crearNotificacion } = useNotificacion();
+  const [errorPassword, setErrorPassword] = useState("");
+
   const [cargando, setCargando] = useState(false);
   const [modoRegistro, setModoRegistro] = useState(false);
 
+    //------------------------Login e Registro-----------------------------------------------------------------------
   const [datosRegistro, setDatosRegistro] = useState({
-    nombreCompleto: "",
-    usuario: "",
-    correo: "",
-    contrasena: "",
+    nombre: "",
+    nombreUsuario: "",
+    email: "",
+    password: "",
   });
+  const [datosLogin, setDatosLogin] = useState({
+    email: "",
+    password: "",
+  });
+  
 
-  const manejarInicioSesion = (e) => {
+  const manejarInicioSesion =  async(e) => {
     e.preventDefault();
     setCargando(true);
-
-    setTimeout(() => {
-      setCargando(false);
-      toast({
-        title: "¡Bienvenido de vuelta!",
-        description: "Has iniciado sesión correctamente.",
-      });
+    try{
+      const result = await postData("auth/login", datosLogin);
+      localStorage.setItem("token", result.token);
       navegar("/dashboard");
-    }, 1000);
+    }catch(error){
+      crearNotificacion({
+        titulo: "Error al iniciar sesion",
+        mensaje: error.message,
+        tipo: "error"
+      });
+    }finally{
+      setCargando(false);
+    }
   };
 
-  const manejarRegistro = (e) => {
+  const manejarRegistro = async (e) => {
     e.preventDefault();
     setCargando(true);
-
-    setTimeout(() => {
-      setCargando(false);
-      toast({
-        title: "¡Cuenta creada!",
-        description: `Bienvenido ${datosRegistro.nombreCompleto}! Tu aventura comienza ahora.`,
+    try {
+      const result = await postData("auth/register", datosRegistro);
+      localStorage.setItem("token", result.token);
+      crearNotificacion({
+        titulo: "¡Cuenta creada!",
+        mensaje: `Bienvenido ${datosRegistro.nombre}! Tu aventura comienza ahora.`,
+        tipo: "success"
       });
-      navegar("/dashboard");
-    }, 1000);
+      setDatosRegistro({
+        nombre: "",
+        nombreUsuario: "",
+        email: "",
+        password: "",
+      });
+      setModoRegistro(false);
+    } catch (error) {
+      crearNotificacion({
+        titulo: "Error al registrarse",
+        mensaje: error.message,
+        tipo: "error"
+      });
+    } finally {
+      setCargando(false);
+    }
+    
   };
 
   return (
@@ -82,13 +111,24 @@ const Autenticacion = () => {
                   <p>Ingresa tus credenciales para continuar tu aventura</p>
 
                   <div className="campo">
-                    <label htmlFor="correo">Correo electrónico</label>
-                    <input type="email" id="correo" placeholder="tu@email.com" required />
+                    <label htmlFor="email">Correo electrónico</label>
+                    <input 
+                    type="email" 
+                    id="email"  
+                    value={datosLogin.email}
+                    onChange={(e)=> setDatosLogin({...datosLogin,email:e.target.value})} 
+                    placeholder="tu@email.com" required />
                   </div>
 
                   <div className="campo">
-                    <label htmlFor="contrasena">Contraseña</label>
-                    <input type="password" id="contrasena" placeholder="••••••••" required />
+                    <label htmlFor="password">Contraseña</label>
+                    <input 
+                    type="password" 
+                    id="password"
+                    value={datosLogin.password}
+                    onChange={(e)=> setDatosLogin({...datosLogin,password:e.target.value})}
+                    placeholder="••••••••" required />
+                    
                   </div>
 
                   <button type="submit" disabled={cargando}>
@@ -105,51 +145,54 @@ const Autenticacion = () => {
                     <input
                       type="text"
                       id="nombre"
-                      value={datosRegistro.nombreCompleto}
+                      value={datosRegistro.nombre}
                       onChange={(e) =>
-                        setDatosRegistro({ ...datosRegistro, nombreCompleto: e.target.value })
+                        setDatosRegistro({ ...datosRegistro, nombre: e.target.value })
                       }
                       required
                     />
                   </div>
 
                   <div className="campo">
-                    <label htmlFor="usuario">Nombre de usuario</label>
+                    <label htmlFor="nombreUsuario">Nombre de Usuario</label>
                     <input
                       type="text"
-                      id="usuario"
-                      value={datosRegistro.usuario}
+                      id="nombreUsuario"
+                      value={datosRegistro.nombreUsuario}
                       onChange={(e) =>
-                        setDatosRegistro({ ...datosRegistro, usuario: e.target.value })
+                        setDatosRegistro({ ...datosRegistro, nombreUsuario: e.target.value })
                       }
                       required
                     />
                   </div>
 
                   <div className="campo">
-                    <label htmlFor="correo">Correo electrónico</label>
+                    <label htmlFor="email">Correo electrónico</label>
                     <input
                       type="email"
-                      id="correo"
-                      value={datosRegistro.correo}
+                      id="email"
+                      value={datosRegistro.email}
                       onChange={(e) =>
-                        setDatosRegistro({ ...datosRegistro, correo: e.target.value })
+                        setDatosRegistro({ ...datosRegistro, email: e.target.value })
                       }
                       required
                     />
                   </div>
 
                   <div className="campo">
-                    <label htmlFor="contrasena">Contraseña</label>
+                    <label htmlFor="password">Contraseña</label>
                     <input
                       type="password"
-                      id="contrasena"
-                      value={datosRegistro.contrasena}
-                      onChange={(e) =>
-                        setDatosRegistro({ ...datosRegistro, contrasena: e.target.value })
-                      }
+                      id="password"
+                      value={datosRegistro.password}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setDatosRegistro({ ...datosRegistro, password: value });
+                        setErrorPassword(value.length < 6 ? "La contraseña debe tener al menos 6 caracteres." : "");
+                      }}
                       required
                     />
+                    {errorPassword && <p className="error-text">{errorPassword}</p>}
                   </div>
 
                   <button type="submit" disabled={cargando}>

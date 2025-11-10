@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "../Estilos/stylesComponentes/DashboardHeader.css";
 import { LogOut, User } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const frasesMotivacionales = [
   "Cada día es una nueva oportunidad para mejorar.",
@@ -26,6 +27,7 @@ const frasesMotivacionales = [
 ];
 
 export default function DashboardHeader() {
+  const navigate = useNavigate();
   const [tiempoActual, setTiempoActual] = useState(new Date());
   const [frase] = useState(() => {
     const indiceAleatorio = Math.floor(Math.random() * frasesMotivacionales.length);
@@ -92,17 +94,20 @@ export default function DashboardHeader() {
       </div>
     )}
 
-    {menuAbierto && (
-      <div className="menu-cuenta">
-        <p className="menu-titulo">Mi Cuenta</p>
-        <button onClick={() => window.location.href = "/perfil"}>
-          <span className="menu-icono"><User/></span> Mi perfil
-        </button>
-        <button onClick={() => window.location.href = "/"} className="cerrar-sesion">
-          <span className="menu-icono"><LogOut color="#dc2626"/></span> Cerrar sesión
-        </button>
-      </div>
-    )}
+{menuAbierto && (
+  <div className="menu-cuenta">
+    <p className="menu-titulo">Mi Cuenta</p>
+
+    <button onClick={() => navigate("/perfil")}>
+      <span className="menu-icono"><User /></span> Mi perfil
+    </button>
+
+    <button onClick={() => navigate("/")} className="cerrar-sesion">
+      <span className="menu-icono"><LogOut color="#dc2626" /></span> Cerrar sesión
+    </button>
+  </div>
+)}
+
   </div>
         </div>
 

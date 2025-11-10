@@ -101,8 +101,8 @@
 .logros-botones {
   display: flex;
   width: 100%;
-  justify-content: space-between;
-  gap: 0.5rem;
+  justify-content: flex-start;
+  gap: 1rem;
   margin-bottom: 0;
   margin-top: 0.5rem;
   padding: 0;
@@ -110,33 +110,34 @@
 .configuracion {
   display: flex;
   flex-direction: column;
-  background: linear-gradient(to bottom, #e6f7ef 3%, #ffffff 97%);
+  background: transparent;
   gap: 0;
   padding: 1rem 1.5rem 0.5rem 1.5rem;
   margin-bottom: -15rem;
 }
 
 .boton-categoria {
-  flex: 1; /* ← cada botón ocupa el mismo espacio */
-  text-align: center;
-  padding: 0.6rem 1rem;
-  font-size: 1.2rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px;
   font-weight: 600;
-  border-radius: 8px;
-  background-color: #1aab21;
-  color: white; 
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid #bbf7d0;
+  background-color: #f0fdf4;
+  color: #15803d;
 }
 
 
 .boton-categoria:hover {
-  background-color: #107205;
-  border: none;
+  background-color: #dcfce7;
+  border-color: #86efac;
 }
 
 .categoria-activa {
-  background-color: #107205;
+  background-color: #22c55e;
+  color: white;
+  border-color: #22c55e;
 }
 
 /* Contenedor principal del grid de columnas */
@@ -374,4 +375,3 @@
     align-self: flex-end;
   }
 }
-

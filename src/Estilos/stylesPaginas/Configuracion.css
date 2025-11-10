@@ -73,58 +73,36 @@
   gap: 1rem;
   margin-bottom: 2rem;
 }
-
 .configuracion-tabs .tab {
   display: flex;
-  align-items: center; /* ✅ Alinea verticalmente ícono y texto */
+  align-items: center;
   justify-content: center;
-  gap: 8px; /* espacio entre ícono y texto */
+  gap: 8px;
   font-weight: 600;
-  padding: 10px 24px;
-  border-radius: 50px;
-  border: 2px solid #16a34a;
-  background-color: #f7f7f7;
-  color: #000;
-  transition: all 0.3s ease;
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid #bbf7d0;
+  background-color: #f0fdf4;
+  color: #15803d;
 }
 
 .configuracion-tabs .tab svg {
   position: relative;
-  top: 1px; /* ✅ ajusta ligeramente la posición del ícono */
+  top: 1px;
+}
+
+.configuracion-tabs .tab:hover {
+  background-color: #dcfce7;
+  border-color: #86efac;
 }
 
 .configuracion-tabs .tab.active {
-  background-color: #16a34a;
+  background-color: #22c55e;
   color: white;
-  border-color: #16a34a;
-}
-
-.configuracion-tabs .tab.active svg {
-  color: white;
-}
-
-.tab {
-  background: #f3f4f6;
-  border: none;
-  padding: 0.6rem 1.5rem;
-  border-radius: 9999px;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: black;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: 2px solid #16a34a;
-}
-
-.tab:hover {
-  background: #e5e7eb;
-  border: solid #16a34a;
-}
-
-.tab.active {
-  background: #16a34a;
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+  border-color: #22c55e;
 }
 
 /* Cuerpo */

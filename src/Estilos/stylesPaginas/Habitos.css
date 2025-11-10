@@ -1,4 +1,4 @@
-.pagina-habitos {
+g.pagina-habitos {
     display: flex;
     min-height: 100vh;
     background: linear-gradient(to bottom, #e6f7ef 3%, #ffffff 97%);
@@ -301,4 +301,32 @@
     border: 1px solid #ccc;
     font-size: 1rem;
   }
+  .filtros-habitos {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
   
+  .filtro-boton {
+    padding: 0.5rem 1.25rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border: 1px solid #bbf7d0;
+    background-color: #f0fdf4;
+    color: #15803d;
+  }
+  
+  .filtro-boton:hover {
+    background-color: #dcfce7;
+    border-color: #86efac;
+  }
+  
+  .filtro-boton.activo {
+    background-color: #22c55e;
+    color: white;
+    border-color: #22c55e;
+  }

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../Estilos/stylesPaginas/Perfil.css";
 import { Edit, Heart, Shield, Sword, Swords, Trophy } from "lucide-react";
+import { getPerfil } from "../Api/api";
 
 const Perfil = () => {
 
@@ -29,7 +30,22 @@ const Perfil = () => {
     genero: "masculino",
     rol: "Guerrero",
   });
-
+  useEffect(() => {
+    getPerfil()
+      .then((data) => {
+        console.log("Perfil recibido:", data);
+        setPerfil({
+          nombre: data.nombre,
+          usuario: data.nombreUsuario,
+          biografia: data.biografia || "",
+          genero: data.genero || "prefiero-no-decir",
+          rol: data.rol || "Guerrero",
+        });
+      })
+      .catch((err) => {
+        console.error("Error al cargar perfil:", err.message);
+      });
+  }, []);
   const logros = [
     { id: 1, nombre: "Primera Victoria", descripcion: "Completa tu primer hábito", rareza: "común" },
     { id: 2, nombre: "Racha de Fuego", descripcion: "Mantén una racha de 7 días", rareza: "rara" },

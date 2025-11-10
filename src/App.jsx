@@ -3,10 +3,12 @@ import Inicio from './Paginas/Inicio';
 import Autenticacion from './Paginas/Autenticacion';
 import NoEncontrado from './Paginas/NoEncontrado';
 import PaginaPrincipal from './Paginas/PaginaPrincipal'
-
+import Notificaciones from "./Componentes/Notificaciones";
 
 function App() {
   return (
+    <>
+    <Notificaciones/>
       <Routes>
         {/* Página de inicio */}
         <Route path="/" element={<Inicio />} />
@@ -14,6 +16,7 @@ function App() {
         <Route path="/*" element={<PaginaPrincipal />} />
         <Route path="*" element={<NoEncontrado />} />
       </Routes>
+    </>
   );
 }
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import "../Estilos/stylesPaginas/Habitos.css";
 
 import  HabitCard  from "../Componentes/HabitCard";
@@ -28,15 +28,16 @@ export const Habitos = () => {
     },
   ]);
 
-  const [dialogoAbierto, setDialogoAbierto] = useState(false);
-  const [habitoEditando, setHabitoEditando] = useState(null);
-  const [formulario, setFormulario] = useState({
+  const FORMULARIO_INICIAL = {
     nombre: "",
     descripcion: "",
-    xpReward: 25,
-    xpPenalty: 0,
     frequency: "Diaria",
-  });
+  };
+
+  const [dialogoAbierto, setDialogoAbierto] = useState(false);
+  const [habitoEditando, setHabitoEditando] = useState(null);
+  const [formulario, setFormulario] = useState(FORMULARIO_INICIAL);
+  const [filtroActivo, setFiltroActivo] = useState("Todos");
 
   const alternarCompletado = (id) => {
     setHabitos((prev) =>
@@ -53,6 +54,23 @@ export const Habitos = () => {
   const enviarFormulario = (e) => {
     e.preventDefault();
 
+    let xpReward, xpPenalty;
+    switch (formulario.frequency) {
+      case "Semanal":
+        xpReward = 100;
+        xpPenalty = 40;
+        break;
+      case "Mensual":
+        xpReward = 300;
+        xpPenalty = 120;
+        break;
+      case "Diaria":
+      default:
+        xpReward = 25;
+        xpPenalty = 10;
+        break;
+    }
+
     if (habitoEditando) {
       setHabitos((prev) =>
         prev.map((h) =>
@@ -61,8 +79,8 @@ export const Habitos = () => {
                 ...h,
                 nombre: formulario.nombre,
                 descripcion: formulario.descripcion,
-                xpReward: formulario.xpReward,
-                xpPenalty: formulario.xpPenalty,
+                xpReward: xpReward,
+                xpPenalty: xpPenalty,
                 frequency: formulario.frequency,
               }
             : h
@@ -73,8 +91,8 @@ export const Habitos = () => {
         id: Date.now().toString(),
         nombre: formulario.nombre,
         descripcion: formulario.descripcion,
-        xpReward: formulario.xpReward,
-        xpPenalty: formulario.xpPenalty,
+        xpReward: xpReward,
+        xpPenalty: xpPenalty,
         frequency: formulario.frequency,
         racha: 0,
         completado: false,
@@ -82,7 +100,7 @@ export const Habitos = () => {
       setHabitos((prev) => [...prev, nuevoHabito]);
     }
 
-    setFormulario({ nombre: "", descripcion: "", xpReward: 25, xpPenalty: 0, frequency: "Diaria" });
+    setFormulario(FORMULARIO_INICIAL);
     setHabitoEditando(null);
     setDialogoAbierto(false);
   };
@@ -94,20 +112,30 @@ export const Habitos = () => {
     setFormulario({
       nombre: habitoCompleto.nombre || habito.name || habitoCompleto.nombre,
       descripcion: habitoCompleto.descripcion || habito.description || habitoCompleto.descripcion,
-      xpReward: habitoCompleto.xpReward || habito.xpReward || habitoCompleto.recompensaXP || 25,
-      xpPenalty: habitoCompleto.xpPenalty || habito.xpPenalty || 0,
-      frequency: habitoCompleto.frequency || habito.frequency || "Diaria",
+      frequency: habitoCompleto.frequency || "Diaria",
     });
     setDialogoAbierto(true);
   };
 
   const abrirDialogoNuevo = () => {
     setHabitoEditando(null);
-    setFormulario({ nombre: "", descripcion: "", xpReward: 25, xpPenalty: 0, frequency: "Diaria" });
+    setFormulario(FORMULARIO_INICIAL);
     setDialogoAbierto(true);
   };
 
   const habitosPendientes = habitos.filter((h) => !h.completado).length;
+
+  const categoriasFiltro = ["Todos", "Diaria", "Semanal", "Mensual"];
+
+  const habitosFiltrados = useMemo(() => {
+    if (filtroActivo === "Todos") {
+      return habitos;
+    }
+    return habitos.filter((habito) => habito.frequency === filtroActivo);
+  }, [habitos, filtroActivo]);
+
+
+
 
   return (
     <div className="pagina-habitos">
@@ -135,6 +163,20 @@ export const Habitos = () => {
             <button className="boton-nuevo" onClick={abrirDialogoNuevo}>
               <Plus size={18} /> Nuevo Hábito
             </button>
+          </div>
+
+          <div className="filtros-habitos">
+            {categoriasFiltro.map((categoria) => (
+              <button
+                key={categoria}
+                className={`filtro-boton ${
+                  filtroActivo === categoria ? "activo" : ""
+                }`}
+                onClick={() => setFiltroActivo(categoria)}
+              >
+                {categoria}
+              </button>
+            ))}
           </div>
 
           {dialogoAbierto && (
@@ -195,37 +237,6 @@ export const Habitos = () => {
                   </label>
 
                   <label className="modal-label">
-                    XP Recompensa
-                    <input
-                      type="number"
-                      value={formulario.xpReward}
-                      onChange={(e) =>
-                        setFormulario({
-                          ...formulario,
-                          xpReward: parseInt(e.target.value),
-                        })
-                      }
-                      required
-                      className="modal-input"
-                    />
-                  </label>
-
-                  <label className="modal-label">
-                    XP Penalización
-                    <input
-                      type="number"
-                      value={formulario.xpPenalty}
-                      onChange={(e) =>
-                        setFormulario({
-                          ...formulario,
-                          xpPenalty: parseInt(e.target.value) || 0,
-                        })
-                      }
-                      className="modal-input"
-                    />
-                  </label>
-
-                  <label className="modal-label">
                     Frecuencia
                     <select
                       value={formulario.frequency}
@@ -252,12 +263,12 @@ export const Habitos = () => {
           )}
 
           <div className="lista-habitos">
-            {habitos.length === 0 ? (
+            {habitosFiltrados.length === 0 ? (
               <p className="mensaje-vacio">
-                No tienes hábitos aún. ¡Crea tu primer hábito!
+                No tienes hábitos en esta categoría. ¡Crea uno nuevo!
               </p>
             ) : (
-              habitos.map((habito) => (
+              habitosFiltrados.map((habito) => (
                 <HabitCard
                   key={habito.id}
                   id={habito.id}
