@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useNotificacion } from "../Hooks/useNotificacion";
+import { useNotificacion } from "../Hooks/useNotificacion"; // Corregida la ruta de importación
 import { Sparkles } from "lucide-react";
 import "../Estilos/stylesPaginas/Autenticacion.css";
-import {postData} from "../Api/api";
+import { postData } from "../Api/api";
+import { useAuth } from "../Context/AuthContext";
 
 const Autenticacion = () => {
   const navegar = useNavigate();
-  const { crearNotificacion } = useNotificacion();
+  const { mostrarMensaje } = useNotificacion();  const { iniciarSesion } = useAuth(); // <-- Obtenemos la función del contexto
   const [errorPassword, setErrorPassword] = useState("");
 
   const [cargando, setCargando] = useState(false);
@@ -30,13 +31,12 @@ const Autenticacion = () => {
     e.preventDefault();
     setCargando(true);
     try{
-      const result = await postData("auth/login", datosLogin);
-      localStorage.setItem("token", result.token);
+      await iniciarSesion(datosLogin.email, datosLogin.password);
       navegar("/dashboard");
     }catch(error){
-      crearNotificacion({
-        titulo: "Error al iniciar sesion",
-        mensaje: error.message,
+      mostrarMensaje({
+        title: "Error al iniciar sesión",
+        description: error.message,
         tipo: "error"
       });
     }finally{
@@ -47,26 +47,26 @@ const Autenticacion = () => {
   const manejarRegistro = async (e) => {
     e.preventDefault();
     setCargando(true);
+
+    const datosCompletosRegistro = {
+      ...datosRegistro,
+      biografia: "Sin biografía aún",
+      genero: "no definido",
+      rol: "sin rol",
+    };
+
     try {
-      const result = await postData("auth/register", datosRegistro);
-      localStorage.setItem("token", result.token);
-      crearNotificacion({
-        titulo: "¡Cuenta creada!",
-        mensaje: `Bienvenido ${datosRegistro.nombre}! Tu aventura comienza ahora.`,
-        tipo: "success"
+      await postData("auth/register", datosCompletosRegistro);
+      mostrarMensaje({
+        title: "¡Cuenta creada!",
+        description: `¡Bienvenido ${datosRegistro.nombre}! Tu aventura comienza ahora.`,
       });
-      setDatosRegistro({
-        nombre: "",
-        nombreUsuario: "",
-        email: "",
-        password: "",
-      });
-      setModoRegistro(false);
+      await iniciarSesion(datosRegistro.email, datosRegistro.password);
+      navegar("/dashboard");
     } catch (error) {
-      crearNotificacion({
-        titulo: "Error al registrarse",
-        mensaje: error.message,
-        tipo: "error"
+      mostrarMensaje({
+        title: "Error al registrarse",
+        description: error.message,
       });
     } finally {
       setCargando(false);

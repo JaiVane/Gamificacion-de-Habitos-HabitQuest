@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "../Estilos/stylesPaginas/Perfil.css";
 import { Edit, Heart, Shield, Sword, Swords, Trophy } from "lucide-react";
-import { getPerfil } from "../Api/api";
+import { useAuth } from "../Context/AuthContext";
+import { useNotificacion } from "../Hooks/useNotificacion";
 
 const Perfil = () => {
 
@@ -22,30 +23,9 @@ const Perfil = () => {
   };
   
   const [modoEdicion, setModoEdicion] = useState(false);
-  const [perfil, setPerfil] = useState({
-    nombre: "Aventurero Legendario",
-    usuario: "warrior_001",
-    biografia:
-      "Un guerrero dedicado en la búsqueda de mejorar cada día. Mi misión es conquistar cada hábito como si fuera un jefe final.",
-    genero: "masculino",
-    rol: "Guerrero",
-  });
-  useEffect(() => {
-    getPerfil()
-      .then((data) => {
-        console.log("Perfil recibido:", data);
-        setPerfil({
-          nombre: data.nombre,
-          usuario: data.nombreUsuario,
-          biografia: data.biografia || "",
-          genero: data.genero || "prefiero-no-decir",
-          rol: data.rol || "Guerrero",
-        });
-      })
-      .catch((err) => {
-        console.error("Error al cargar perfil:", err.message);
-      });
-  }, []);
+  const { usuario, actualizarUsuario, setUsuario } = useAuth();
+  const { mostrarMensaje } = useNotificacion(); // Unificar a mostrarMensaje
+
   const logros = [
     { id: 1, nombre: "Primera Victoria", descripcion: "Completa tu primer hábito", rareza: "común" },
     { id: 2, nombre: "Racha de Fuego", descripcion: "Mantén una racha de 7 días", rareza: "rara" },
@@ -53,9 +33,28 @@ const Perfil = () => {
     { id: 4, nombre: "Corazón Inquebrantable", descripcion: "Mantén una racha de 30 días", rareza: "legendaria" },
   ];
 
-  const guardarCambios = () => {
-    setModoEdicion(false);
+  const guardarCambios = async () => {
+    try {
+      await actualizarUsuario(usuario); // Enviamos el objeto 'usuario' del contexto
+      setModoEdicion(false);
+      mostrarMensaje({
+        title: "¡Perfil actualizado!",
+        description: "Tus cambios han sido guardados correctamente.",
+        tipo: "success"
+      });
+    } catch (err) {
+      console.error("Error al guardar perfil:", err.message);
+      mostrarMensaje({
+        title: "Error al guardar",
+        description: err.message || "No se pudieron guardar los cambios. Inténtalo de nuevo.",
+        tipo: "error"
+      });
+    }
   };
+
+  if (!usuario) {
+    return <div>Cargando perfil...</div>; // O un spinner de carga
+  }
 
   const obtenerColorRareza = (rareza) => {
     switch (rareza) {
@@ -95,22 +94,22 @@ const Perfil = () => {
             <div className="perfil-detalles">
               <div className="avatar">
                 <div className="avatar-fondo">
-                  {perfil.nombre.slice(0, 2).toUpperCase()}
+                  {usuario.nombre?.slice(0, 2).toUpperCase() || '??'}
                 </div>
               </div>
 
               <div className="perfil-info">
-                <span className="etiqueta-rol">{perfil.rol}</span>
+                <span className="etiqueta-rol">{usuario.rol}</span>
                 {modoEdicion ? (
                   <input
                   className={`campo-texto ${modoEdicion ? "modo-edicion" : ""}`}
-                    value={perfil.nombre}
-                    onChange={(e) => setPerfil({ ...perfil, nombre: e.target.value })}
+                    value={usuario.nombre}
+                    onChange={(e) => setUsuario({ ...usuario, nombre: e.target.value })}
                   />
                 ) : (
                   <>
-                    <h2 className="nombre-perfil">{perfil.nombre}</h2>
-                    <p className="usuario-perfil">@{perfil.usuario}</p>
+                    <h2 className="nombre-perfil">{usuario.nombre}</h2>
+                    <p className="usuario-perfil">@{usuario.nombreUsuario}</p>
                   </>
                 )}
               </div>
@@ -121,9 +120,21 @@ const Perfil = () => {
                 <label>Nombre de Usuario</label>
                 <input
                   className={`campo-texto ${modoEdicion ? "modo-edicion" : ""}`}
-                  value={perfil.usuario}
-                  onChange={(e) => setPerfil({ ...perfil, usuario: e.target.value })}
+                  value={usuario.nombreUsuario}
+                  onChange={(e) => setUsuario({ ...usuario, nombreUsuario: e.target.value })}
                   disabled={!modoEdicion}
+                />
+              </div>
+
+              <div className="campo">
+                <label>Correo Electrónico</label>
+                <input
+                  className={`campo-texto ${modoEdicion ? "modo-edicion" : ""}`}
+                  type="email"
+                  value={usuario.email}
+                  onChange={(e) => setUsuario({ ...usuario, email: e.target.value })}
+                  disabled={!modoEdicion}
+                  required
                 />
               </div>
 
@@ -131,8 +142,8 @@ const Perfil = () => {
                 <label>Biografía</label>
                 <textarea
                   className={`campo-texto ${modoEdicion ? "modo-edicion" : ""}`}
-                  value={perfil.biografia}
-                  onChange={(e) => setPerfil({ ...perfil, biografia: e.target.value })}
+                  value={usuario.biografia}
+                  onChange={(e) => setUsuario({ ...usuario, biografia: e.target.value })}
                   disabled={!modoEdicion}
                   rows="4"
                 />
@@ -143,8 +154,8 @@ const Perfil = () => {
                 <label>Género</label>
                 <select
                   className={`campo-texto ${modoEdicion ? "modo-edicion" : ""}`}
-                  value={perfil.genero}
-                  onChange={(e) => setPerfil({ ...perfil, genero: e.target.value })}
+                  value={usuario.genero}
+                  onChange={(e) => setUsuario({ ...usuario, genero: e.target.value })}
                   disabled={!modoEdicion}
                 >
                   <option value="masculino">Masculino</option>
@@ -158,8 +169,8 @@ const Perfil = () => {
                 <label>Rol RPG</label>
                 <select
                   className={`campo-texto ${modoEdicion ? "modo-edicion" : ""}`}
-                  value={perfil.rol}
-                  onChange={(e) => setPerfil({ ...perfil, rol: e.target.value })}
+                  value={usuario.rol}
+                  onChange={(e) => setUsuario({ ...usuario, rol: e.target.value })}
                   disabled={!modoEdicion}
                 >
                   <option value="Guerrero">Guerrero</option>
@@ -168,6 +179,11 @@ const Perfil = () => {
                   <option value="Paladín">Paladín</option>
                   <option value="Asesino">Asesino</option>
                   <option value="Druida">Druida</option>
+                  <option value="Guerrera">Guerrera</option>
+                  <option value="Hechicera">Hechicera</option>
+                  <option value="Sacerdotisa">Sacerdotisa</option>
+                  <option value="Valquiria">Valquiria</option>
+                  <option value="Cazadora">Cazadora</option>
                 </select>
               </div>
 

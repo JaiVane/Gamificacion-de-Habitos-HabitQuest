@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "../Estilos/stylesComponentes/DashboardHeader.css";
 import { LogOut, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../Context/AuthContext";
 
 const frasesMotivacionales = [
   "Cada día es una nueva oportunidad para mejorar.",
@@ -27,16 +28,13 @@ const frasesMotivacionales = [
 ];
 
 export default function DashboardHeader() {
+  const { usuario } = useAuth(); // <--- Usamos el contexton
   const navigate = useNavigate();
   const [tiempoActual, setTiempoActual] = useState(new Date());
   const [frase] = useState(() => {
     const indiceAleatorio = Math.floor(Math.random() * frasesMotivacionales.length);
     return frasesMotivacionales[indiceAleatorio];
   });
-  const perfil = {
-    nombre: "Aventurero Legendario",
-    avatar: null, // si tienes imagen, pon la URL aquí
-  };
 
   useEffect(() => {
     const temporizador = setInterval(() => {
@@ -69,7 +67,7 @@ export default function DashboardHeader() {
       <div className="header-container">
         <div className="header-left">
           <h2 className="saludo-rpg">
-            {obtenerSaludo()}, <span className="usuario">Usuario</span>
+            {obtenerSaludo()}, <span className="usuario">{usuario?.nombreUsuario || 'Aventurero'}</span>
           </h2>
 
           <p className="frase">{frase}</p>
@@ -86,11 +84,11 @@ export default function DashboardHeader() {
 
         <div className="header-right">
   <div className="avatar-menu" onClick={() => setMenuAbierto(!menuAbierto)}>
-    {perfil.avatar ? (
-      <img src={perfil.avatar} alt="Avatar" className="avatar-imagen" />
+    {usuario?.avatar ? (
+      <img src={usuario.avatar} alt="Avatar" className="avatar-imagen" />
     ) : (
       <div className="avatar-letras">
-        {perfil.nombre.slice(0, 2).toUpperCase()}
+        {usuario?.nombre?.slice(0, 2).toUpperCase() || '??'}
       </div>
     )}
 

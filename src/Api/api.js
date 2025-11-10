@@ -77,12 +77,27 @@ export const deleteData = async (endpoint) => {
   return response.json();
 };
 
+//funcion obtener perfil
 export async function getPerfil() {
   const token = localStorage.getItem("token");
   const response = await fetch(`${API_URL}/auth/perfil`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
+  });
+  if (!response.ok) return handleError(response);
+  return response.json();
+}
+//funcion actualizar perfil
+export async function updatePerfil(data) {
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${API_URL}/auth/perfil`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
   });
   if (!response.ok) return handleError(response);
   return response.json();

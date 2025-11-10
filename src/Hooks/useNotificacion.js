@@ -1,125 +1,54 @@
-import { useEffect, useState } from "react";
+import { useState, useCallback, useEffect } from 'react';
 
-const LIMITE_NOTIFICACIONES = 1;
-const TIEMPO_ELIMINAR = 3000; // 3 segundos
+// Usamos un estado y escuchas fuera del componente para que sea global en toda la app.
+let notificacionesState = [];
+const listeners = new Set(); 
 
-let contador = 0;
-
-function generarId() {
-  contador = (contador + 1) % Number.MAX_SAFE_INTEGER;
-  return contador.toString();
-}
-
-const tiposAccion = {
-  AGREGAR: "AGREGAR",
-  ACTUALIZAR: "ACTUALIZAR",
-  OCULTAR: "OCULTAR",
-  ELIMINAR: "ELIMINAR",
+const despachar = () => {
+  for (const listener of listeners) {
+    listener([...notificacionesState]);
+  }
 };
 
-const temporizadores = new Map();
-let estadoMemoria = { notificaciones: [] };
-const escuchas = [];
+const mostrarMensaje = ({ title, description, tipo = 'info' }) => {
+  const id = Date.now();
+  const nuevaNotificacion = {
+    id,
+    title,
+    description,
+    tipo,
+    visible: true,
+  };
 
-function despachar(accion) {
-  estadoMemoria = reductor(estadoMemoria, accion);
-  escuchas.forEach((escucha) => escucha(estadoMemoria));
-}
+  // Añadimos la nueva notificación y despachamos el cambio
+  notificacionesState = [nuevaNotificacion, ...notificacionesState].slice(0, 5); // Limite de 5 notificaciones
+  despachar();
 
-function agregarAColaEliminar(id) {
-  if (temporizadores.has(id)) return;
+  // Temporizador para ocultar la notificación
+  setTimeout(() => {
+    const notificacion = notificacionesState.find(n => n.id === id);
+    if (notificacion) {
+      notificacion.visible = false;
+      despachar();
 
-  const tiempo = setTimeout(() => {
-    temporizadores.delete(id);
-    despachar({ tipo: tiposAccion.ELIMINAR, id });
-  }, TIEMPO_ELIMINAR);
-
-  temporizadores.set(id, tiempo);
-}
-
-function reductor(estado, accion) {
-  switch (accion.tipo) {
-    case tiposAccion.AGREGAR:
-      return {
-        ...estado,
-        notificaciones: [accion.notificacion, ...estado.notificaciones].slice(
-          0,
-          LIMITE_NOTIFICACIONES
-        ),
-      };
-
-    case tiposAccion.ACTUALIZAR:
-      return {
-        ...estado,
-        notificaciones: estado.notificaciones.map((n) =>
-          n.id === accion.notificacion.id
-            ? { ...n, ...accion.notificacion }
-            : n
-        ),
-      };
-
-    case tiposAccion.OCULTAR:
-      const id = accion.id;
-      if (id) agregarAColaEliminar(id);
-      return {
-        ...estado,
-        notificaciones: estado.notificaciones.map((n) =>
-          n.id === id || id === undefined ? { ...n, visible: false } : n
-        ),
-      };
-
-    case tiposAccion.ELIMINAR:
-      if (accion.id === undefined) return { ...estado, notificaciones: [] };
-      return {
-        ...estado,
-        notificaciones: estado.notificaciones.filter((n) => n.id !== accion.id),
-      };
-
-    default:
-      return estado;
-  }
-}
-
-function crearNotificacion({ titulo, mensaje, tipo = "info" }) {
-  const id = generarId();
-
-  const actualizar = (nueva) =>
-    despachar({
-      tipo: tiposAccion.ACTUALIZAR,
-      notificacion: { ...nueva, id },
-    });
-
-  const ocultar = () => despachar({ tipo: tiposAccion.OCULTAR, id });
-
-  despachar({
-    tipo: tiposAccion.AGREGAR,
-    notificacion: {
-      id,
-      titulo,
-      mensaje,
-      tipo,
-      visible: true,
-      onClose: () => ocultar(),
-    },
-  });
-
-  return { id, actualizar, ocultar };
-}
+      // Remover completamente la notificación del DOM después de la animación de salida
+      setTimeout(() => {
+        notificacionesState = notificacionesState.filter(n => n.id !== id);
+        despachar();
+      }, 200); // Coincide con la duración de la animación CSS
+    }
+  }, 2000); // 3 segundos
+};
 
 export function useNotificacion() {
-  const [estado, setEstado] = useState(estadoMemoria);
+  const [notificaciones, setNotificaciones] = useState(notificacionesState);
 
   useEffect(() => {
-    escuchas.push(setEstado);
+    listeners.add(setNotificaciones);
     return () => {
-      const index = escuchas.indexOf(setEstado);
-      if (index > -1) escuchas.splice(index, 1);
+      listeners.delete(setNotificaciones);
     };
   }, []);
 
-  return {
-    ...estado,
-    crearNotificacion,
-    ocultar: (id) => despachar({ tipo: tiposAccion.OCULTAR, id }),
-  };
+  return { notificaciones, mostrarMensaje };
 }
