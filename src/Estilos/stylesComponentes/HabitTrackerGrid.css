@@ -1,0 +1,51 @@
+.tracker-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-top: 0.5rem;
+    padding: 0 4px;
+  }
+  
+  .tracker-dia {
+    background-color: #f3f4f6;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #374151;
+    transition: all 0.3s ease;
+  }
+  
+  .tracker-dia.cumplido {
+    background-color: #10b981;
+    color: white;
+    box-shadow: 0 0 3px #059669;
+  }
+  
+  .dia-mes {
+    font-size: 1rem;
+    opacity: 0.6;
+    line-height: 1;
+  }
+  
+  .dia-numero {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  
+  @media (max-width: 480px) {
+    .tracker-grid {
+      grid-template-columns: repeat(7, 1fr);
+      gap: 1px;
+    }
+  
+    .tracker-dia {
+      font-size: 0.5rem;
+      padding: 1px;
+    }
+  }
+    

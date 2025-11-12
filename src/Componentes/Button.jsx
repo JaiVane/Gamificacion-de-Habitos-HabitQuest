@@ -1,10 +1,8 @@
-import React from "react";
-import "../Estilos/stylesComponentes/Button.css";
+import React from 'react';
 
-const Button = ({ children, onClick, tipo = "primario", grande = false }) => {
-  const clases = `boton ${tipo} ${grande ? "grande" : ""}`;
+const Button = ({ onClick, children, className, ...props }) => {
   return (
-    <button className={clases} onClick={onClick}>
+    <button onClick={onClick} className={className} {...props}>
       {children}
     </button>
   );

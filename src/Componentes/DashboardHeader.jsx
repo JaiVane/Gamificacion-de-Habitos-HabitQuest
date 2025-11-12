@@ -28,7 +28,7 @@ const frasesMotivacionales = [
 ];
 
 export default function DashboardHeader() {
-  const { usuario } = useAuth(); // <--- Usamos el contexton
+  const { usuario, cerrarSesion } = useAuth(); // Obtenemos la función cerrarSesion
   const navigate = useNavigate();
   const [tiempoActual, setTiempoActual] = useState(new Date());
   const [frase] = useState(() => {
@@ -60,6 +60,11 @@ export default function DashboardHeader() {
     return `${horas12}:${minutosFormateados} ${ampm}`;
   };
   const [menuAbierto, setMenuAbierto] = useState(false);
+
+  const handleCerrarSesion = () => {
+    cerrarSesion();
+    navigate("/"); // Redirigimos al inicio después de limpiar todo
+  };
 
 
   return (
@@ -100,7 +105,7 @@ export default function DashboardHeader() {
       <span className="menu-icono"><User /></span> Mi perfil
     </button>
 
-    <button onClick={() => navigate("/")} className="cerrar-sesion">
+    <button onClick={handleCerrarSesion} className="cerrar-sesion">
       <span className="menu-icono"><LogOut color="#dc2626" /></span> Cerrar sesión
     </button>
   </div>

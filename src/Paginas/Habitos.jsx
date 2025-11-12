@@ -1,33 +1,22 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import "../Estilos/stylesPaginas/Habitos.css";
-
 import  HabitCard  from "../Componentes/HabitCard";
 import { Plus, Trash2, Edit, AlertCircle, X } from "lucide-react";
+import { useHabits } from "../Context/HabitosContext"; // <-- 1. Importamos el hook del contexto
+
 
 export const Habitos = () => {
-  const [habitos, setHabitos] = useState([
-    {
-      id: "1",
-      nombre: "Ejercicio matutino",
-      descripcion: "30 minutos de actividad física",
-      xpReward: 50,
-      racha: 7,
-      completado: false,
-      frequency: "Diaria",
-      xpPenalty: 25,
-    },
-    {
-      id: "2",
-      nombre: "Leer 20 páginas",
-      descripcion: "Leer un libro de desarrollo personal",
-      xpReward: 30,
-      racha: 5,
-      completado: false,
-      frequency: "Diaria",
-      xpPenalty: 15,
-    },
-  ]);
-
+  // 2. Consumimos el contexto para obtener los hábitos y las funciones
+  const {
+    habitos,
+    addHabit,
+    updateHabit,
+    removeHabit,
+    toggleHabitCompletion,
+    markDayForHabit, // <-- Obtenemos las nuevas funciones
+    getHistoryForHabit,
+  } = useHabits();
+  
   const FORMULARIO_INICIAL = {
     nombre: "",
     descripcion: "",
@@ -40,20 +29,25 @@ export const Habitos = () => {
   const [filtroActivo, setFiltroActivo] = useState("Todos");
 
   const alternarCompletado = (id) => {
-    setHabitos((prev) =>
-      prev.map((h) =>
-        h.id === id ? { ...h, completado: !h.completado } : h
-      )
-    );
+    const habito = habitos.find(h => h.id === id);
+    toggleHabitCompletion(id);
   };
-
+  
   const eliminarHabito = (id) => {
-    setHabitos((prev) => prev.filter((h) => h.id !== id));
+    removeHabit(id);
   };
 
-  const enviarFormulario = (e) => {
-    e.preventDefault();
+  const marcarDiaHabito = (id) => {
+    markDayForHabit(id);
+  };
 
+  const verHistorialHabito = async (id) => {
+    return await getHistoryForHabit(id);
+  };
+  
+
+  const enviarFormulario = async (e) => {
+    e.preventDefault();
     let xpReward, xpPenalty;
     switch (formulario.frequency) {
       case "Semanal":
@@ -72,32 +66,20 @@ export const Habitos = () => {
     }
 
     if (habitoEditando) {
-      setHabitos((prev) =>
-        prev.map((h) =>
-          h.id === habitoEditando.id
-            ? {
-                ...h,
-                nombre: formulario.nombre,
-                descripcion: formulario.descripcion,
-                xpReward: xpReward,
-                xpPenalty: xpPenalty,
-                frequency: formulario.frequency,
-              }
-            : h
-        )
-      );
-    } else {
-      const nuevoHabito = {
-        id: Date.now().toString(),
+      // 3. Usamos la función del contexto para actualizar
+      await updateHabit(habitoEditando.id, {
         nombre: formulario.nombre,
         descripcion: formulario.descripcion,
-        xpReward: xpReward,
-        xpPenalty: xpPenalty,
-        frequency: formulario.frequency,
-        racha: 0,
-        completado: false,
-      };
-      setHabitos((prev) => [...prev, nuevoHabito]);
+        frecuencia: formulario.frequency,
+      });
+    } else {
+      // 4. Usamos la función del contexto para añadir
+      await addHabit({
+        nombre: formulario.nombre,
+        descripcion: formulario.descripcion,
+        frecuencia: formulario.frequency,
+        xp: xpReward, // El backend debería asignar esto, pero lo enviamos si es necesario
+      });
     }
 
     setFormulario(FORMULARIO_INICIAL);
@@ -106,7 +88,6 @@ export const Habitos = () => {
   };
 
   const abrirDialogoEdicion = (habito) => {
-    // Buscar el hábito completo en el estado si solo recibimos un objeto parcial
     const habitoCompleto = habitos.find(h => h.id === habito.id) || habito;
     setHabitoEditando(habitoCompleto);
     setFormulario({
@@ -123,7 +104,19 @@ export const Habitos = () => {
     setDialogoAbierto(true);
   };
 
-  const habitosPendientes = habitos.filter((h) => !h.completado).length;
+  // Objeto para contar hábitos por frecuencia, usando useMemo para optimizar
+  const conteoPorFrecuencia = useMemo(() => {
+    const conteo = {
+      "Todos": habitos.length,
+      "Diaria": habitos.filter(h => h.frecuencia === 'Diaria').length,
+      "Semanal": habitos.filter(h => h.frecuencia === 'Semanal').length,
+      "Mensual": habitos.filter(h => h.frecuencia === 'Mensual').length,
+    };
+    return conteo;
+  }, [habitos]);
+  const habitosPendientes = habitos.filter(
+    (h) => h.frecuencia === "Diaria" && !h.cumplido
+  ).length;
 
   const categoriasFiltro = ["Todos", "Diaria", "Semanal", "Mensual"];
 
@@ -131,7 +124,7 @@ export const Habitos = () => {
     if (filtroActivo === "Todos") {
       return habitos;
     }
-    return habitos.filter((habito) => habito.frequency === filtroActivo);
+    return habitos.filter((habito) => habito.frecuencia === filtroActivo);
   }, [habitos, filtroActivo]);
 
 
@@ -154,15 +147,21 @@ export const Habitos = () => {
           )}
 
           <div className="encabezado">
-            <div >
+            <div>
               <h1 className="titulo">Mis Hábitos</h1>
               <p className="subtitulo">
                 Gestiona y da seguimiento a tus hábitos diarios
               </p>
             </div>
-            <button className="boton-nuevo" onClick={abrirDialogoNuevo}>
-              <Plus size={18} /> Nuevo Hábito
-            </button>
+            <div className="encabezado-acciones">
+              <div className="contador-total-habitos">
+                <span className="contador-etiqueta">Hábitos Totales</span>
+                <span className="contador-valor">{habitos.length}</span>
+              </div>
+              <button className="boton-nuevo" onClick={abrirDialogoNuevo}>
+                <Plus size={18} /> Nuevo Hábito
+              </button>
+            </div>
           </div>
 
           <div className="filtros-habitos">
@@ -174,7 +173,7 @@ export const Habitos = () => {
                 }`}
                 onClick={() => setFiltroActivo(categoria)}
               >
-                {categoria}
+                {categoria} ({conteoPorFrecuencia[categoria] || 0})
               </button>
             ))}
           </div>
@@ -230,7 +229,6 @@ export const Habitos = () => {
                         })
                       }
                       placeholder="Describe tu hábito..."
-                      required
                       className="modal-textarea"
                       rows="4"
                     />
@@ -274,14 +272,17 @@ export const Habitos = () => {
                   id={habito.id}
                   name={habito.nombre}
                   description={habito.descripcion}
-                  xpReward={habito.xpReward || habito.recompensaXP}
-                  streak={habito.racha}
-                  completed={habito.completado}
-                  frequency={habito.frequency || "Diaria"}
+                  xp={habito.xp}
+                  xpReward={habito.xpReward}  
+                  streak={habito.diasConsecutivos}
+                  completed={habito.cumplido}
+                  frequency={habito.frecuencia}
                   xpPenalty={habito.xpPenalty || 0}
                   onToggle={alternarCompletado}
                   onEdit={abrirDialogoEdicion}
                   onDelete={eliminarHabito}
+                  onMarkDay={marcarDiaHabito} // <-- Pasamos la nueva función
+                  onShowHistory={verHistorialHabito} // <-- Pasamos la nueva función
                 />
               ))
             )}

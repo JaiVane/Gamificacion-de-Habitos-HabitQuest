@@ -57,6 +57,38 @@ g.pagina-habitos {
     align-items: flex-start;
     margin-bottom: 2rem;
   }
+
+  .encabezado-acciones {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .contador-total-habitos {
+    background-color: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .contador-etiqueta {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .contador-valor {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1f2937;
+  }
   
   .titulo {
     font-size: 2rem;
@@ -330,3 +362,69 @@ g.pagina-habitos {
     color: white;
     border-color: #22c55e;
   }
+
+/* Estilos para las etiquetas de frecuencia en HabitCard */
+.frecuencia-tag {
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.frecuencia-diaria {
+  background-color: #ecfdf5; /* Verde muy claro */
+  color: #16a34a; /* Verde oscuro */
+}
+
+.frecuencia-semanal {
+  background-color: #fffbeb; /* Amarillo muy claro */
+  color: #d97706; /* Amarillo/Naranja oscuro */
+}
+
+.frecuencia-mensual {
+  background-color: #eef2ff; /* Índigo muy claro */
+  color: #4f46e5; /* Índigo oscuro */
+}
+
+/* Estilos para los botones de acción en HabitCard */
+.habit-card-actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.75rem;
+}
+
+.boton-marcar-dia,
+.boton-historial {
+  padding: 0.4rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.boton-marcar-dia {
+  background-color: #22c55e; /* Verde principal */
+  color: white;
+}
+
+.boton-marcar-dia:hover {
+  background-color: #16a34a; /* Verde más oscuro */
+}
+
+.boton-historial {
+  background-color: #f3f4f6; /* Gris claro */
+  color: #374151; /* Texto oscuro */
+  border-color: #e5e7eb;
+}
+
+.boton-historial:hover {
+  background-color: #e5e7eb;
+}
+
+.boton-marcar-dia.cumplido {
+  background-color: #15803d; /* Un verde más oscuro para indicar que está cumplido */
+  cursor: pointer; /* Mantenemos el cursor por si se quiere desmarcar */
+}

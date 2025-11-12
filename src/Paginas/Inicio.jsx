@@ -40,9 +40,6 @@ const Inicio = () => {
               <Button onClick={() => navegar("/autenticacion")} className="boton-primario grande">
                 Comenzar Ahora
               </Button>
-              <Button onClick={() => navegar("/dashboard")} className="boton-secundario grande">
-                Ver Demo
-              </Button>
             </div>
           </div>
           <div className="imagen-principal">

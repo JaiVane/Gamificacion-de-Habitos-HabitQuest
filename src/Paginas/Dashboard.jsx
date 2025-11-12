@@ -45,7 +45,7 @@ const Dashboard = () => {
               xpRestante = nuevaXP - experienciaSiguienteNivel;
               mostrarMensaje({title: "🎉 ¡Subiste de nivel!", description: `Ahora eres nivel ${nuevoNivel}. ¡Sigue así!`, tipo: "success"});
             } else {
-              mostrarMensaje({title: "✅ ¡Hábito completado!", description: `+${habito.xp} XP ganados`, tipo: "success"});
+              mostrarMensaje({title: "✅ ¡Hábito completado!", description: `+${habito.xp} ganados`, tipo: "success"});
             }
 
             setEstadisticas({

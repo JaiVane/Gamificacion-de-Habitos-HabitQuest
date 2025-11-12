@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { getPerfil, updatePerfil, postData } from '../Api/api.js';
-
+ 
 // 1. Crear el contexto
 const AuthContext = createContext();
 
@@ -63,7 +63,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const value = { usuario, setUsuario, cargando, actualizarUsuario, iniciarSesion };
+  // Función para cerrar la sesión del usuario
+  const cerrarSesion = () => {
+    localStorage.removeItem("token"); // Limpiamos el token
+    setUsuario(null); // Limpiamos el estado del usuario
+    // Opcional: podrías limpiar también el estado de los hábitos si lo deseas
+  };
+
+  const value = { usuario, setUsuario, cargando, actualizarUsuario, iniciarSesion, cerrarSesion };
 
   return (
     <AuthContext.Provider value={value}>

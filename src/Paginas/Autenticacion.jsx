@@ -65,7 +65,7 @@ const Autenticacion = () => {
       navegar("/dashboard");
     } catch (error) {
       mostrarMensaje({
-        title: "Error al registrarse",
+        title: "Error en el registro",
         description: error.message,
       });
     } finally {

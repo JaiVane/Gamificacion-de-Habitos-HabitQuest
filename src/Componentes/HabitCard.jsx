@@ -1,11 +1,14 @@
 import { useState } from "react";
 import "../Estilos/stylesComponentes/HabitCard.css";
+import { useNotificacion } from "../Hooks/useNotificacion";
 import { Flame, Trophy, Calendar, AlertTriangle, Edit3, Trash2 } from "lucide-react";
+import HabitTrackerGrid from "../Componentes/HabitTrackerGrid";
 
 const HabitCard = ({
   id,
   name,
   description,
+  xp,
   xpReward,
   streak,
   completed,
@@ -14,17 +17,57 @@ const HabitCard = ({
   onToggle,
   onEdit,
   onDelete,
+  onMarkDay,
+  onShowHistory,
 }) => {
   const [isAnimating, setIsAnimating] = useState(false);
-
-  const handleToggle = () => {
-    if (!completed) {
-      setIsAnimating(true);
-      setTimeout(() => setIsAnimating(false), 600);
+  const { mostrarMensaje } = useNotificacion();
+  const [historial, setHistorial] = useState([]);
+  const [mostrarHistorial, setMostrarHistorial] = useState(false);
+  const handleMarkCompleted = async (e) => {
+    e.stopPropagation();
+    try {
+      // 🔹 Marca el hábito y obtiene el historial actualizado
+      const history = await onToggle(id);
+  
+      if (history && history.length > 0) {
+        setHistorial(history);
+      }
+  
+      mostrarMensaje({
+        title: "¡Hábito cumplido!",
+        description: "Se ha registrado este día en tu historial 🎯",
+        tipo: "success",
+      });
+    } catch (error) {
+      console.error("Error al marcar hábito:", error);
+      mostrarMensaje({
+        title: "Error al marcar hábito",
+        description: error.message || "No se pudo registrar el cumplimiento.",
+        tipo: "error",
+      });
     }
-    onToggle(id);
   };
+  
+  
+ 
+  const handleShowHistory = async (e) => {
+    e.stopPropagation(); // Evita que otros eventos de click se disparen
 
+    // Si el historial ya se está mostrando, simplemente lo ocultamos.
+    if (mostrarHistorial) {
+      setMostrarHistorial(false);
+      return;
+    }
+
+    // Si no se está mostrando, pedimos los datos a la API.
+    const historyData = await onShowHistory(id); // onShowHistory viene de Habitos.jsx
+    if (historyData && historyData.length > 0) {
+      setHistorial(historyData); // Guardamos los datos en el estado
+      setMostrarHistorial(true); // Y ahora sí, mostramos la lista
+    }
+  }
+  console.log("HabitCard props:", { id, name, xpReward, xp });
   return (
     <div
       className={`habit-card ${completed ? "completed" : ""} ${
@@ -36,17 +79,22 @@ const HabitCard = ({
           <input
             type="checkbox"
             checked={completed}
-            onChange={handleToggle}
+            onChange={handleMarkCompleted}
             className="habit-checkbox"
           />
         </div>
 
         <div className="habit-details">
           <div className="habit-header">
-            <div className="habit-title-section">
-              <h3 className={`habit-name ${completed ? "done" : ""}`}>{name}</h3>
-              <p className="habit-description">{description}</p>
-            </div>
+          <div className="habit-title-section">
+            <h3 className={`habit-name ${completed ? "done" : ""}`}>{name}</h3>
+            {description && (
+            <p className="habit-description">{description}</p>
+            )}
+
+
+          </div>
+
 
             <div className="habit-top-badges">
               {streak > 0 && (
@@ -54,16 +102,22 @@ const HabitCard = ({
                   <Flame size={14} /> {streak}
                 </span>
               )}
-              <span className="badge-xp-top">
-                <Trophy size={14} /> {xpReward} XP
-              </span>
+               {/* XP acumulado */}
+                <span className="badge-xp-top">
+                  <Trophy size={14} /> {xp} XP
+                </span>
+
+                {/* XP por cumplimiento */}
+                <span className="badge-xp-reward">
+                  +{xpReward} XP / {frequency}
+                </span>
               {(onEdit || onDelete) && (
                 <div className="habit-actions">
                   {onEdit && (
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        onEdit({ id, name, description, xpReward, streak, completed, frequency, xpPenalty });
+                        onEdit({ id, name, description, xp, xpReward, streak, completed, frequency, xpPenalty });
                       }}
                       className="icon-btn edit"
                       title="Editar hábito"
@@ -89,6 +143,7 @@ const HabitCard = ({
           </div>
 
           <div className="habit-badges">
+
             {frequency && (
               <span className="badge badge-frequency">
                 <Calendar size={14} /> {frequency}
@@ -100,6 +155,34 @@ const HabitCard = ({
               </span>
             )}
           </div>
+
+          <div className="habit-card-actions">
+          <button
+            className={`boton-marcar-dia ${completed ? "cumplido" : ""}`}
+            onClick={handleMarkCompleted }
+            disabled={completed}
+          >
+            {completed ? " Cumplido" : "Marcar Cumplido"}
+          </button>
+
+
+            <button
+              className="boton-historial"
+              onClick={handleShowHistory}
+            >
+              Ver Historial
+            </button>
+          </div>
+
+          {mostrarHistorial && (
+            <div className="habit-historial">
+              <h4>Historial de Cumplimiento</h4>
+              <p>Días consecutivos: <strong>{streak}</strong></p>
+              <HabitTrackerGrid frecuencia={frequency} historial={historial} />
+            </div>
+          )}
+
+
         </div>
       </div>
     </div>

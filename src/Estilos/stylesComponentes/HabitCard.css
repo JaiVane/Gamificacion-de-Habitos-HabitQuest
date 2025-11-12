@@ -121,7 +121,17 @@
   margin-top: 0.3rem;
   margin-bottom: 0;
   line-height: 1.4;
+  display: block; /* Por defecto, la descripción es visible */
+  transition: opacity 0.3s ease;
 }
+
+
+.habit-card.completed .habit-description {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
+
 
 .habit-top-badges {
   display: flex;
@@ -229,4 +239,74 @@
   --accent-color: #7f89ff;
   --primary-rgb: 108, 99, 255;
   --muted-foreground: #6b6b6b;
+}
+.boton-marcar-dia {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-top: 8px;
+}
+.boton-marcar-dia.cumplido {
+  background-color: #a0a0a0;
+  cursor: not-allowed;
+  color: white;
+}
+
+.habit-historial {
+  margin-top: 10px;
+  font-size: 0.85rem;
+}
+
+.historial-lista {
+  list-style: none;
+  padding-left: 0;
+}
+.badge-xp-reward {
+  background: linear-gradient(to right, #f59e0b, #fbbf24);
+  color: #fff;
+  font-weight: 700;
+  border-radius: 20px;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.historial-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+  gap: 8px;
+  margin-top: 1rem;
+}
+
+.historial-dia {
+  background-color: #f3f4f6;
+  border-radius: 8px;
+  padding: 6px;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #374151;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.historial-dia.cumplido {
+  background-color: #34a479;
+  color: white;
+  border-color: #059669;
+}
+
+.dia-numero {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.dia-mes {
+  font-size: 0.7rem;
+  opacity: 0.8;
 }
