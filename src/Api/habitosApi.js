@@ -91,3 +91,16 @@ export async function obtenerHistorial(habitoId) {
   if (!res.ok) throw new Error("No se pudo obtener el historial");
   return res.json();
 }
+export async function getHistorialHabito(habitoId) {
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${API_URL}/Habitos/historial/${habitoId}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) return handleError(response);
+  return await response.json();
+}
+

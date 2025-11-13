@@ -17,8 +17,8 @@ const HabitCard = ({
   onToggle,
   onEdit,
   onDelete,
-  onMarkDay,
   onShowHistory,
+  soloLectura =false,
 }) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const { mostrarMensaje } = useNotificacion();
@@ -75,14 +75,17 @@ const HabitCard = ({
       }`}
     >
       <div className="habit-card-content">
-        <div className="checkbox-container">
-          <input
-            type="checkbox"
-            checked={completed}
-            onChange={handleMarkCompleted}
-            className="habit-checkbox"
-          />
-        </div>
+      {!soloLectura && (
+  <div className="checkbox-container">
+    <input
+      type="checkbox"
+      checked={completed}
+      onChange={handleMarkCompleted}
+      className="habit-checkbox"
+    />
+  </div>
+)}
+
 
         <div className="habit-details">
           <div className="habit-header">
@@ -157,30 +160,37 @@ const HabitCard = ({
           </div>
 
           <div className="habit-card-actions">
-          <button
-            className={`boton-marcar-dia ${completed ? "cumplido" : ""}`}
-            onClick={handleMarkCompleted }
-            disabled={completed}
-          >
-            {completed ? " Cumplido" : "Marcar Cumplido"}
-          </button>
+          {!soloLectura && (
+  <button
+    className={`boton-marcar-dia ${completed ? "cumplido" : ""}`}
+    onClick={handleMarkCompleted}
+    disabled={completed}
+  >
+    {completed ? " Cumplido" : "Marcar Cumplido"}
+  </button>
+)}
 
 
-            <button
-              className="boton-historial"
-              onClick={handleShowHistory}
-            >
-              Ver Historial
-            </button>
+
+{!soloLectura && (
+  <button
+    className="boton-historial"
+    onClick={handleShowHistory}
+  >
+    Ver Historial
+  </button>
+)}
+
           </div>
 
-          {mostrarHistorial && (
-            <div className="habit-historial">
-              <h4>Historial de Cumplimiento</h4>
-              <p>Días consecutivos: <strong>{streak}</strong></p>
-              <HabitTrackerGrid frecuencia={frequency} historial={historial} />
-            </div>
-          )}
+          {!soloLectura && mostrarHistorial && (
+  <div className="habit-historial">
+    <h4>Historial de Cumplimiento</h4>
+    <p>Días consecutivos: <strong>{streak}</strong></p>
+    <HabitTrackerGrid frecuencia={frequency} historial={historial} />
+  </div>
+)}
+
 
 
         </div>

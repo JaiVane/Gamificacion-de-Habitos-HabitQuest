@@ -1,82 +1,84 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import HabitCard from "../Componentes/HabitCard";
 import MostrarNivel from "../Componentes/MostrarNivel";
 import TarjetaEstadistica from "../Componentes/TarjetaEstadistica";
-import { Target, CheckCircle2, Zap, CalendarHeart, Calendar, Flame } from "lucide-react";
+import { Target, CheckCircle2, Zap, Calendar, Flame } from "lucide-react";
 import { useNotificacion } from "../Hooks/useNotificacion";
 import heroImage from "../assets/hero-habits.jpg";
 import "../Estilos/stylesPaginas/Dashboard.css";
-import ContadorRacha from "../Componentes/ContadorRacha";
+import { getHistorialHabito } from "../Api/habitosApi";
+import { toggleHabito, getUsuario } from "../Api/api";
 
 const Dashboard = () => {
   const { mostrarMensaje } = useNotificacion();
+  const [usuario, setUsuario] = useState(null);
 
-  const [habitos, setHabitos] = useState([
-    { id: "1", nombre: "Ejercicio matutino", descripcion: "30 minutos de actividad física", xp: 50, racha: 7, completado: false },
-    { id: "2", nombre: "Leer 20 páginas", descripcion: "Lectura de desarrollo personal", xp: 30, racha: 5, completado: false },
-    { id: "3", nombre: "Meditar", descripcion: "10 minutos de meditación", xp: 25, racha: 12, completado: false },
-    { id: "4", nombre: "Beber 2L de agua", descripcion: "Mantenerse hidratado todo el día", xp: 20, racha: 3, completado: false },
-  ]);
+  useEffect(() => {
+    const cargarUsuario = async () => {
+      try {
+        const userId = localStorage.getItem("userId");
+        const data = await getUsuario(userId);
 
-  const [estadisticas, setEstadisticas] = useState({
-    nivel: 5,
-    experienciaActual: 150,
-    experienciaTotal: 1250,
-    rachaActual: 7,
-    mejorRacha: 15,
-  });
+        const hoy = new Date().toDateString();
 
-  const experienciaSiguienteNivel = estadisticas.nivel * 300;
+        const habitosConHistorial = await Promise.all(
+          (data.habitos || []).map(async (h) => {
+            const historial = await getHistorialHabito(h.id);
+            const fueCumplidoHoy = historial.some(r => new Date(r.fecha).toDateString() === hoy);
+            return { ...h, historial, cumplido: fueCumplidoHoy };
+          })
+        );
 
-  const alternarHabito = (id) => {
-    setHabitos((prev) =>
-      prev.map((habito) => {
-        if (habito.id === id) {
-          const nuevoCompletado = !habito.completado;
+        setUsuario({ ...data, habitos: habitosConHistorial });
+      } catch (error) {
+        console.error("Error cargando usuario:", error);
+      }
+    };
+    cargarUsuario();
+  }, []);
 
-          if (nuevoCompletado) {
-            const nuevaXP = estadisticas.experienciaActual + habito.xp;
-            const nuevaTotalXP = estadisticas.experienciaTotal + habito.xp;
-            let nuevoNivel = estadisticas.nivel;
-            let xpRestante = nuevaXP;
-
-            if (nuevaXP >= experienciaSiguienteNivel) {
-              nuevoNivel += 1;
-              xpRestante = nuevaXP - experienciaSiguienteNivel;
-              mostrarMensaje({title: "🎉 ¡Subiste de nivel!", description: `Ahora eres nivel ${nuevoNivel}. ¡Sigue así!`, tipo: "success"});
-            } else {
-              mostrarMensaje({title: "✅ ¡Hábito completado!", description: `+${habito.xp} ganados`, tipo: "success"});
-            }
-
-            setEstadisticas({
-              ...estadisticas,
-              nivel: nuevoNivel,
-              experienciaActual: xpRestante,
-              experienciaTotal: nuevaTotalXP,
-            });
-
-            return { ...habito, completado: true, racha: habito.racha + 1 };
-          } else {
-            const nuevaXP = Math.max(0, estadisticas.experienciaActual - habito.xp);
-            const nuevaTotalXP = Math.max(0, estadisticas.experienciaTotal - habito.xp);
-
-            setEstadisticas({
-              ...estadisticas,
-              experienciaActual: nuevaXP,
-              experienciaTotal: nuevaTotalXP,
-            });
-
-            return { ...habito, completado: false };
-          }
-        }
-        return habito;
-      })
-    );
+  const alternarHabito = async (id) => {
+    try {
+      const usuarioActualizado = await toggleHabito(id);
+      setUsuario(usuarioActualizado);
+      mostrarMensaje({
+        title: "✅ ¡Hábito actualizado!",
+        description: "Tu progreso ha sido guardado",
+        tipo: "success",
+      });
+    } catch (error) {
+      mostrarMensaje({
+        title: "Error",
+        description: error.message,
+        tipo: "error",
+      });
+    }
   };
 
-  const completadosHoy = habitos.filter((h) => h.completado).length;
-  const totalHabitos = habitos.length;
+  if (!usuario) {
+    return <p>Cargando tu progreso...</p>;
+  }
+
+  const hoy = new Date().toDateString();
+  const habitos = usuario.habitos || [];
+
+  // ✅ Solo hábitos activos hoy (diarios)
+  const habitosActivosHoy = habitos.filter(h => h.frecuencia === "Diaria");
+
+  // ✅ Métricas del día
+  const completadosHoy = habitosActivosHoy.filter(h => h.cumplido).length;
+  const totalHabitos = habitosActivosHoy.length;
   const tasaExito = totalHabitos > 0 ? Math.round((completadosHoy / totalHabitos) * 100) : 0;
+  const xpHoy = habitosActivosHoy.filter(h => h.cumplido).reduce((acc, h) => acc + h.xpReward, 0);
+
+  // ✅ XP total y nivel
+  const xpTotal = habitos.reduce((acc, h) => acc + h.xp, 0);
+  const experienciaSiguienteNivel = usuario.nivel * 300;
+  const experienciaActual = xpTotal % experienciaSiguienteNivel;
+  const nivelCalculado = Math.floor(xpTotal / 300) + 1;
+
+  // ✅ Rachas
+  const mejorRacha = habitos.reduce((acc, h) => Math.max(acc, h.diasConsecutivos), 0);
 
   return (
     <div className="dashboard">
@@ -100,28 +102,27 @@ const Dashboard = () => {
 
         {/* Progreso */}
         <section className="seccion-progreso">
-          
           <MostrarNivel
-            nivel={estadisticas.nivel}
-            experienciaActual={estadisticas.experienciaActual}
+            nivel={nivelCalculado}
+            experienciaActual={experienciaActual}
             experienciaSiguienteNivel={experienciaSiguienteNivel}
-            experienciaTotal={estadisticas.experienciaTotal}
+            experienciaTotal={xpTotal}
           />
 
-          <ContadorRacha
+          <TarjetaEstadistica
             Icono={Flame}
             etiqueta="Racha actual"
-            valor={`${estadisticas.rachaActual} días`}
-            descripcion={`Sigue así!`}
+            valor={`${mejorRacha} días`}
+            descripcion="¡Sigue así!"
+            claseExtra={"tarjeta-ContarRacha"}
           />
           <TarjetaEstadistica
             Icono={Calendar}
             etiqueta="Mejor racha"
-            valor={`${estadisticas.mejorRacha} días`}
-            descripcion="Tu récord Personal"
+            valor={`${mejorRacha} días`}
+            descripcion="Tu récord personal"
             claseExtra={"tarjeta-mejor-racha"}
           />
-
         </section>
 
         {/* Estadísticas */}
@@ -141,7 +142,7 @@ const Dashboard = () => {
           <TarjetaEstadistica
             Icono={Zap}
             etiqueta="XP ganado hoy"
-            valor={habitos.filter((h) => h.completado).reduce((acc, h) => acc + h.xp, 0)}
+            valor={xpHoy}
             descripcion="Puntos de experiencia"
           />
         </section>
@@ -150,16 +151,20 @@ const Dashboard = () => {
         <section className="seccion-habitos">
           <h2>Tus Hábitos de Hoy</h2>
           <div className="lista-habitos">
-            {habitos.map((habito) => (
+            {habitosActivosHoy.map(habito => (
               <HabitCard
                 key={habito.id}
                 id={habito.id}
                 name={habito.nombre}
                 description={habito.descripcion}
-                xpReward={habito.xp}
-                streak={habito.racha}
-                completed={habito.completado}
-                onToggle={alternarHabito}
+                xpReward={habito.xpReward}
+                streak={habito.diasConsecutivos}
+                completed={habito.cumplido}
+                historial={habito.historial}
+                frequency={habito.frecuencia}
+                xp={habito.xp}
+                xpPenalty={habito.xpPenalty}
+                soloLectura={true}
               />
             ))}
           </div>
@@ -169,7 +174,7 @@ const Dashboard = () => {
         <footer className="pie-dashboard">
           <h3>Cada día es una oportunidad para mejorar</h3>
           <p>No se trata de ser perfecto, sino de ser constante.</p>
-          <p> Cada hábito te acerca a tu mejor versión.</p>
+          <p>Cada hábito te acerca a tu mejor versión.</p>
         </footer>
       </div>
     </div>

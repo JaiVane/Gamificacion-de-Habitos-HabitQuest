@@ -51,15 +51,17 @@ export const AuthProvider = ({ children }) => {
   // Función para manejar el inicio de sesión
   const iniciarSesion = async (email, password) => {
     try {
-      const result = await postData("auth/login", { email, password });
+      const result = await postData("Auth/login", { email, password });
       localStorage.setItem("token", result.token);
-      // Después de guardar el token, obtenemos los datos del perfil inmediatamente
-      const datosUsuario = await getPerfil();
-      setUsuario(datosUsuario); // Actualizamos el estado global
-      return datosUsuario;
+      localStorage.setItem("userId", result.usuario.id);
+  
+      // Guardamos también el usuario en estado global
+      setUsuario(result.usuario);
+  
+      return result.usuario;
     } catch (error) {
       console.error("Error al iniciar sesión desde el contexto:", error);
-      throw error; // Relanzamos el error para que el componente lo maneje
+      throw error;
     }
   };
 

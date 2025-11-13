@@ -1,0 +1,31 @@
+/* EstilosComponentes/FlokiAvatar.css */
+.floki-avatar {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 12px;
+    align-items: center;
+    background: #fef3c7;
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  }
+  
+  .floki-lottie {
+    width: 140px;
+    height: 140px;
+  }
+  
+  .floki-badges {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px;
+  }
+  .floki-badge {
+    background: #fff; color: #92400e; border: 1px solid #fcd34d;
+    border-radius: 8px; padding: 4px 8px; font-size: 0.75rem; font-weight: 700;
+  }
+  .floki-mensaje { font-size: 0.9rem; font-weight: 600; color: #92400e; }
+  
+  @media (max-width: 640px) {
+    .floki-avatar { grid-template-columns: 100px 1fr; }
+    .floki-lottie { width: 100px; height: 100px; }
+  }
+  

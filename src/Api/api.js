@@ -4,15 +4,15 @@ console.log("API_URL:", API_URL);
 
 async function handleError(response) {
   let errorMessage = `Error ${response.status}: ${response.statusText}`;
+  let bodyText = "";
   try {
-    // Intenta parsear el cuerpo del error como JSON, que es común en APIs REST.
-    const errorBody = await response.json();
-    // Si el JSON tiene una propiedad 'message' o 'error', úsala.
-    errorMessage = errorBody.message || errorBody.error || JSON.stringify(errorBody);
+    bodyText = await response.text();
+    const errorBody = JSON.parse(bodyText);
+    errorMessage = errorBody.message || errorBody.error || bodyText;
   } catch (e) {
-    // Si no es JSON, usa el texto plano de la respuesta.
-    errorMessage = await response.text() || errorMessage;
+    errorMessage = bodyText || errorMessage;
   }
+
   throw new Error(errorMessage);
 }
   
@@ -102,3 +102,35 @@ export async function updatePerfil(data) {
   if (!response.ok) return handleError(response);
   return response.json();
 }
+
+// Obtener datos completos del usuario por ID
+export async function getUsuario(id) {
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${API_URL}/Usuario/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) return handleError(response);
+  return response.json();
+}
+
+
+export async function toggleHabito(id) {
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${API_URL}/Habitos/cumplir/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) return handleError(response);
+  return response.json(); // idealmente devuelve el usuario actualizado
+}
+
+
+

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../Estilos/stylesComponentes/MostrarNivel.css";
 import { TrendingUp, Trophy } from "lucide-react";
 
@@ -13,17 +13,29 @@ const MostrarNivel = ({
     100
   );
 
+  const [nivelAnimado, setNivelAnimado] = useState(false);
+
+  useEffect(() => {
+    setNivelAnimado(true);
+    const timeout = setTimeout(() => setNivelAnimado(false), 600);
+    return () => clearTimeout(timeout);
+  }, [nivel]);
+
   return (
     <div className="tarjeta-nivel">
       <div className="nivel-header">
         <h3 className="titulo-nivel">
-        <Trophy /> Nivel Actual 
+          <Trophy /> Nivel Actual
         </h3>
-        <p className="xp-total">< TrendingUp/> XP Total:  {experienciaTotal}</p>
+        <p className="xp-total">
+          <TrendingUp /> XP Total: {experienciaTotal}
+        </p>
       </div>
 
       <div className="nivel-principal">
-        <h2 className="valor-nivel">Nivel {nivel}</h2>
+        <h2 className={`valor-nivel ${nivelAnimado ? "animado" : ""}`}>
+          Nivel {nivel}
+        </h2>
         <p className="texto-progreso">
           Progreso al siguiente nivel{" "}
           <span className="xp-progreso">
@@ -33,7 +45,7 @@ const MostrarNivel = ({
 
         <div className="barra-progreso">
           <div
-            className="relleno"
+            className={`relleno ${progreso === 100 ? "brillante" : ""}`}
             style={{ width: `${progreso}%` }}
           ></div>
         </div>

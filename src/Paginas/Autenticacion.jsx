@@ -8,7 +8,8 @@ import { useAuth } from "../Context/AuthContext";
 
 const Autenticacion = () => {
   const navegar = useNavigate();
-  const { mostrarMensaje } = useNotificacion();  const { iniciarSesion } = useAuth(); // <-- Obtenemos la función del contexto
+  const { mostrarMensaje } = useNotificacion();  
+  const { iniciarSesion } = useAuth(); // <-- Obtenemos la función del contexto
   const [errorPassword, setErrorPassword] = useState("");
 
   const [cargando, setCargando] = useState(false);
