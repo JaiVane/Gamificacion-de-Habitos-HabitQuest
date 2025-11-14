@@ -1,6 +1,7 @@
 const API_URL = import.meta.env.VITE_API_URL;
 const token = () => localStorage.getItem("token");
 
+//Obtener habitos
 export async function getHabitos() {
   const res = await fetch(`${API_URL}/habitos`, {
     headers: { Authorization: `Bearer ${token()}` },
@@ -9,7 +10,7 @@ export async function getHabitos() {
   return res.json();
 }
 
-
+//Obtener habitos por id 
 export async function getHabitoById(id) {
   const res = await fetch(`${API_URL}/habitos/${id}`, {
     headers: { Authorization: `Bearer ${token()}` },
@@ -25,6 +26,7 @@ export async function crearHabito(data) {
     descripcion: data.descripcion,
     frecuencia: data.frecuencia,
     xp: data.xp,
+    categoriaId: data.categoriaId, 
   };
 
   const res = await fetch(`${API_URL}/habitos`, {
@@ -33,8 +35,7 @@ export async function crearHabito(data) {
     body: JSON.stringify(body),
   });
   if (!res.ok) throw new Error("No se pudo crear el hábito");
-  // Si la respuesta es 201 Created y tiene contenido, lo devolvemos.
-  // Si no, simplemente indicamos que fue exitoso.
+
   const contentType = res.headers.get("content-type");
   if (contentType && contentType.indexOf("application/json") !== -1) {
     return res.json();
@@ -43,6 +44,12 @@ export async function crearHabito(data) {
 }
 
 export async function actualizarHabito(id, data) {
+  const body = {
+    nombre: data.nombre,
+    descripcion: data.descripcion,
+    frecuencia: data.frecuencia,
+    categoriaId: data.categoriaId, 
+  };
   const res = await fetch(`${API_URL}/habitos/${id}`, {
     method: "PUT",
     headers: {

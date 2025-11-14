@@ -1,32 +1,60 @@
 import React, { useState, useMemo, useEffect } from "react";
 import "../Estilos/stylesPaginas/Habitos.css";
 import  HabitCard  from "../Componentes/HabitCard";
-import { Plus, Trash2, Edit, AlertCircle, X } from "lucide-react";
-import { useHabits } from "../Context/HabitosContext"; // <-- 1. Importamos el hook del contexto
-
+import { Plus, FolderPlus, AlertCircle, X } from "lucide-react";
+import { useHabits } from "../Context/HabitosContext";
+import { useAuth } from "../Context/AuthContext";
+import { crearCategoria, getCategorias } from "../Api/categoriaApi";
+import { useNotificacion } from "../Hooks/useNotificacion";
 
 export const Habitos = () => {
-  // 2. Consumimos el contexto para obtener los hábitos y las funciones
+  
+  //  Consumimos el contexto para obtener los hábitos y las funciones
   const {
     habitos,
     addHabit,
     updateHabit,
     removeHabit,
     toggleHabitCompletion,
-    markDayForHabit, // <-- Obtenemos las nuevas funciones
+    markDayForHabit, 
     getHistoryForHabit,
   } = useHabits();
+  const { usuario } = useAuth();
+  const { mostrarMensaje } = useNotificacion();
   
   const FORMULARIO_INICIAL = {
     nombre: "",
     descripcion: "",
+    categoriaId: "",
     frequency: "Diaria",
   };
+  
 
   const [dialogoAbierto, setDialogoAbierto] = useState(false);
   const [habitoEditando, setHabitoEditando] = useState(null);
   const [formulario, setFormulario] = useState(FORMULARIO_INICIAL);
   const [filtroActivo, setFiltroActivo] = useState("Todos");
+  const [categorias, setCategorias] = useState([]);
+  const [dialogoCategoriaAbierto, setDialogoCategoriaAbierto] = useState(false);
+  const [formularioCategoria, setFormularioCategoria] = useState({
+    nombre: "",
+    descripcion: "",
+  });
+
+  useEffect(() => {
+    const cargarCategorias = async () => {
+      try {
+        const categoriasObtenidas = await getCategorias(); // ✅ sin parámetros
+        setCategorias(categoriasObtenidas);
+      } catch (error) {
+        console.error("Error al cargar las categorías:", error);
+        mostrarMensaje("Error", "No se pudieron cargar las categorías.", "error");
+      }
+    };
+    cargarCategorias();
+  }, []); // 👈 no dependas de usuario, el token ya lo identifica
+
+  
 
   const alternarCompletado = (id) => {
     const habito = habitos.find(h => h.id === id);
@@ -71,6 +99,7 @@ export const Habitos = () => {
         nombre: formulario.nombre,
         descripcion: formulario.descripcion,
         frecuencia: formulario.frequency,
+        categoriaId: formulario.categoriaId,
       });
     } else {
       // 4. Usamos la función del contexto para añadir
@@ -79,6 +108,7 @@ export const Habitos = () => {
         descripcion: formulario.descripcion,
         frecuencia: formulario.frequency,
         xp: xpReward, // El backend debería asignar esto, pero lo enviamos si es necesario
+        categoriaId: formulario.categoriaId,
       });
     }
 
@@ -94,6 +124,7 @@ export const Habitos = () => {
       nombre: habitoCompleto.nombre || habito.name || habitoCompleto.nombre,
       descripcion: habitoCompleto.descripcion || habito.description || habitoCompleto.descripcion,
       frequency: habitoCompleto.frequency || "Diaria",
+      categoriaId: habitoCompleto.categoriaId || "",
     });
     setDialogoAbierto(true);
   };
@@ -103,6 +134,31 @@ export const Habitos = () => {
     setFormulario(FORMULARIO_INICIAL);
     setDialogoAbierto(true);
   };
+
+  const enviarFormularioCategoria = async (e) => {
+    e.preventDefault();
+    // 📋 Log para depuración
+  console.log("📤 Enviando creación de categoría:", {
+    nombre: formularioCategoria.nombre,
+    descripcion: formularioCategoria.descripcion,
+  });
+    try {
+      const nuevaCategoria = await crearCategoria({
+        nombre: formularioCategoria.nombre,
+        descripcion: formularioCategoria.descripcion,
+      });
+  
+      setCategorias([...categorias, nuevaCategoria]);
+      mostrarMensaje("Categoría Creada", `La categoría "${nuevaCategoria.nombre}" ha sido creada.`, "success");
+  
+      setFormularioCategoria({ nombre: "", descripcion: "" });
+      setDialogoCategoriaAbierto(false);
+    } catch (error) {
+      console.error("Error al crear la categoría:", error);
+      mostrarMensaje("Error", "No se pudo crear la categoría.", "error");
+    }
+  };
+  
 
   // Objeto para contar hábitos por frecuencia, usando useMemo para optimizar
   const conteoPorFrecuencia = useMemo(() => {
@@ -129,6 +185,9 @@ export const Habitos = () => {
 
 
 
+
+
+  
 
   return (
     <div className="pagina-habitos">
@@ -158,6 +217,9 @@ export const Habitos = () => {
                 <span className="contador-etiqueta">Hábitos Totales</span>
                 <span className="contador-valor">{habitos.length}</span>
               </div>
+              <button className="boton-nueva-categoria" onClick={() => setDialogoCategoriaAbierto(true)}>
+                <FolderPlus size={18} /> Crear Categoría
+              </button>
               <button className="boton-nuevo" onClick={abrirDialogoNuevo}>
                 <Plus size={18} /> Nuevo Hábito
               </button>
@@ -178,6 +240,7 @@ export const Habitos = () => {
             ))}
           </div>
 
+            {/*MODAL HABITOS*/}
           {dialogoAbierto && (
             <div className="modal-fondo" onClick={() => setDialogoAbierto(false)}>
               <div className="modal" onClick={(e) => e.stopPropagation()}>
@@ -235,6 +298,27 @@ export const Habitos = () => {
                   </label>
 
                   <label className="modal-label">
+                    Categoría
+                    <select
+                      value={formulario.categoriaId}
+                      onChange={(e) =>
+                        setFormulario({
+                          ...formulario,
+                          categoriaId: e.target.value,
+                        })
+                      }
+                      className="modal-select"
+                    >
+                      <option value="">Sin categoría</option>
+                      {categorias.map((cat) => (
+                        <option key={cat.id} value={cat.id}>
+                          {cat.nombre}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+
+                  <label className="modal-label">
                     Frecuencia
                     <select
                       value={formulario.frequency}
@@ -260,33 +344,110 @@ export const Habitos = () => {
             </div>
           )}
 
-          <div className="lista-habitos">
-            {habitosFiltrados.length === 0 ? (
-              <p className="mensaje-vacio">
-                No tienes hábitos en esta categoría. ¡Crea uno nuevo!
-              </p>
-            ) : (
-              habitosFiltrados.map((habito) => (
-                <HabitCard
-                  key={habito.id}
-                  id={habito.id}
-                  name={habito.nombre}
-                  description={habito.descripcion}
-                  xp={habito.xp}
-                  xpReward={habito.xpReward}  
-                  streak={habito.diasConsecutivos}
-                  completed={habito.cumplido}
-                  frequency={habito.frecuencia}
-                  xpPenalty={habito.xpPenalty || 0}
-                  onToggle={alternarCompletado}
-                  onEdit={abrirDialogoEdicion}
-                  onDelete={eliminarHabito}
-                  onMarkDay={marcarDiaHabito} // <-- Pasamos la nueva función
-                  onShowHistory={verHistorialHabito} // <-- Pasamos la nueva función
-                />
-              ))
-            )}
-          </div>
+          {dialogoCategoriaAbierto && (
+            <div className="modal-fondo" onClick={() => setDialogoCategoriaAbierto(false)}>
+              <div className="modal" onClick={(e) => e.stopPropagation()}>
+                <div className="modal-header">
+                  <div>
+                    <h2 className="modal-titulo">Crear Nueva Categoría</h2>
+                    <p className="modal-subtitulo">
+                      Organiza tus hábitos en grupos personalizados.
+                    </p>
+                  </div>
+                  <button
+                    className="modal-cerrar"
+                    onClick={() => setDialogoCategoriaAbierto(false)}
+                    type="button"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+                <form onSubmit={enviarFormularioCategoria} className="modal-formulario">
+                  <label className="modal-label">
+                    Nombre de la categoría
+                    <input
+                      type="text"
+                      value={formularioCategoria.nombre}
+                      onChange={(e) =>
+                        setFormularioCategoria({
+                          ...formularioCategoria,
+                          nombre: e.target.value,
+                        })
+                      }
+                      placeholder="Ej: Salud y Bienestar"
+                      required
+                      className="modal-input"
+                    />
+                  </label>
+
+                  <label className="modal-label">
+                    Descripción (opcional)
+                    <textarea
+                      value={formularioCategoria.descripcion}
+                      onChange={(e) =>
+                        setFormularioCategoria({
+                          ...formularioCategoria,
+                          descripcion: e.target.value,
+                        })
+                      }
+                      placeholder="Describe el propósito de esta categoría..."
+                      className="modal-textarea"
+                      rows="3"
+                    />
+                  </label>
+
+                  <button type="submit" className="modal-boton-crear">
+                    Crear Categoría
+                  </button>
+                </form>
+              </div>
+            </div>
+            
+          )}
+
+{categorias.length === 0 ? (
+  <p>Cargando categorías...</p>
+) : (
+  <div className="lista-habitos">
+    {habitosFiltrados.map((habito) => {
+      const categoriaNombre =
+        categorias.find(
+          (c) =>
+            c.id?.trim().toLowerCase() === habito.categoriaId?.trim().toLowerCase()
+        )?.nombre || "Sin categoría";
+
+        
+        console.log("🧩 Hábito con categoría:", {
+          habito: habito.nombre,
+          categoriaId: habito.categoriaId,
+          categoriaNombre
+        });
+        
+      return (
+        <HabitCard
+          key={habito.id}
+          id={habito.id}
+          name={habito.nombre}
+          description={habito.descripcion}
+          xp={habito.xp}
+          xpReward={habito.xpReward}
+          streak={habito.diasConsecutivos}
+          completed={habito.cumplido}
+          frequency={habito.frecuencia}
+          xpPenalty={habito.xpPenalty || 0}
+          onToggle={alternarCompletado}
+          onEdit={abrirDialogoEdicion}
+          onDelete={eliminarHabito}
+          onMarkDay={marcarDiaHabito}
+          onShowHistory={verHistorialHabito}
+          categoriaNombre={categoriaNombre}
+        />
+      );
+    })}
+  </div>
+)}
+
+
         </main>
       </div>
     </div>

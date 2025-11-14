@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../Estilos/stylesComponentes/HabitCard.css";
 import { useNotificacion } from "../Hooks/useNotificacion";
-import { Flame, Trophy, Calendar, AlertTriangle, Edit3, Trash2 } from "lucide-react";
+import { Flame, Trophy, Calendar, AlertTriangle, Edit3, Trash2, Tags, } from "lucide-react";
 import HabitTrackerGrid from "../Componentes/HabitTrackerGrid";
 
 const HabitCard = ({
@@ -19,6 +19,7 @@ const HabitCard = ({
   onDelete,
   onShowHistory,
   soloLectura =false,
+  categoriaNombre,
 }) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const { mostrarMensaje } = useNotificacion();
@@ -67,7 +68,8 @@ const HabitCard = ({
       setMostrarHistorial(true); // Y ahora sí, mostramos la lista
     }
   }
-  console.log("HabitCard props:", { id, name, xpReward, xp });
+  
+  
   return (
     <div
       className={`habit-card ${completed ? "completed" : ""} ${
@@ -146,6 +148,12 @@ const HabitCard = ({
           </div>
 
           <div className="habit-badges">
+            
+            {categoriaNombre && (
+              <span className="badge badge-categoria">
+                <Tags size={14} /> {categoriaNombre}
+              </span>
+            )}
 
             {frequency && (
               <span className="badge badge-frequency">

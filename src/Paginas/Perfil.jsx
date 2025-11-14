@@ -1,12 +1,27 @@
 import React, { useState, useEffect } from "react";
 import "../Estilos/stylesPaginas/Perfil.css";
-import { Edit, Heart, Shield, Sword, Swords, Trophy } from "lucide-react";
+import { Edit, Heart, Shield, Sword, Swords, Trophy, Award, Star } from "lucide-react";
 import { useAuth } from "../Context/AuthContext";
 import { useNotificacion } from "../Hooks/useNotificacion";
+import { getUsuario } from "../Api/api";
 
 const Perfil = () => {
+  const [habitos, setHabitos] = useState([]);
 
-
+  useEffect(() => {
+    const cargarHabitos = async () => {
+      try {
+        const userId = localStorage.getItem("userId");
+        const data = await getUsuario(userId);
+        setHabitos(data.habitos || []);
+      } catch (error) {
+        console.error("Error cargando hábitos en perfil:", error);
+      }
+    };
+    cargarHabitos();
+  }, []);
+  
+  
   const obtenerIconoLogro = (nombre) => {
     switch (nombre) {
       case "Primera Victoria":
@@ -70,6 +85,14 @@ const Perfil = () => {
         return "";
     }
   };
+
+// XP total acumulado desde todos los hábitos
+const xpTotal = habitos.reduce((acc, h) => acc + (h.xp || 0), 0);
+
+const experienciaSiguienteNivel = (usuario.nivel || 1) * 300;
+const experienciaActual = xpTotal % experienciaSiguienteNivel;
+const progresoXP = (experienciaActual / experienciaSiguienteNivel) * 100;
+
 
   return (
     <div className="pagina-perfil">
@@ -193,6 +216,40 @@ const Perfil = () => {
             </div>
           </section>
 
+          {/* Sección de Progreso del Aventurero */}
+          <section className="tarjeta-progreso">
+            <h2 className="titulo-seccion">
+              <Sword className="icono-Trofeo" size={40} /> Progreso del Aventurero
+            </h2>
+
+            <div className="perfil-stats">
+              <div className="stat-item">
+                <Award size={40} className="stat-icon" />
+                <span className="stat-valor">{usuario.nivel || 1}</span>
+                <span className="stat-label">Nivel</span>
+              </div>
+              <div className="stat-item">
+                <Star size={40} className="stat-icon" />
+                <span className="stat-valor">{xpTotal}</span>
+                <span className="stat-label">XP Acumulado</span>
+              </div>
+            </div>
+
+            <div className="xp-progreso-container">
+              <div className="xp-labels">
+                <span>
+                  XP en este nivel: {experienciaActual} / {experienciaSiguienteNivel}
+                </span>
+                <span>Siguiente Nivel</span>
+              </div>
+              <div className="xp-barra">
+                <div
+                  className="xp-barra-progreso"
+                  style={{ width: `${progresoXP}%` }}
+                ></div>
+              </div>
+            </div>
+          </section>
           {/* Logros */}
           <section className="tarjeta-logros">
             <h2 className="titulo-seccion"> <Trophy className="icono-Trofeo" size={32}/>Logros Desbloqueados</h2>

@@ -52,6 +52,7 @@ export const HabitProvider = ({ children }) => {
         xpReward: h.xpReward || 0,      
         xpPenalty: h.xpPenalty || 0,     
         rareza: h.rareza || "Común",
+        categoriaId: h.categoriaId, // <-- ✨ CORRECCIÓN AQUÍ
         fechaUltimoCumplimiento: h.fechaUltimoCumplimiento || null,
       })));
       

@@ -189,6 +189,11 @@
   border: 1px solid #e2e2e2;
 }
 
+.badge-categoria {
+  background: #fff;
+  color: #111010;
+  border: 1px solid #e2e2e2;
+}
 .badge-xp-negative {
   background: transparent;
   color: #ff4d4d;

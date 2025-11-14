@@ -7,17 +7,20 @@ import { useNotificacion } from "../Hooks/useNotificacion";
 import heroImage from "../assets/hero-habits.jpg";
 import "../Estilos/stylesPaginas/Dashboard.css";
 import { getHistorialHabito } from "../Api/habitosApi";
+import { getCategorias } from "../Api/categoriaApi";
 import { toggleHabito, getUsuario } from "../Api/api";
 
 const Dashboard = () => {
   const { mostrarMensaje } = useNotificacion();
   const [usuario, setUsuario] = useState(null);
+  const [categorias, setCategorias] = useState([]);
 
   useEffect(() => {
     const cargarUsuario = async () => {
       try {
         const userId = localStorage.getItem("userId");
         const data = await getUsuario(userId);
+        const categoriasData = await getCategorias();
 
         const hoy = new Date().toDateString();
 
@@ -29,6 +32,7 @@ const Dashboard = () => {
           })
         );
 
+        setCategorias(categoriasData);
         setUsuario({ ...data, habitos: habitosConHistorial });
       } catch (error) {
         console.error("Error cargando usuario:", error);
@@ -151,22 +155,26 @@ const Dashboard = () => {
         <section className="seccion-habitos">
           <h2>Tus Hábitos de Hoy</h2>
           <div className="lista-habitos">
-            {habitosActivosHoy.map(habito => (
-              <HabitCard
-                key={habito.id}
-                id={habito.id}
-                name={habito.nombre}
-                description={habito.descripcion}
-                xpReward={habito.xpReward}
-                streak={habito.diasConsecutivos}
-                completed={habito.cumplido}
-                historial={habito.historial}
-                frequency={habito.frecuencia}
-                xp={habito.xp}
-                xpPenalty={habito.xpPenalty}
-                soloLectura={true}
-              />
-            ))}
+            {habitosActivosHoy.map(habito => {
+              const categoria = categorias.find(c => c.id === habito.categoriaId);
+              return (
+                <HabitCard
+                  key={habito.id}
+                  id={habito.id}
+                  name={habito.nombre}
+                  description={habito.descripcion}
+                  xpReward={habito.xpReward}
+                  streak={habito.diasConsecutivos}
+                  completed={habito.cumplido}
+                  historial={habito.historial}
+                  frequency={habito.frecuencia}
+                  categoriaNombre={categoria ? categoria.nombre : null}
+                  xp={habito.xp}
+                  xpPenalty={habito.xpPenalty}
+                  soloLectura={true}
+                />
+              );
+            })}
           </div>
         </section>
 
