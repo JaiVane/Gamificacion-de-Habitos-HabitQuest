@@ -28,7 +28,7 @@ const HabitCard = ({
   const handleMarkCompleted = async (e) => {
     e.stopPropagation();
     try {
-      // 🔹 Marca el hábito y obtiene el historial actualizado
+      // 🔹 Marca el hábito y obtiene el historial actualizado  git 
       const history = await onToggle(id);
   
       if (history && history.length > 0) {
