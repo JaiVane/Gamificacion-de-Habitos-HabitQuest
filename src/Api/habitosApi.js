@@ -18,7 +18,6 @@ export async function getHabitoById(id) {
   if (!res.ok) throw new Error("No se pudo obtener el hábito");
   return res.json();
 }
-
 export async function crearHabito(data) {
   // Aseguramos que los datos a enviar tengan la estructura correcta
   const body = {
