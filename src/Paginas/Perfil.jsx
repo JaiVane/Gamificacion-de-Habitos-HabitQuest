@@ -7,6 +7,12 @@ import { getUsuario } from "../Api/api";
 
 const Perfil = () => {
   const [habitos, setHabitos] = useState([]);
+  const [modoEdicion, setModoEdicion] = useState(false);
+  const [editableUsuario, setEditableUsuario] = useState(null);
+  const [archivoImagen, setArchivoImagen] = useState(null);
+
+  const { usuario, actualizarUsuario, setUsuario } = useAuth();
+  const { mostrarMensaje } = useNotificacion();
 
   useEffect(() => {
     const cargarHabitos = async () => {
@@ -20,114 +26,121 @@ const Perfil = () => {
     };
     cargarHabitos();
   }, []);
-  
-  
-  const obtenerIconoLogro = (nombre) => {
-    switch (nombre) {
-      case "Primera Victoria":
-        return <Trophy size={24} />;
-      case "Racha de Fuego":
-        return <Shield size={24} />;
-      case "Maestro de Hábitos":
-        return <Swords size={24} />;
-      case "Corazón Inquebrantable":
-        return <Heart size={24} />;
-      default:
-        return <Trophy size={24} />;
-    }
-  };
-  
-  const [modoEdicion, setModoEdicion] = useState(false);
-  const { usuario, actualizarUsuario, setUsuario } = useAuth();
-  const { mostrarMensaje } = useNotificacion(); // Unificar a mostrarMensaje
 
-  const logros = [
-    { id: 1, nombre: "Primera Victoria", descripcion: "Completa tu primer hábito", rareza: "común" },
-    { id: 2, nombre: "Racha de Fuego", descripcion: "Mantén una racha de 7 días", rareza: "rara" },
-    { id: 3, nombre: "Maestro de Hábitos", descripcion: "Completa 50 hábitos", rareza: "épica" },
-    { id: 4, nombre: "Corazón Inquebrantable", descripcion: "Mantén una racha de 30 días", rareza: "legendaria" },
-  ];
+  // Al entrar en modo edición, tomamos una copia local del usuario
+  const entrarEdicion = () => {
+    setEditableUsuario({
+      id: usuario.id,
+      nombre: usuario.nombre || "",
+      nombreUsuario: usuario.nombreUsuario || "",
+      email: usuario.email || "",
+      biografia: usuario.biografia || "",
+      genero: usuario.genero || "prefiero-no-decir",
+      rol: usuario.rol || "Guerrero",
+      imagenPerfil: usuario.imagenPerfil || null,
+      nivel: usuario.nivel || 1,
+    });
+    setModoEdicion(true);
+  };
 
   const guardarCambios = async () => {
     try {
-      await actualizarUsuario(usuario); // Enviamos el objeto 'usuario' del contexto
+      // 1) Actualiza datos básicos
+      await actualizarUsuario(editableUsuario);
+
+      // 2) Si hay imagen seleccionada, súbela
+      if (archivoImagen) {
+        const resultado = await subirFotoPerfil(archivoImagen);
+        setEditableUsuario(prev => ({ ...prev, imagenPerfil: resultado.imagen }));
+      }
+
+      // 3) Refleja los cambios en el contexto (solo una vez)
+      setUsuario(prev => ({
+        ...prev,
+        ...editableUsuario,
+      }));
+
       setModoEdicion(false);
+      setArchivoImagen(null);
+
       mostrarMensaje({
         title: "¡Perfil actualizado!",
         description: "Tus cambios han sido guardados correctamente.",
-        tipo: "success"
+        tipo: "success",
       });
     } catch (err) {
       console.error("Error al guardar perfil:", err.message);
       mostrarMensaje({
         title: "Error al guardar",
         description: err.message || "No se pudieron guardar los cambios. Inténtalo de nuevo.",
-        tipo: "error"
+        tipo: "error",
       });
     }
   };
 
-  if (!usuario) {
-    return <div>Cargando perfil...</div>; // O un spinner de carga
-  }
+  if (!usuario) return <div>Cargando perfil...</div>;
 
-  const obtenerColorRareza = (rareza) => {
-    switch (rareza) {
-      case "común":
-        return "etiqueta-comun";
-      case "rara":
-        return "etiqueta-rara";
-      case "épica":
-        return "etiqueta-epica";
-      case "legendaria":
-        return "etiqueta-legendaria";
-      default:
-        return "";
+  const obtenerIconoLogro = (nombre) => {
+    switch (nombre) {
+      case "Primera Victoria": return <Trophy size={24} />;
+      case "Racha de Fuego": return <Shield size={24} />;
+      case "Maestro de Hábitos": return <Swords size={24} />;
+      case "Corazón Inquebrantable": return <Heart size={24} />;
+      default: return <Trophy size={24} />;
     }
   };
 
-// XP total acumulado desde todos los hábitos
-const xpTotal = habitos.reduce((acc, h) => acc + (h.xp || 0), 0);
+  const obtenerColorRareza = (rareza) => {
+    switch (rareza) {
+      case "común": return "etiqueta-comun";
+      case "rara": return "etiqueta-rara";
+      case "épica": return "etiqueta-epica";
+      case "legendaria": return "etiqueta-legendaria";
+      default: return "";
+    }
+  };
 
-const experienciaSiguienteNivel = (usuario.nivel || 1) * 300;
-const experienciaActual = xpTotal % experienciaSiguienteNivel;
-const progresoXP = (experienciaActual / experienciaSiguienteNivel) * 100;
-
+  const xpTotal = habitos.reduce((acc, h) => acc + (h.xp || 0), 0);
+  const experienciaSiguienteNivel = (usuario.nivel || 1) * 300;
+  const experienciaActual = xpTotal % experienciaSiguienteNivel;
+  const progresoXP = (experienciaActual / experienciaSiguienteNivel) * 100;
 
   return (
     <div className="pagina-perfil">
       <div className="contenido-principal">
-
         <main className="perfil-contenido">
           <div className="perfil-encabezado">
             <h1 className="titulo-pagina">Mi Perfil</h1>
             <button
+              type="button"
               className={modoEdicion ? "boton-guardar" : "boton-editar"}
-              onClick={() => (modoEdicion ? guardarCambios() : setModoEdicion(true))}
+              onClick={() => (modoEdicion ? guardarCambios() : entrarEdicion())}
             >
               <Edit className="w-5 h-5" />
               {modoEdicion ? "Guardar" : "Editar"}
             </button>
           </div>
 
-          {/* Información del perfil */}
           <section className="tarjeta-perfil">
             <h2 className="titulo-seccion">Información Personal</h2>
 
             <div className="perfil-detalles">
               <div className="avatar">
-                <div className="avatar-fondo">
-                  {usuario.nombre?.slice(0, 2).toUpperCase() || '??'}
-                </div>
+              <div className="avatar-fondo">
+                    {usuario.nombre?.slice(0, 2).toUpperCase() || "??"}
+                  </div>
               </div>
 
               <div className="perfil-info">
                 <span className="etiqueta-rol">{usuario.rol}</span>
+
                 {modoEdicion ? (
                   <input
-                  className={`campo-texto ${modoEdicion ? "modo-edicion" : ""}`}
-                    value={usuario.nombre}
-                    onChange={(e) => setUsuario({ ...usuario, nombre: e.target.value })}
+                    className={`campo-texto ${modoEdicion ? "modo-edicion" : ""}`}
+                    value={editableUsuario?.nombre || ""}
+                    onChange={(e) =>
+                      setEditableUsuario((prev) => ({ ...prev, nombre: e.target.value }))
+                    }
                   />
                 ) : (
                   <>
@@ -140,11 +153,15 @@ const progresoXP = (experienciaActual / experienciaSiguienteNivel) * 100;
 
             <div className="campos-perfil">
               <div className="campo">
+                
+
                 <label>Nombre de Usuario</label>
                 <input
                   className={`campo-texto ${modoEdicion ? "modo-edicion" : ""}`}
-                  value={usuario.nombreUsuario}
-                  onChange={(e) => setUsuario({ ...usuario, nombreUsuario: e.target.value })}
+                  value={(modoEdicion ? editableUsuario?.nombreUsuario : usuario.nombreUsuario) || ""}
+                  onChange={(e) =>
+                    setEditableUsuario((prev) => ({ ...prev, nombreUsuario: e.target.value }))
+                  }
                   disabled={!modoEdicion}
                 />
               </div>
@@ -154,8 +171,10 @@ const progresoXP = (experienciaActual / experienciaSiguienteNivel) * 100;
                 <input
                   className={`campo-texto ${modoEdicion ? "modo-edicion" : ""}`}
                   type="email"
-                  value={usuario.email}
-                  onChange={(e) => setUsuario({ ...usuario, email: e.target.value })}
+                  value={(modoEdicion ? editableUsuario?.email : usuario.email) || ""}
+                  onChange={(e) =>
+                    setEditableUsuario((prev) => ({ ...prev, email: e.target.value }))
+                  }
                   disabled={!modoEdicion}
                   required
                 />
@@ -165,58 +184,60 @@ const progresoXP = (experienciaActual / experienciaSiguienteNivel) * 100;
                 <label>Biografía</label>
                 <textarea
                   className={`campo-texto ${modoEdicion ? "modo-edicion" : ""}`}
-                  value={usuario.biografia}
-                  onChange={(e) => setUsuario({ ...usuario, biografia: e.target.value })}
+                  value={(modoEdicion ? editableUsuario?.biografia : usuario.biografia) || ""}
+                  onChange={(e) =>
+                    setEditableUsuario((prev) => ({ ...prev, biografia: e.target.value }))
+                  }
                   disabled={!modoEdicion}
                   rows="4"
                 />
               </div>
-              
+
               <div className="descripcion">
-              <div className="campo">
-                <label>Género</label>
-                <select
-                  className={`campo-texto ${modoEdicion ? "modo-edicion" : ""}`}
-                  value={usuario.genero}
-                  onChange={(e) => setUsuario({ ...usuario, genero: e.target.value })}
-                  disabled={!modoEdicion}
-                >
-                  <option value="masculino">Masculino</option>
-                  <option value="femenino">Femenino</option>
-                  <option value="otro">Otro</option>
-                  <option value="prefiero-no-decir">Prefiero no decir</option>
-                </select>
-              </div>
+                <div className="campo">
+                  <label>Género</label>
+                  <select
+                    className={`campo-texto ${modoEdicion ? "modo-edicion" : ""}`}
+                    value={(modoEdicion ? editableUsuario?.genero : usuario.genero) || "prefiero-no-decir"}
+                    onChange={(e) =>
+                      setEditableUsuario((prev) => ({ ...prev, genero: e.target.value }))
+                    }
+                    disabled={!modoEdicion}
+                  >
+                    <option value="masculino">Masculino</option>
+                    <option value="femenino">Femenino</option>
+                    <option value="otro">Otro</option>
+                    <option value="prefiero-no-decir">Prefiero no decir</option>
+                  </select>
+                </div>
 
-              <div className="campo">
-                <label>Rol RPG</label>
-                <select
-                  className={`campo-texto ${modoEdicion ? "modo-edicion" : ""}`}
-                  value={usuario.rol}
-                  onChange={(e) => setUsuario({ ...usuario, rol: e.target.value })}
-                  disabled={!modoEdicion}
-                >
-                  <option value="Guerrero">Guerrero</option>
-                  <option value="Mago">Mago</option>
-                  <option value="Arquero">Arquero</option>
-                  <option value="Paladín">Paladín</option>
-                  <option value="Asesino">Asesino</option>
-                  <option value="Druida">Druida</option>
-                  <option value="Guerrera">Guerrera</option>
-                  <option value="Hechicera">Hechicera</option>
-                  <option value="Sacerdotisa">Sacerdotisa</option>
-                  <option value="Valquiria">Valquiria</option>
-                  <option value="Cazadora">Cazadora</option>
-                </select>
+                <div className="campo">
+                  <label>Rol RPG</label>
+                  <select
+                    className={`campo-texto ${modoEdicion ? "modo-edicion" : ""}`}
+                    value={(modoEdicion ? editableUsuario?.rol : usuario.rol) || "Guerrero"}
+                    onChange={(e) =>
+                      setEditableUsuario((prev) => ({ ...prev, rol: e.target.value }))
+                    }
+                    disabled={!modoEdicion}
+                  >
+                    <option value="Guerrero">Guerrero</option>
+                    <option value="Mago">Mago</option>
+                    <option value="Arquero">Arquero</option>
+                    <option value="Paladín">Paladín</option>
+                    <option value="Asesino">Asesino</option>
+                    <option value="Druida">Druida</option>
+                    <option value="Guerrera">Guerrera</option>
+                    <option value="Hechicera">Hechicera</option>
+                    <option value="Sacerdotisa">Sacerdotisa</option>
+                    <option value="Valquiria">Valquiria</option>
+                    <option value="Cazadora">Cazadora</option>
+                  </select>
+                </div>
               </div>
-
-
-              </div>
-              
             </div>
           </section>
 
-          {/* Sección de Progreso del Aventurero */}
           <section className="tarjeta-progreso">
             <h2 className="titulo-seccion">
               <Sword className="icono-Trofeo" size={40} /> Progreso del Aventurero
@@ -243,32 +264,18 @@ const progresoXP = (experienciaActual / experienciaSiguienteNivel) * 100;
                 <span>Siguiente Nivel</span>
               </div>
               <div className="xp-barra">
-                <div
-                  className="xp-barra-progreso"
-                  style={{ width: `${progresoXP}%` }}
-                ></div>
+                <div className="xp-barra-progreso" style={{ width: `${progresoXP}%` }}></div>
               </div>
             </div>
           </section>
-          {/* Logros */}
+
           <section className="tarjeta-logros">
-            <h2 className="titulo-seccion"> <Trophy className="icono-Trofeo" size={32}/>Logros Desbloqueados</h2>
+            <h2 className="titulo-seccion">
+              <Trophy className="icono-Trofeo" size={32} />Logros Desbloqueados
+            </h2>
             <div className="lista-logros">
-              {logros.map((logro) => (
-                <div key={logro.id} className={`logro-tarjeta ${obtenerColorRareza(logro.rareza)}`}>
-                  <div className="icono-logro">
-                    {obtenerIconoLogro(logro.nombre)}
-                  </div>
-                  <div className="contenido-logro">
-                    <h3>{logro.nombre}</h3>
-                    <p>{logro.descripcion}</p>
-                    <span className="rareza">{logro.rareza}</span>
-                  </div>
-                </div>
-              ))}
+              {/* ... */}
             </div>
-
-
           </section>
         </main>
       </div>

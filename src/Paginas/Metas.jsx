@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNotificacion } from "../Hooks/useNotificacion";
-import { Flag, Plus, Calendar, TrendingUp, CheckCircle2, Target, X } from "lucide-react";
+import { Flag, Plus, Calendar, TrendingUp, CheckCircle2, Target, X, Pen } from "lucide-react";
 import "../Estilos/stylesPaginas/Metas.css";
 import { getMetasPorUsuario, crearMeta, actualizarMeta, eliminarMeta } from "../Api/metasApi";
 
@@ -80,7 +80,7 @@ const Metas = () => {
               <div className="modal-meta" onClick={(e) => e.stopPropagation()}>
                 <div className="modal-header">
                   <div>
-                    <h2 className="modal-titulo">Crear Nueva Meta</h2>
+                    <h2 className="modal-titulo"><Pen size={32} className="icon-"/>Crear Nueva Meta</h2>
                     <p className="modal-subtitulo">Define un nuevo objetivo para conquistar</p>
                   </div>
                   <button className="modal-cerrar" onClick={() => setMostrarFormulario(false)}>

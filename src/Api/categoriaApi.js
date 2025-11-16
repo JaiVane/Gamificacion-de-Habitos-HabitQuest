@@ -1,3 +1,6 @@
+import { useNotificacion } from "../Hooks/useNotificacion";
+
+
 const API_URL = import.meta.env.VITE_API_URL;
 const token = () => localStorage.getItem("token");
 
@@ -44,24 +47,35 @@ export async function crearCategoria(data) {
       body: JSON.stringify(body),
     });
   
-    if (!res.ok) throw new Error("No se pudo crear la categoría");
-    return res.json();
+    if (!res.ok) {
+      let errorMessage = "No se pudo crear la categoría";
+      try {
+        const errorBody = await res.json();
+        errorMessage = errorBody.message || errorBody.error || errorMessage;
+      } catch (e) {}
+      throw new Error(errorMessage);
+    }
+
+    const nuevaCategoria = await res.json();
+    return { ...nuevaCategoria, successMessage: "Categoría creada exitosamente" };
   }
   
 
 // Actualizar categoría
 export async function actualizarCategoria(id, data) {
+  const body = { Nombre: data.nombre, Descripcion: data.descripcion };
   const res = await fetch(`${API_URL}/categorias/${id}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token()}`,
-    },
-    body: JSON.stringify(data),
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` },
+    body: JSON.stringify(body),
   });
-  if (!res.ok) throw new Error("No se pudo actualizar la categoría");
-  return { success: true };
+  if (!res.ok) {
+    const errorBody = await res.json().catch(() => ({}));
+    throw new Error(errorBody.mensaje || "No se pudo actualizar la categoría");
+  }
+  return res.json(); // devuelve { mensaje: "..."}
 }
+
 
 // Eliminar categoría
 export async function eliminarCategoria(id) {
@@ -69,9 +83,14 @@ export async function eliminarCategoria(id) {
     method: "DELETE",
     headers: { Authorization: `Bearer ${token()}` },
   });
-  if (!res.ok) throw new Error("No se pudo eliminar la categoría");
-  return { success: true };
+  if (!res.ok) {
+    const errorBody = await res.json().catch(() => ({}));
+    throw new Error(errorBody.mensaje || "No se pudo eliminar la categoría");
+  }
+  return res.json(); // { mensaje: "Categoría eliminada correctamente" }
 }
+
+
 
 // Obtener categorías con detalles (hábitos y metas)
 export async function getCategoriasConDetalles() {

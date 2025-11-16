@@ -34,7 +34,7 @@ export async function crearHabito(data) {
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` },
     body: JSON.stringify(body),
   });
-  if (!res.ok) throw new Error("No se pudo crear el hábito");
+  if (!res.ok) throw new Error("No se pudo crear el hábito, porfavor seleccione una categoria");
 
   const contentType = res.headers.get("content-type");
   if (contentType && contentType.indexOf("application/json") !== -1) {
@@ -107,7 +107,9 @@ export async function getHistorialHabito(habitoId) {
     },
   });
 
-  if (!response.ok) return handleError(response);
+  if (!response.ok) {
+    throw new Error("No se pudo obtener el historial");
+  }
   return await response.json();
 }
 
