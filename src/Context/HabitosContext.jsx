@@ -14,13 +14,13 @@ import { useNotificacion } from '../Hooks/useNotificacion';
 
 
 
-// 1️⃣ Crear el contexto
+// 1️ Crear el contexto
 const HabitContext = createContext();
 
-// 2️⃣ Hook personalizado para consumir el contexto fácilmente
+// 2️ Hook personalizado para consumir el contexto fácilmente
 export const useHabits = () => useContext(HabitContext);
 
-// 3️⃣ Proveedor del contexto
+// 3️ Proveedor del contexto
 export const HabitProvider = ({ children }) => {
   const [habitos, setHabitos] = useState([]);
   const [cargandoHabitos, setCargandoHabitos] = useState(false);
@@ -136,7 +136,7 @@ export const HabitProvider = ({ children }) => {
       if (updatedHabit.cumplido) {
         try {
           await marcarDia(id);
-          console.log(`✅ Día registrado en historial para hábito ${id}`);
+          console.log(` Día registrado en historial para hábito ${id}`);
         } catch (err) {
           console.warn("No se pudo registrar el día (posiblemente ya marcado):", err.message);
         }

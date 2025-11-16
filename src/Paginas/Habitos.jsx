@@ -70,6 +70,7 @@ export const Habitos = () => {
 //CRUd de habitos 
   const alternarCompletado = (id) => {
     const habito = habitos.find(h => h.id === id);
+
     toggleHabitCompletion(id);
   };
   const eliminarHabito = (id) => {

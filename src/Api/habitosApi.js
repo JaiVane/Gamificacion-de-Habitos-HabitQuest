@@ -72,16 +72,21 @@ export async function eliminarHabito(id) {
 
 
 export async function marcarCumplido(id) {
-  const res = await fetch(`${API_URL}/habitos/cumplir/${id}`, {
+  if (!id) throw new Error("ID de hábito no definido");
+
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${API_URL}/habitos/cumplir/${id}`, {
     method: "PUT",
     headers: {
-      Authorization: `Bearer ${token()}`,
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
   });
 
-  if (!res.ok) throw new Error("No se pudo marcar el hábito como cumplido");
-  return res.json();
+  if (!response.ok) throw new Error("No se pudo marcar el hábito como cumplido");
+  return await response.json();
 }
+
 export async function marcarDia(habitoId) {
   const res = await fetch(`${API_URL}/habitos/marcar-dia/${habitoId}`, {
     method: "POST",

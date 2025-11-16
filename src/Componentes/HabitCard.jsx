@@ -68,7 +68,7 @@ const HabitCard = ({
       setMostrarHistorial(true); // Y ahora sí, mostramos la lista
     }
   }
-  
+
   
   return (
     <div
@@ -77,16 +77,6 @@ const HabitCard = ({
       }`}
     >
       <div className="habit-card-content">
-      {!soloLectura && (
-  <div className="checkbox-container">
-    <input
-      type="checkbox"
-      checked={completed}
-      onChange={handleMarkCompleted}
-      className="habit-checkbox"
-    />
-  </div>
-)}
 
 
         <div className="habit-details">
