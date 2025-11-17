@@ -3,11 +3,11 @@ import { useNotificacion } from "../Hooks/useNotificacion";
 import { Flag, Plus, Calendar, TrendingUp, CheckCircle2, Target, X, Pen } from "lucide-react";
 import "../Estilos/stylesPaginas/Metas.css";
 import { getMetasPorUsuario, crearMeta, actualizarMeta, eliminarMeta } from "../Api/metasApi";
-
+import Modal from "../Componentes/Modal";
 const Metas = () => {
   const { mostrarMensaje } = useNotificacion();
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
-  const [metas, setMetas] = useState([]); // ✅ inicializar estado
+  const [metas, setMetas] = useState([]); //  inicializar estado
 
   useEffect(() => {
     const cargarMetas = async () => {
@@ -75,74 +75,81 @@ const Metas = () => {
             </button>
           </div>
 
-          {mostrarFormulario && (
-            <div className="modal-fondo" onClick={() => setMostrarFormulario(false)}>
-              <div className="modal-meta" onClick={(e) => e.stopPropagation()}>
-                <div className="modal-header">
-                  <div>
-                    <h2 className="modal-titulo"><Pen size={32} className="icon-"/>Crear Nueva Meta</h2>
-                    <p className="modal-subtitulo">Define un nuevo objetivo para conquistar</p>
-                  </div>
-                  <button className="modal-cerrar" onClick={() => setMostrarFormulario(false)}>
-                    <X size={24} />
-                  </button>
-                </div>
+<Modal
+  isOpen={mostrarFormulario}
+  onClose={() => setMostrarFormulario(false)}
+  title={
+    <span style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+      <Pen size={32} className="icon-" />
+      Crear Nueva Meta
+    </span>
+  }
+  subtitle="Define un nuevo objetivo para conquistar"
+>
+  <form className="modal-formulario" onSubmit={crearMetaHandler}>
+    <label className="modal-label">
+      Título de la meta
+      <input
+        className="modal-input"
+        type="text"
+        value={formData.titulo}
+        onChange={(e) => setFormData({ ...formData, titulo: e.target.value })}
+        placeholder="Ej: Ahorrar para un viaje"
+        required
+      />
+    </label>
 
-                <form className="modal-formulario" onSubmit={crearMetaHandler}>
-                  <label className="modal-label">
-                    Título de la meta
-                    <input
-                      className="modal-input"
-                      type="text"
-                      value={formData.titulo}
-                      onChange={(e) => setFormData({ ...formData, titulo: e.target.value })}
-                      placeholder="Ej: Ahorrar para un viaje"
-                      required
-                    />
-                  </label>
-                  <label className="modal-label">
-                    Descripción
-                    <textarea
-                      className="modal-textarea"
-                      value={formData.descripcion}
-                      onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
-                      placeholder="Describe los detalles de tu meta..."
-                      required
-                    />
-                  </label>
-                  <div className="campos-en-linea">
-                    <label className="modal-label">
-                      Valor objetivo
-                      <input
-                        className="modal-input"
-                        type="number"
-                        value={formData.valorObjetivo}
-                        onChange={(e) => setFormData({ ...formData, valorObjetivo: e.target.value })}
-                        placeholder="Ej: 1000"
-                        required
-                      />
-                    </label>
-                    <label className="modal-label">
-                      Categoría
-                      <input
-                        className="modal-input"
-                        type="text"
-                        value={formData.categoria}
-                        onChange={(e) => setFormData({ ...formData, categoria: e.target.value })}
-                        placeholder="Ej: Finanzas"
-                        required
-                      />
-                    </label>
-                  </div>
-                  <label className="modal-label">
-                    Fecha límite
-                    <input className="modal-input" type="date" value={formData.fechaLimite} onChange={(e) => setFormData({ ...formData, fechaLimite: e.target.value })} required />
-                  </label>
-                  <button type="submit" className="modal-boton-crear">Crear Meta</button>
-                </form>
-              </div>
-            </div>
-          )}
+    <label className="modal-label">
+      Descripción
+      <textarea
+        className="modal-textarea"
+        value={formData.descripcion}
+        onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
+        placeholder="Describe los detalles de tu meta..."
+        required
+      />
+    </label>
+
+    <div className="campos-en-linea">
+      <label className="modal-label">
+        Valor objetivo
+        <input
+          className="modal-input"
+          type="number"
+          value={formData.valorObjetivo}
+          onChange={(e) => setFormData({ ...formData, valorObjetivo: e.target.value })}
+          placeholder="Ej: 1000"
+          required
+        />
+      </label>
+      <label className="modal-label">
+        Categoría
+        <input
+          className="modal-input"
+          type="text"
+          value={formData.categoria}
+          onChange={(e) => setFormData({ ...formData, categoria: e.target.value })}
+          placeholder="Ej: Finanzas"
+          required
+        />
+      </label>
+    </div>
+
+    <label className="modal-label">
+      Fecha límite
+      <input
+        className="modal-input"
+        type="date"
+        value={formData.fechaLimite}
+        onChange={(e) => setFormData({ ...formData, fechaLimite: e.target.value })}
+        required
+      />
+    </label>
+
+    <button type="submit" className="modal-boton-crear">Crear Meta</button>
+  </form>
+</Modal>
+
 
           {/* Resumen de metas */}
           <section className="resumen-metas">

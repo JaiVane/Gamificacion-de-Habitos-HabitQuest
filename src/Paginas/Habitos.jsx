@@ -6,6 +6,8 @@ import { useHabits } from "../Context/HabitosContext";
 import { useAuth } from "../Context/AuthContext";
 import { crearCategoria, getCategorias, actualizarCategoria, eliminarCategoria as eliminarCategoriaApi, getCategoriaById } from "../Api/categoriaApi";
 import { useNotificacion } from "../Hooks/useNotificacion";
+import Modal from "../Componentes/Modal";
+
 
 export const Habitos = () => {
   
@@ -109,6 +111,8 @@ export const Habitos = () => {
         descripcion: formulario.descripcion,
         frecuencia: formulario.frequency,
         categoriaId: formulario.categoriaId,
+        cumplido: habitoEditando.cumplido ?? false,
+  diasConsecutivos: habitoEditando.diasConsecutivos ?? 0,
       });
     } else {
       // 4. Usamos la función del contexto para añadir
@@ -277,7 +281,7 @@ export const Habitos = () => {
               </div>
             </div>
           )}
-
+             {/* encabezado y acciones */}
           <div className="encabezado">
             <div>
               <h1 className="titulo">Mis Hábitos</h1>
@@ -299,6 +303,7 @@ export const Habitos = () => {
             </div>
           </div>
 
+          {/* filtros de habitos */}
           <div className="filtros-habitos">
             {categoriasFiltro.map((categoria) => (
               <button
@@ -314,7 +319,7 @@ export const Habitos = () => {
           </div>
 
             {/*MODAL HABITOS*/}
-          {dialogoAbierto && (
+          {/* {dialogoAbierto && (
             <div className="modal-fondo" onClick={() => setDialogoAbierto(false)}>
               <div className="modal" onClick={(e) => e.stopPropagation()}>
                 <div className="modal-header">
@@ -415,112 +420,174 @@ export const Habitos = () => {
                 </form>
               </div>
             </div>
-          )}
+          )} */}
+
+          <Modal
+            isOpen={dialogoAbierto}
+            onClose={() => setDialogoAbierto(false)}
+            title={habitoEditando ? "Editar Hábito" : "Crear Nuevo Hábito"}
+            subtitle={
+              habitoEditando
+                ? "Actualiza los detalles de tu hábito para mantener tu progreso."
+                : "Define tu nuevo hábito y gana XP al completarlo"
+            }
+          >
+            <form onSubmit={enviarFormulario} className="modal-formulario">
+              <label className="modal-label">
+                Nombre del hábito
+                <input
+                  type="text"
+                  value={formulario.nombre}
+                  onChange={(e) =>
+                    setFormulario({ ...formulario, nombre: e.target.value })
+                  }
+                  placeholder="Ej: Ejercicio matutino"
+                  required
+                  className="modal-input"
+                />
+              </label>
+                
+              <label className="modal-label">
+                Descripción
+                <textarea
+                  value={formulario.descripcion}
+                  onChange={(e) =>
+                    setFormulario({ ...formulario, descripcion: e.target.value })
+                  }
+                  placeholder="Describe tu hábito..."
+                  className="modal-textarea"
+                  rows="4"
+                />
+              </label>
+                
+              <label className="modal-label">
+                Categoría
+                <select
+                  value={formulario.categoriaId}
+                  onChange={(e) =>
+                    setFormulario({ ...formulario, categoriaId: e.target.value })
+                  }
+                  className="modal-select"
+                >
+                  <option value="">Sin categoría</option>
+                  {categorias.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.nombre}
+                    </option>
+                  ))}
+                </select>
+              </label>
+                
+              <label className="modal-label">
+                Frecuencia
+                <select
+                  value={formulario.frequency}
+                  onChange={(e) =>
+                    setFormulario({ ...formulario, frequency: e.target.value })
+                  }
+                  className="modal-select"
+                >
+                  <option value="Diaria">Diaria</option>
+                  <option value="Semanal">Semanal</option>
+                  <option value="Mensual">Mensual</option>
+                </select>
+              </label>
+                
+              <button type="submit" className="modal-boton-crear">
+                {habitoEditando ? "Guardar cambios" : "Crear hábito"}
+              </button>
+            </form>
+          </Modal>
+
             {/* MODAL CATEGORIAS CON TABS Y CARDS */}
-{dialogoCategoriaAbierto && (
-  <div className="modal-fondo" onClick={() => setDialogoCategoriaAbierto(false)}>
-    <div className="modal" onClick={(e) => e.stopPropagation()}>
-      <div className="modal-header">
-        <div>
-          <h2 className="modal-titulo">Gestión de Categorías</h2>
-          <p className="modal-subtitulo">
-            Organiza tus hábitos en grupos personalizados.
-          </p>
-        </div>
-        <button
-          className="modal-cerrar"
-          onClick={cerrarModalCategoria}
-          type="button"
-        >
-          <X size={20} />
-        </button>
-      </div>
-
-      {/* Tabs */}
-      <div className="tabs">
-        <button
-          className={`tab-boton ${tabActivo === "crear" ? "activo" : ""}`}
-          onClick={() => setTabActivo("crear")}
-        >
-          {categoriaEditando ? "Editar Categoría" : "Crear Categoría"}
-        </button>
-        <button
-          className={`tab-boton ${tabActivo === "listar" ? "activo" : ""}`}
-          onClick={() => setTabActivo("listar")}
-        >
-          Listar Categorías
-        </button>
-      </div>
-
-      {/* Contenido según tab */}
-      {tabActivo === "crear" && (
-        <form onSubmit={enviarFormularioCategoria} className="modal-formulario-categoria">
-          <label className="modal-label">
-            Nombre de la categoría
-            <input
-              type="text"
-              value={formularioCategoria.nombre}
-              onChange={(e) =>
-                setFormularioCategoria({
-                  ...formularioCategoria,
-                  nombre: e.target.value,
-                })
-              }
-              placeholder="Ej: Salud y Bienestar"
-              required
-              className="modal-input"
-            />
-          </label>
-
-          <label className="modal-label">
-            Descripción (opcional)
-            <textarea
-              value={formularioCategoria.descripcion}
-              onChange={(e) =>
-                setFormularioCategoria({
-                  ...formularioCategoria,
-                  descripcion: e.target.value,
-                })
-              }
-              placeholder="Describe el propósito de esta categoría..."
-              className="modal-textarea"
-              rows="3"
-            />
-          </label>
-
-          <button type="submit" className="modal-boton-crear">
-            {categoriaEditando ? "Guardar cambios" : "Crear Categoría"}
-          </button>
-
-          </form>
-        )}
-
-          {tabActivo === "listar" && (
-            <div className="categorias-grid">
-              {categorias.length === 0 ? (
-                <p>No hay categorías creadas.</p>
-              ) : (
-                categorias.map((cat) => (
-                  <div key={cat.id} className="categoria-card">
-                    <h4>{cat.nombre}</h4>
-                    <p>{cat.descripcion || "Sin descripción"}</p>
-                    <div className="acciones">
-                      <button className="btn-editar" onClick={() => abrirDialogoEditarCategoria(cat)}>
-                        <Edit   size={16} /> Editar
-                      </button>
-                      <button className="btn-eliminar" onClick={() => eliminarCategoria(cat.id)}>
-                        <Trash className="icon-eliminar" size={16} /> Eliminar
-                      </button>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          )}
-
-    </div>
+<Modal
+  isOpen={dialogoCategoriaAbierto}
+  onClose={cerrarModalCategoria}
+  title="Gestión de Categorías"
+  subtitle="Organiza tus hábitos en grupos personalizados."
+>
+  {/* Tabs */}
+  <div className="tabs">
+    <button
+      className={`tab-boton ${tabActivo === "crear" ? "activo" : ""}`}
+      onClick={() => setTabActivo("crear")}
+    >
+      {categoriaEditando ? "Editar Categoría" : "Crear Categoría"}
+    </button>
+    <button
+      className={`tab-boton ${tabActivo === "listar" ? "activo" : ""}`}
+      onClick={() => setTabActivo("listar")}
+    >
+      Listar Categorías
+    </button>
   </div>
-)}
+
+  {/* Contenido según tab */}
+  {tabActivo === "crear" && (
+    <form onSubmit={enviarFormularioCategoria} className="modal-formulario-categoria">
+      <label className="modal-label">
+        Nombre de la categoría
+        <input
+          type="text"
+          value={formularioCategoria.nombre}
+          onChange={(e) =>
+            setFormularioCategoria({
+              ...formularioCategoria,
+              nombre: e.target.value,
+            })
+          }
+          placeholder="Ej: Salud y Bienestar"
+          required
+          className="modal-input"
+        />
+      </label>
+
+      <label className="modal-label">
+        Descripción (opcional)
+        <textarea
+          value={formularioCategoria.descripcion}
+          onChange={(e) =>
+            setFormularioCategoria({
+              ...formularioCategoria,
+              descripcion: e.target.value,
+            })
+          }
+          placeholder="Describe el propósito de esta categoría..."
+          className="modal-textarea"
+          rows="3"
+        />
+      </label>
+
+      <button type="submit" className="modal-boton-crear">
+        {categoriaEditando ? "Guardar cambios" : "Crear Categoría"}
+      </button>
+    </form>
+  )}
+
+  {tabActivo === "listar" && (
+    <div className="categorias-grid">
+      {categorias.length === 0 ? (
+        <p>No hay categorías creadas.</p>
+      ) : (
+        categorias.map((cat) => (
+          <div key={cat.id} className="categoria-card">
+            <h4>{cat.nombre}</h4>
+            <p>{cat.descripcion || "Sin descripción"}</p>
+            <div className="acciones">
+              <button className="btn-editar" onClick={() => abrirDialogoEditarCategoria(cat)}>
+                <Edit size={16} /> Editar
+              </button>
+              <button className="btn-eliminar" onClick={() => eliminarCategoria(cat.id)}>
+                <Trash className="icon-eliminar" size={16} /> Eliminar
+              </button>
+            </div>
+          </div>
+        ))
+      )}
+    </div>
+  )}
+</Modal>
+
 
 
 
@@ -563,6 +630,7 @@ export const Habitos = () => {
 
         </main>
       </div>
+      
     </div>
   );
 };

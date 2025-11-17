@@ -48,6 +48,8 @@ export async function actualizarHabito(id, data) {
     descripcion: data.descripcion,
     frecuencia: data.frecuencia,
     categoriaId: data.categoriaId, 
+    cumplido: data.cumplido ?? false,
+    diasConsecutivos: data.diasConsecutivos ?? 0,
   };
   const res = await fetch(`${API_URL}/habitos/${id}`, {
     method: "PUT",
@@ -55,7 +57,7 @@ export async function actualizarHabito(id, data) {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token()}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(body),
   });
   if (!res.ok) throw new Error("No se pudo actualizar el hábito");
   return { success: true }; // No esperamos contenido, solo confirmación.
