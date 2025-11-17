@@ -47,6 +47,38 @@
 
 .header-right {
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.user-stats {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.user-stats span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #fff;
+  border-radius: 20px;
+  font-size: 1rem;
+  padding: 0.4rem 0.8rem;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.badge-xp {
+  background: linear-gradient(90deg, #ff7a00, #ffd700);
+}
+
+.badge-level {
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+}
+
+.badge-streak {
+  background: linear-gradient(90deg, #ef4444, #f87171);
 }
 
 .avatar-menu {
@@ -55,20 +87,20 @@
 }
 
 .avatar-imagen {
-  width: 40px;
-  height: 40px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   object-fit: cover;
 }
 
 .avatar-letras {
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  background: linear-gradient(to bottom right, #1bb910, #059669);
+  background: linear-gradient(135deg, #4caf50, #45a049);
   color: white;
   font-weight: bold;
-  font-size: 2rem;
+  font-size: 2.2rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -76,7 +108,7 @@
 }
 .menu-cuenta {
   position: absolute;
-  top: 50px;
+  top: 110%; /* Ajustado para que no se solape con el avatar más grande */
   right: 0;
   background-color: #ffffff;
   border: 1px solid #d1d5db;

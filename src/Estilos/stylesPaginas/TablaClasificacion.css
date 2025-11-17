@@ -257,20 +257,19 @@ td {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  
 }
 
 .avatar {
-  width: 40px;
-  height: 40px;
+    width: 100px;
+  height: 100px;
   border-radius: 50%;
   background: #4CAF50;
   color: white;
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 1.5rem;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+  
 }
 
 .usuario-datos {
@@ -283,11 +282,11 @@ td {
   font-weight: 700;
   color: #1a1a1a;
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1.2rem;
 }
 
 .usuario-username {
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: #6b6b6b;
 }
 
@@ -295,7 +294,7 @@ td {
   display: inline-block;
   padding: 0.35rem 0.75rem;
   border-radius: 6px;
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-weight: 600;
 }
 
@@ -322,9 +321,19 @@ td {
 .columna-xp {
   font-weight: 700;
   color: #1a1a1a;
-}
+  font-size: 1rem;
 
+}
+.habitos {
+  font-weight: 700;
+  color: #1a1a1a;
+  font-size: 1rem;
+  
+}
 .columna-racha {
   color: #4CAF50;
   font-weight: 600;
+  
+  font-size: 1rem;
 }
+

@@ -66,23 +66,21 @@ const Dashboard = () => {
   const hoy = new Date().toDateString();
   const habitos = usuario.habitos || [];
 
-  // ✅ Solo hábitos activos hoy (diarios)
+  //  Solo hábitos activos hoy (diarios)
   const habitosActivosHoy = habitos.filter(h => h.frecuencia === "Diaria");
 
-  // ✅ Métricas del día
+  //  Métricas del día
   const completadosHoy = habitosActivosHoy.filter(h => h.cumplido).length;
   const totalHabitos = habitosActivosHoy.length;
   const tasaExito = totalHabitos > 0 ? Math.round((completadosHoy / totalHabitos) * 100) : 0;
   const xpHoy = habitosActivosHoy.filter(h => h.cumplido).reduce((acc, h) => acc + h.xpReward, 0);
 
-  // ✅ XP total y nivel
-  const xpTotal = habitos.reduce((acc, h) => acc + h.xp, 0);
-  const experienciaSiguienteNivel = usuario.nivel * 300;
-  const experienciaActual = xpTotal % experienciaSiguienteNivel;
-  const nivelCalculado = Math.floor(xpTotal / 300) + 1;
-
-  // ✅ Rachas
-  const mejorRacha = habitos.reduce((acc, h) => Math.max(acc, h.diasConsecutivos), 0);
+  //  XP total y nivel
+  const xpTotal = usuario.experiencia; //  viene del backend
+const nivelCalculado = usuario.nivel; //  nivel real del usuario
+const experienciaSiguienteNivel = usuario.nivel * 300;
+const experienciaActual = usuario.experiencia % experienciaSiguienteNivel;
+const mejorRacha = usuario.racha; // racha global del usuario
 
   return (
     <div className="dashboard">
@@ -154,7 +152,7 @@ const Dashboard = () => {
         {/* Hábitos */}
         <section className="seccion-habitos">
           <h2>Tus Hábitos de Hoy</h2>
-          <div className="lista-habitos">
+          <div className="lista-habitos" >
             {habitosActivosHoy.map(habito => {
               const categoria = categorias.find(c => c.id === habito.categoriaId);
               return (

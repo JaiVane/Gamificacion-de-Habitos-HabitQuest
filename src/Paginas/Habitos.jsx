@@ -21,7 +21,7 @@ export const Habitos = () => {
     markDayForHabit, 
     getHistoryForHabit,
   } = useHabits();
-  const { usuario } = useAuth();
+  const { usuario, refrescarPerfil } = useAuth();
   const { mostrarMensaje } = useNotificacion();
   const [tabActivo, setTabActivo] = useState("crear");
   const [categoriaDetalle, setCategoriaDetalle] = useState(null);
@@ -72,11 +72,12 @@ export const Habitos = () => {
 //CRUd de habitos 
   const alternarCompletado = (id) => {
     const habito = habitos.find(h => h.id === id);
-
     toggleHabitCompletion(id);
+    refrescarPerfil();   
   };
   const eliminarHabito = (id) => {
     removeHabit(id);
+     refrescarPerfil();   
   };
   const marcarDiaHabito = (id) => {
     markDayForHabit(id);

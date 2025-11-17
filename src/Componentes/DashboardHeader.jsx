@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "../Estilos/stylesComponentes/DashboardHeader.css";
-import { LogOut, User } from "lucide-react";
+import { LogOut, User, Flame, Trophy, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 
@@ -87,7 +87,22 @@ export default function DashboardHeader() {
           </p>
         </div>
 
+
+
+
         <div className="header-right">
+          <div className="user-stats">
+  <span className="badge-xp">
+    <Trophy size={22} /> XP: {usuario?.experiencia ?? 0}
+  </span>
+  <span className="badge-level">
+    <Star size={22} /> Nivel: {usuario?.nivel ?? 1}
+  </span>
+  <span className="badge-streak">
+    <Flame size={22} /> Racha: {usuario?.racha ?? 0}
+  </span>
+</div>
+
   <div className="avatar-menu" onClick={() => setMenuAbierto(!menuAbierto)}>
     {usuario?.avatar ? (
       <img src={usuario.avatar} alt="Avatar" className="avatar-imagen" />

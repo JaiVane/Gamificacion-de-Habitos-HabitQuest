@@ -1,82 +1,89 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { getPerfil, updatePerfil, postData } from '../Api/api.js';
- 
-// 1. Crear el contexto
-const AuthContext = createContext();
 
-// 2. Hook personalizado para consumir el contexto fácilmente
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+
+// 1. Create the context 
+const AuthContext = createContext();
+// 2. Custom hook to easily consume context 
+export const useAuth = () => { return useContext(AuthContext); };
+
 
 // 3. Proveedor del contexto
-export const AuthProvider = ({ children }) => {
-  const [usuario, setUsuario] = useState(null);
+export const AuthProvider = ({ children }) => { 
+  const [usuario, setUsuario] = useState(null); 
   const [cargando, setCargando] = useState(true);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      getPerfil()
-        .then(data => {
-          setUsuario(data);
-        })
-        .catch(err => {
-          console.error("Error al cargar perfil en AuthContext:", err);
-          // Si el token es inválido, lo limpiamos
-          localStorage.removeItem('token');
-        })
-        .finally(() => {
-          setCargando(false);
-        });
-    } else {
-      setCargando(false);
-    }
-  }, []);
 
-  // Función para actualizar el perfil del usuario
-  const actualizarUsuario = async (nuevosDatos) => {
-    try {
-      // Hacemos la llamada a la API para que guarde los datos.
-      await updatePerfil(nuevosDatos);
-      // No necesitamos hacer nada con la respuesta, ya que el estado 'usuario' ya fue actualizado en el frontend.
-      // Simplemente mantenemos el estado que ya tenemos.
-      return nuevosDatos; // Devolvemos los datos que ya teníamos.
-    } catch (error) {
-      console.error("Error al actualizar el perfil desde el contexto:", error);
-      throw error; // Relanzamos el error para que el componente pueda manejarlo
-    }
-  };
+ useEffect(() => { 
+  const token = localStorage.getItem('token'); 
+  if (token) { 
+    getPerfil() .then(data => { setUsuario(data); 
 
-  // Función para manejar el inicio de sesión
-  const iniciarSesion = async (email, password) => {
+    }) 
+    .catch(err => { 
+      console.error("Error al cargar perfil en AuthContext:", err); 
+// If the token is invalid, we clean itpiamos 
+      localStorage.removeItem('token'); 
+    }) 
+    .finally(() => { 
+      setCargando(false); 
+    }); 
+  } else { setCargando(false); } 
+}, []);
+
+// Function to refresh the user's profile
+
+  const refrescarPerfil = async () => {
     try {
-      const result = await postData("Auth/login", { email, password });
-      localStorage.setItem("token", result.token);
-      localStorage.setItem("userId", result.usuario.id);
-  
-      // Guardamos también el usuario en estado global
-      setUsuario(result.usuario);
-  
-      return result.usuario;
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/Auth/perfil`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      });
+      if (!res.ok) throw new Error("No se pudo refrescar el perfil");
+      const data = await res.json();
+      setUsuario(data); // ✅ ahora sí actualiza el estado global
+      return data;
     } catch (error) {
-      console.error("Error al iniciar sesión desde el contexto:", error);
+      console.error("Error refrescando perfil:", error);
+      setUsuario(null);
+      localStorage.removeItem("token");
       throw error;
     }
   };
-
-  // Función para cerrar la sesión del usuario
-  const cerrarSesion = () => {
-    localStorage.removeItem("token"); // Limpiamos el token
-    setUsuario(null); // Limpiamos el estado del usuario
-    // Opcional: podrías limpiar también el estado de los hábitos si lo deseas
+// Function to update the user's profile 
+const actualizarUsuario = async (nuevosDatos) => { 
+try { // We call the API to save the data.s. 
+  await updatePerfil(nuevosDatos); 
+// We don't need to do anything with the response, as the 'user' status has already been updated in the frontend. // We just maintain the state we already have.s. 
+return nuevosDatos; // We return the data we already had.s.
+} catch (error) { console.error("Error updating profile from context:", error); throw error; // We relaunch the error so that the component can handle itrlo 
+   } 
   };
 
-  const value = { usuario, setUsuario, cargando, actualizarUsuario, iniciarSesion, cerrarSesion };
+//Login Handling Feature 
+const iniciarSesion = async (email, password) => {
+   try { const result = await postData("Auth/login", { email, password });
+    localStorage.setItem("token", result.token); 
+    localStorage.setItem("userId", result.usuario.id); 
+    
+// We also save the user in global statusobal 
+    setUsuario(result.usuario); 
+    return result.usuario;
+   } catch (error) {
+     console.error("Error al iniciar sesión desde el contexto:", error); 
+     throw error; 
+    } 
+  };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {!cargando && children}
-    </AuthContext.Provider>
-  );
-};
+//User Logout Feature 
+const cerrarSesion = () => {
+localStorage.removeItem("token"); // We clean the tokenken 
+setUsuario(null); // We clean the status of the user // Optional: you could also clean the status of the habits if you wisheas 
+   }; 
+   const value = { usuario, setUsuario, cargando, refrescarPerfil,actualizarUsuario, iniciarSesion, cerrarSesion }; 
+   return ( 
+   <AuthContext.Provider value={value}> 
+   {!cargando && children} 
+   </AuthContext.Provider> );
+}
+
+ 
