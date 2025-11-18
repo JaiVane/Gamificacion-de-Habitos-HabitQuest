@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../Estilos/stylesPaginas/Estadisticas.css";
 import { BarChart3, TrendingUp, Calendar, Target, Zap, Award } from "lucide-react";
 import {
@@ -9,39 +9,48 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer,Bar,BarChart,PieChart, Pie, Cell
+  ResponsiveContainer,
+  Bar,
+  BarChart,
+  PieChart,
+  Pie,
+  Cell
 } from "recharts";
-import { useState } from "react";
+import { getEstadisticas } from "../Api/api";
+
+
 
 const Stats = () => {
   const [vista, setVista] = useState("semanal");
-  const datosSemanales = [
-    { dia: "Lun", completados: 9, fallidos: 3 },
-    { dia: "Mar", completados: 6, fallidos: 2 },
-    { dia: "Mié", completados: 9, fallidos: 3 },
-    { dia: "Jue", completados: 7, fallidos: 2 },
-    { dia: "Vie", completados: 6, fallidos: 2 },
-    { dia: "Sáb", completados: 4, fallidos: 1 },
-    { dia: "Dom", completados: 3, fallidos: 1 },
-  ];
-  
-  const datosMensuales = [
-    { dia: "Semana 1", completados: 45, fallidos: 10 },
-    { dia: "Semana 2", completados: 50, fallidos: 8 },
-    { dia: "Semana 3", completados: 42, fallidos: 12 },
-    { dia: "Semana 4", completados: 48, fallidos: 9 },
-  ];
-  const datosGrafico = vista === "semanal" ? datosSemanales : datosMensuales;
-  const estadisticasCategorias = [
-    { nombre: "Salud", completados: 45, total: 60, color: "#10b981" },
-    { nombre: "Productividad", completados: 38, total: 50, color: "#3b82f6" },
-    { nombre: "Desarrollo Personal", completados: 28, total: 40, color: "#8b5cf6" },
-    { nombre: "Ejercicio", completados: 32, total: 35, color: "#f97316" },
-  ];
+  const [estadisticas, setEstadisticas] = useState(null);
+
+ useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userId = localStorage.getItem("userId");
+        const data = await getEstadisticas(userId); 
+        setEstadisticas(data);
+      } catch (error) {
+        console.error("Error cargando estadísticas:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (!estadisticas) {
+    return <p>Cargando estadísticas...</p>;
+  }
+
+  // Datos dinámicos desde el backend
+  const datosGrafico = vista === "semanal" ? estadisticas.semanal : estadisticas.mensual;
+
   const datosCircular = [
-    { nombre: "Completados", valor: 79, color: "#10b981" },
-    { nombre: "Fallidos", valor: 21, color: "#ef4444" },
+    { nombre: "Completados", valor: estadisticas.totalCompletados, color: "#10b981" },
+    { nombre: "Fallidos", valor: estadisticas.totalFallidos, color: "#ef4444" },
   ];
+
+  const estadisticasCategorias = estadisticas.porCategoria;
 
   return (
     <div className="estadisticas">
@@ -58,43 +67,38 @@ const Stats = () => {
           {/* Tarjetas resumen */}
           <div className="grid-cards">
             <div className="card card-exito">
-              <div className="card-header"><span className="iconoExito"> <Target /></span> Tasa de Éxito</div>
+              <div className="card-header"><Target /> Tasa de Éxito</div>
               <div className="card-content">
-                <div className="valor">87%</div>
-                <div className="detalle">+5% vs mes anterior</div>
+                <div className="valor">{estadisticas.tasaExito}%</div>
               </div>
             </div>
 
             <div className="card card-activos">
-              <div className="card-header"><span className="iconoActivos"><Calendar /></span> Días Activos</div>
+              <div className="card-header"><Calendar /> Días Activos</div>
               <div className="card-content">
-                <div className="valor">28</div>
-                <div className="detalle">Este mes</div>
+                <div className="valor">{estadisticas.diasActivos}</div>
               </div>
             </div>
 
             <div className="card card-xp">
-              <div className="card-header"><span className="iconoXp"><Zap /></span> XP Promedio</div>
+              <div className="card-header"><Zap /> XP Promedio</div>
               <div className="card-content">
-                <div className="valor">245</div>
-                <div className="detalle">XP por día</div>
+                <div className="valor">{estadisticas.xpPromedioDiario}</div>
               </div>
             </div>
 
             <div className="card card-racha">
-              <div className="card-header"><span className="iconoRacha"><Award /> </span>Mejor Racha</div>
+              <div className="card-header"><Award /> Mejor Racha</div>
               <div className="card-content">
-                <div className="valor">45</div>
-                <div className="detalle">días consecutivos</div>
+                <div className="valor">{estadisticas.mejorRacha}</div>
               </div>
             </div>
           </div>
+
           {/* Reporte de Evolución */}
           <div className="card card-evolucion">
-            <div className="reporte"><span className="encabezado-repo">
-            <TrendingUp /> 
-            </span>
-              Reporte de Evolución
+            <div className="reporte">
+              <TrendingUp /> Reporte de Evolución
               <div className="vista-toggle">
                 <button
                   className={vista === "semanal" ? "activo" : ""}
@@ -125,14 +129,13 @@ const Stats = () => {
             </div>
           </div>
 
-
           <div className="graficas">
-                      {/*Grafico de Barras */}
+            {/* Gráfico de Barras */}
             <div className="card card-barras">
               <div className="header">Hábitos: Cumplidos vs Fallidos</div>
               <div className="card-content grafico-barras">
                 <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={datosSemanales}>
+                  <BarChart data={estadisticas.semanal}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="dia" />
                     <YAxis />
@@ -144,8 +147,10 @@ const Stats = () => {
                 </ResponsiveContainer>
               </div>
             </div>
+
+            {/* Gráfico Circular */}
             <div className="card card-circular">
-            <div className="header">Proporción de Cumplimiento</div>
+              <div className="header">Proporción de Cumplimiento</div>
               <div className="card-content grafico-circular">
                 <ResponsiveContainer width="100%" height={300}>
                   <PieChart>
@@ -174,6 +179,7 @@ const Stats = () => {
             </div>
           </div>
 
+          {/* Categorías */}
           <div className="card card-categorias">
             <div className="header">Estadísticas por Categoría</div>
             <div className="card-content grafico-categorias">
@@ -199,9 +205,6 @@ const Stats = () => {
               })}
             </div>
           </div>
-
-
-
         </main>
       </div>
     </div>

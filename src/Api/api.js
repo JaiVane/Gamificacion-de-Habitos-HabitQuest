@@ -2,6 +2,7 @@
 const API_URL = import.meta.env.VITE_API_URL;
 console.log("API_URL:", API_URL);
 
+// Función para manejar errores de respuesta
 async function handleError(response) {
   let errorMessage = `Error ${response.status}: ${response.statusText}`;
   let bodyText = "";
@@ -117,7 +118,7 @@ export async function getUsuario(id) {
   return response.json();
 }
 
-
+// Cambiar el estado de un hábito (completado/no completado)
 export async function toggleHabito(id) {
   const token = localStorage.getItem("token");
   const response = await fetch(`${API_URL}/Habitos/cumplir/${id}`, {
@@ -132,4 +133,16 @@ export async function toggleHabito(id) {
   return response.json(); // idealmente devuelve el usuario actualizado
 }
 
+// Obtener estadísticas del usuario por ID
+export async function getEstadisticas(usuarioId) {
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${API_URL}/estadisticas/estadisticas/${usuarioId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) return handleError(response);
+  return response.json();
+}
 
