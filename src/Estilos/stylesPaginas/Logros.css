@@ -1,7 +1,7 @@
 .pagina-logros {
   width: 100%;
   min-height: 100vh;
-  background-color: #ffffff;
+background: linear-gradient(to bottom, #e6f7ef 3%, #ffffff 97%);
   overflow-x: hidden;
   /* Firefox scrollbar */
   scrollbar-width: thin;

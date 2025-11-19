@@ -8,6 +8,7 @@ g.pagina-habitos {
     flex: 1;
     display: flex;
     flex-direction: column;
+    background: linear-gradient(to bottom, #e6f7ef 3%, #ffffff 97%);
   }
   
   .contenido {
