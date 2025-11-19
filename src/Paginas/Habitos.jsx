@@ -53,7 +53,7 @@ export const Habitos = () => {
   useEffect(() => {
     const cargarCategorias = async () => {
       try {
-        const categoriasObtenidas = await getCategorias(); // ✅ sin parámetros
+        const categoriasObtenidas = await getCategorias(); //  sin parámetros
         setCategorias(categoriasObtenidas);
       } catch (error) {
         console.error("Error al cargar las categorías:", error);
@@ -292,14 +292,14 @@ export const Habitos = () => {
             </div>
             <div className="encabezado-acciones">
               <div className="contador-total-habitos">
-                <span className="contador-etiqueta">Hábitos Totales</span>
+                <span className="contador-etiqueta">Hábitos Totales:</span>
                 <span className="contador-valor">{habitos.length}</span>
               </div>
               <button className="boton-nueva-categoria" onClick={() => setDialogoCategoriaAbierto(true)}>
-                <FolderPlus size={18} /> Categorías
+                <FolderPlus size={22} /> Categorías
               </button>
               <button className="boton-nuevo" onClick={abrirDialogoNuevo}>
-                <Plus size={18} /> Nuevo Hábito
+                <Plus size={22} /> Nuevo Hábito
               </button>
             </div>
           </div>

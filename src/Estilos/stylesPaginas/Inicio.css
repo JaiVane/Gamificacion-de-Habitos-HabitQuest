@@ -13,7 +13,7 @@ html, body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: linear-gradient(135deg, #fffefe, #ebedee);
+    background: linear-gradient(to bottom, #d2ffea 3%, #ffffff 97% );
   color: #222;
   font-family: "Poppins", sans-serif;
   overflow-y: auto;
@@ -21,8 +21,9 @@ html, body {
 
 /* HEADER */
 .encabezado {
+  background: linear-gradient(to bottom, #d2ffea , #ffffff );
   width: 100%;
-  margin: 0 auto;
+height:100%;
   display: flex;
   justify-content: space-between; /* Cambiado de center a space-between */
   align-items: center;
@@ -32,174 +33,629 @@ html, body {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-left: 40px;
+
+  margin: 1.3rem;  
 }
 .logo h1 {
-  font-size: 40px; /* Tamaño aumentado para mejor visibilidad */
+  font-size: 40px;
   font-weight: 700;
-  color: #222;
+  background: linear-gradient(to right, #02a513 , #18dc8e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
+
 .logoIcon{
-  color: #4caf50;
+  color: #02a513 ;
 }
 /* SECCIÓN PRINCIPAL */
 
 .contenedor-principal {
   display: flex;
-  grid-template-columns: 1fr 1fr;
+  flex-direction: column;
   align-items: center;
-  gap: 60px;
   background-color: #dafddd;
-  
+margin-top: -32px;
 }
 
 .texto-principal{
-  margin-top: -50px;
-  margin-left: 40px;
+  display: flex;
+  flex-direction: row  !important;
+  margin: 130px 40px 20px;
+  gap: 40px;
+
+
+}
+.info{
+  display: inline-flex;
+  flex-direction: column;
+  align-self: start;
+  align-items: flex-start; /* Alinea los hijos a la izquierda */
+}
+.hero-banner {
+  display: flex; 
   align-items: center;
-  justify-content: center;
+  background-color: #d9f1da;
+  color: #3fb143;
+  font-weight: 600;
+  padding: 0.5rem 2rem;
+  border-radius: 999px;
+  box-shadow: #3fb143 0px 5px 8px;
+  font-size: 1rem;
+  margin-bottom: -50px;
+
+}
+.rocket-icon {
+  margin-right: 0.5rem;
 }
 .texto-principal h2 {
-  gap: 10px;
-  font-size: 52px;
-  line-height: 1.2;
+  font-size: 80px;
+  font-weight: 800;
+  line-height: 1;
 }
 
 .resaltado {
-  color: #4caf50;
+  background: linear-gradient(to right, #3fb143, #7df083);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .texto-principal p {
-  
-  font-size: 25px;
-  color: #555;
-}
-
-.botones-principales {
-  margin-top: 30px;
-  display: flex;
-  gap: 16px;
+ margin-top: -10px;
+  font-size: 30px;
+  color: #878484;
 }
 
 .imagen-principal img {
-  margin-top: -50px;
-  width: 90%;
+  margin: 100px 0  20px;
+  width: 100%;
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
+.benefits-section {
+  margin-top: -1.5rem;
+padding: 4rem 0 0 ;
+  font-family: 'Segoe UI', sans-serif;
 
-/* SECCIÓN DE CARACTERÍSTICAS */
-.seccion-caracteristicas {
-  text-align: center;
-  padding: 80px 40px;
+}
+.benefits-header{
+  display: flex; /* Habilita Flexbox */
+  align-items: center; /* Centra verticalmente los elementos */
   background: #ffffff;
+  border: 1px solid #e3e6e4;
+  padding: 0.5rem ;
+  border-radius: 15px;
+  gap: 1rem; /* Reduce el espacio para que el ícono y el texto estén más juntos */
 }
 
-.seccion-caracteristicas h3 {
-  font-size: 40px;
-  margin-bottom: 40px;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+.benefits-header p {
+  margin-top: 0.6rem;
+  font-size: 1.2rem;
+  color: #4d4c4c;
 }
 
-.caracteristicas {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
+.benefits-header strong {
+  font-size: 1.2rem;
+  color: #393939;
 }
 
-.tarjeta {
-  background: #f7f7f7;
-  padding: 30px;
+.stats-grid {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  background-color: transparent;
   border-radius: 12px;
+  padding: 1.5rem 2rem;
+  width: 220px;
+}
+
+.stat-card h3 {
+  font-size: 2.5rem;
+  color: #3fb143;
+  margin-bottom: 0.5rem;
+}
+
+.stat-card p {
+  font-size: 1rem;
+  color: #5f6575;
+}
+
+/* SECCIÓN "CÓMO FUNCIONA" */
+.como-funciona-seccion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  background-color: #f7f7f7;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.banner{
+  display: flex; 
+  align-items: center;
+  background-color: #d9f1da;
+  color: #3fb143;
+  font-weight: 600;
+  padding: 0.5rem 2rem;
+  border-radius: 999px;
+  box-shadow: #3fb143 0px 5px 8px;
+  font-size: 1.2rem;
+  gap: 1rem;
+
+
+}
+
+.section-subtitle {
+  font-size: 4rem;
+  color: #071508;
+  margin: 1rem 0 0.5rem;
+}
+
+.section-description {
+  font-size: 2rem;
+  color: #7f82a7;
+  margin-bottom: 2rem;
+}
+.span-habit{
+    background: linear-gradient(to right, #02a513 , #18dc8e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.steps-grid {
+  display: flex;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.step-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  text-align: left;
+  position: relative;
+}
+.step-number {
+  font-size: 4.5rem;
+  font-weight: bold;
+  color: #dbf9dd; /* Verde suave */
+}
+
+/* Estilo para el ícono dentro de cada paso */
+.iconos {
+  background-color:  #dbf9dd;
+  color: #0ea51d;
+  display: flex;
+  border-radius: 12px;
+  padding: 0.8rem;
+  margin-bottom: -1.2rem;
+}
+/* Flecha entre tarjetas */
+.step-card:not(:last-child)::after {
+  content: "→";
+  position: absolute;
+  right: -1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 3rem;
+  color: #a7e8ac;
+}
+.step-card h4 {
+  font-size: 1.9rem;
+  color: #0f2110;
+  margin-bottom: 0.5rem;
+}
+
+.step-card p {
+  font-size: 1.2rem;
+  color: #8e96bc;
+  line-height: 1.5;
+}
+.step-card:hover {
+  transform: scale(1.05);
+  border: 1px solid #7df083;
+  box-shadow: #41b13f 0px 5px 8px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+/* Responsive: flechas abajo en móvil */
+@media (max-width: 768px) {
+  .steps-grid {
+    flex-direction: column;
+    align-items: center;
+  }
 
-.tarjeta:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  .step-card:not(:last-child)::after {
+    content: "↓";
+    right: 50%;
+    top: auto;
+    bottom: -1.5rem;
+    transform: translateX(50%);
+  }
 }
 
-.icon{
-  color: #43a047;
+/* SECCIÓN DE BENEFICIOS REALES */
+.real-benefits {
+  padding: 4rem 2rem;
+  text-align: center;
+  background-color: #f9fefc;
+  font-family: 'Segoe UI', sans-serif;
 }
-.icono-fondo {
-  background: rgba(157, 227, 160, 0.1);
-  border-radius: 8px;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  justify-content: center;
+.header-beneficios{
+display: inline-block;;
+}
+.star-banner{
+  display: flex; 
   align-items: center;
-  margin: 0 auto 16px;
+  background-color: #e1f2fd;
+  color: #1f87f0;
+  font-weight: 600;
+  padding: 0.5rem 2rem;
+  border-radius: 999px;
+  box-shadow: #3f94b1 0px 5px 8px;
+  font-size: 1.2rem;
+  gap: 1rem;
 }
-.icono-fon{
-  background: #dafddd;
-  border-color: #43a047;
-  border-radius: 8px;
-  width: 60px;
-  height: 60px;
+
+.benefits-title {
+  font-size: 4rem;
+  color: #070817;
+  margin: 0.5rem;
+}
+.encantar {
+  background: linear-gradient(to right, #1f87f0 , #8bc9f2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.benefits-subtitle {
+  font-size: 2rem;
+  color: #7f82a7;
+  margin-bottom: 2rem;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.benefit-card {
   display: flex;
-  justify-content: center;
+  background-color: #ffffff;
+  border: 1px solid #e0f2f1;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+  text-align: left;
+  gap: 1.2rem;
+}
+
+.benefit-icon {
+  background-color: #e1f2fd;
+  border-radius: 12px;
+  padding: 0.8rem;
+  font-size: 2.5rem;
+  color: #2196f3;
+  flex-shrink: 0;
+}
+.info-benefit{
+  display: flex;
+  flex-direction: column;
+}
+.benefit-card h3 {
+  font-size: 2rem;
+  color: #110f35;
+  margin-bottom: 0.3rem;
+}
+
+.benefit-card p {
+  font-size: 1.2rem;
+  color: #8e96bc;
+  line-height: 1.5;
+}
+
+/* Responsive: 1 columna en móvil */
+@media (max-width: 768px) {
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .benefit-card {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+
+  .benefit-icon {
+    margin-bottom: 1rem;
+  }
+}
+.benefit-card:hover {
+  transform: scale(1.05);
+  border: 1px solid #4087f1;
+   box-shadow: #3f94b1 0px 5px 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease ;
+}
+
+/* SECCIÓN DE SISTEMA DE JUEGO */
+.game-system {
+  padding: 4rem 2rem;
+  background-color: #f4fcf9;
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+}
+.system-header {
+  display: inline-block;
+}
+.play-banner {
   align-items: center;
-  margin: 0 auto 16px;
-
+  background-color: #fdf4e4;
+  color: #f2a409;
+  font-weight: 600;
+  padding: 0.5rem 2rem;
+  border-radius: 999px;
+  box-shadow: #e7a32d 0px 5px 8px;
+  font-size: 1.2rem;
+  gap: 1rem;
+}
+.titulo-play{
+    font-size: 4rem;
+  color: #070817;
+  margin: 0.5rem;
+}
+.span-play{
+    background: linear-gradient(to right, #f2a409 , #f7d070);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.subtitulo-play{
+    font-size: 2rem;
+  color: #7f82a7;
+  margin-bottom: 2rem;
 }
 
-.tarjeta h4 {
-  font-size: 30px;
-  margin-bottom: 10px;
+.system-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-.tarjeta p {
-  color: #555;
-  font-size: 20px;
+.system-card {
+  display: flex;
+  background-color: #ffffff;
+  border: 1px solid #e0f2f1;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+  text-align: left;
+  gap: 1.2rem;
 }
+
+.play-icon{
+  border-radius: 12px;
+  padding: 0.8rem;
+  font-size: 2.5rem;
+  flex-shrink: 0;
+}
+.zap{
+  background-color: #eaf7ea;
+  color: #0ea51d;
+}
+.flame{
+  background-color: #ffebe6;
+  color: #f52500;
+}
+.trophy{
+  background-color: #e5eeff;
+  color: #006cf0;
+}
+.star{
+  background-color: #f9ffe6;
+  color: #e0f000;
+}
+.system-card h3 {
+  font-size: 2rem;
+  color: #110f35;
+  margin-bottom: 0.3rem;
+}
+
+.system-card p {
+  font-size: 1.2rem;
+  color: #8e96bc;
+  line-height: 1.5;
+}
+.system-card.blue:hover {
+  transform: scale(1.05);
+  border: 1px solid #097af2;
+  box-shadow: #2d9ae7 0px 5px 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease ;
+} 
+.system-card.green:hover {
+  transform: scale(1.05);
+  border: 1px solid #0ea51d;
+  box-shadow: #3fb143 0px 5px 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease ;
+}
+.system-card.red:hover {
+  transform: scale(1.05);
+  border: 1px solid #f52500;
+  box-shadow: #f55030 0px 5px 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease ;
+}
+.system-card.yellow:hover {
+  transform: scale(1.05);
+  border: 1px solid rgb(255, 251, 34) 00;
+  box-shadow: #cef530 0px 5px 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease ;
+}
+
+
+
+
 
 /* SECCIÓN FINAL (CTA) */
 .seccion-final {
-  padding: 80px 40px;
+  padding: 100px 50px;
+  width: 100%;
+
 }
 
-.cta {
-  background: linear-gradient(90deg, #d4eafa, #d1f4d4);
+.final-cta {
+  padding: 100px 40px;
   text-align: center;
-  padding: 60px;
+  background: linear-gradient(90deg, #d4eafa, #d1f4d4);
+  font-family: 'Segoe UI', sans-serif;
   border-radius: 20px;
+  
 }
 
-.cta h3 {
-  font-size: 30px;
-  margin-bottom: 10px;
+.header-final{
+    display: inline-block;
+    
 }
 
-.cta p {
-  font-size: 20px;
-  margin-bottom: 30px;
-  color: #555;
+.cta-title {
+  font-size: 5.5rem;
+  color: #15182e;
+  margin:-1.5rem 0 0.5rem;
 }
+.heroe{
+  background: linear-gradient(to right, #02a513 , #18dc8e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.cta-subtitle {
+  font-size: 2rem;
+  color: #7f82a7;
+  margin-bottom: 2rem;
+}
+
+
+.cta-description {
+    font-size: 2rem;
+  color: #7f82a7;
+  margin-bottom: 2rem;
+}
+.cta-description strong {
+  color: #393939;
+}
+.info-final{
+  display: flex ;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cta-benefits {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.cta-benefits li {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  color: #676777;
+  font-weight: 500;
+}
+
+.check-icon {
+  color: #4caf50;
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+}
+
+
+
 
 /* FOOTER */
-.pie {
+.hq-footer {
+  background: linear-gradient(to top, #d3f6d6, #ffffff);
+  padding: 3rem 2rem;
   text-align: center;
-  padding: 30px;
-  color: #777;
-  font-size: 14px;
+  font-family: 'Segoe UI', sans-serif;
+  color: #2e7d32;
 }
+
+
+.footer-logo  {
+display: flex;
+flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.spar{
+  color: #02a513 ;}
+
+.footer-tagline {
+  margin-top: -1rem;
+  font-size: 1.5rem;
+  color: #8b8faa;
+  margin-bottom: 1.5rem;
+}
+
+.footer-tagline strong {
+  color: #8b8faa;
+}
+
+.footer-note {
+  font-size: 1rem;
+  color: #919191;
+  margin-bottom: 1rem;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: #919191;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
 
 /* BOTONES */
 .boton-primario {
-  background-color: #4caf50;
+  background: linear-gradient(to right, #0ea51d , #18dc8e);
   color: white;
   border: none;
   padding: 10px 20px;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
-  margin-top: 2rem;
+  margin: 1.3rem;
 }
 
 .boton-primario:hover {
   background-color: #43a047;
+    transform: scale(1.05);
+  transition: transform 0.3s ease;
 }
 
 .boton-secundario {
@@ -218,8 +674,9 @@ html, body {
 }
 
 .grande {
-  font-size: 16px;
-  padding: 12px 30px;
+  font-size: 20px;
+  padding: 16px 20px;
+
 }
 
 .boton-inicio-sesion {
@@ -228,3 +685,11 @@ html, body {
   margin-top: 1rem;
 }
 
+.botones-principales {
+  display: flex;
+  gap: 20px;
+}
+.botones-principales:hover{
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}

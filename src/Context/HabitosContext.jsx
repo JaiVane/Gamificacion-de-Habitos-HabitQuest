@@ -133,15 +133,6 @@ export const HabitProvider = ({ children }) => {
     try {
       const updatedHabit = await marcarCumplido(id);
   
-      if (updatedHabit.cumplido) {
-        try {
-          await marcarDia(id);
-          console.log(` Día registrado en historial para hábito ${id}`);
-        } catch (err) {
-          console.warn("No se pudo registrar el día (posiblemente ya marcado):", err.message);
-        }
-      }
-  
       // 🔹 Actualizar estado local
       setHabitos((prev) =>
         prev.map((h) => (h.id === id ? updatedHabit : h))

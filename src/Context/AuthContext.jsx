@@ -60,19 +60,24 @@ return nuevosDatos; // We return the data we already had.s.
   };
 
 //Login Handling Feature 
+//Login Handling Feature
 const iniciarSesion = async (email, password) => {
-   try { const result = await postData("Auth/login", { email, password });
+  try {
+    const result = await postData("Auth/login", { email, password });
     localStorage.setItem("token", result.token); 
     localStorage.setItem("userId", result.usuario.id); 
     
-// We also save the user in global statusobal 
-    setUsuario(result.usuario); 
-    return result.usuario;
-   } catch (error) {
-     console.error("Error al iniciar sesión desde el contexto:", error); 
-     throw error; 
-    } 
-  };
+    // 🔹 Traemos el perfil completo después del login
+    const perfilCompleto = await getPerfil();
+    setUsuario(perfilCompleto);
+
+    return perfilCompleto;
+  } catch (error) {
+    console.error("Error al iniciar sesión desde el contexto:", error); 
+    throw error; 
+  } 
+};
+
 
 //User Logout Feature 
 const cerrarSesion = () => {

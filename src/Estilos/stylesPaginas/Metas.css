@@ -1,6 +1,5 @@
 .goal-page {
   display: flex;
-  min-height: 100vh;
   background: linear-gradient(135deg, #f3f4f6, #ffffff);
 }
 
@@ -145,7 +144,7 @@ h3 {
   background-color: #e5e7eb;
   overflow: hidden;
 }
-.progreso progress::-webkit-progress-bar { background-color: #e5e7eb; border-radius: 999px; }
+.progreso progress::-webkit-progress-bar { background-color: #467ff1; border-radius: 999px; }
 .progreso progress::-webkit-progress-value { background-color: #10b932; border-radius: 999px; }
 
 .progreso span {
