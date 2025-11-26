@@ -47,7 +47,7 @@ export const HabitProvider = ({ children }) => {
         descripcion: h.descripcion ?? h.Descripcion ?? "", 
         frecuencia: h.frecuencia,
         cumplido: h.cumplido,
-        diasConsecutivos: h.diasConsecutivos,
+        diasConsecutivos: h.diasConsecutivos ?? h.DiasConsecutivos ?? 0,
         xp: h.xp || 0,
         xpReward: h.xpReward || 0,      
         xpPenalty: h.xpPenalty || 0,     
@@ -134,9 +134,10 @@ export const HabitProvider = ({ children }) => {
       const updatedHabit = await marcarCumplido(id);
   
       // 🔹 Actualizar estado local
-      setHabitos((prev) =>
-        prev.map((h) => (h.id === id ? updatedHabit : h))
-      );
+        setHabitos((prev) =>
+          prev.map((h) => (h.id === id ? updatedHabit : h))
+       );
+    
   
       mostrarMensaje({
         title: updatedHabit.cumplido ? "¡Hábito completado!" : "Hábito desmarcado",
@@ -160,7 +161,7 @@ export const HabitProvider = ({ children }) => {
         tipo: "error",
       });
     }
-  }, [mostrarMensaje]);
+  }, [mostrarMensaje, fetchHabitos]);
   
 
   // 🔹 Registrar manualmente el día (opcional)

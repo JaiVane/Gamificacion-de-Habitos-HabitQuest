@@ -78,6 +78,7 @@ export const deleteData = async (endpoint) => {
   return response.json();
 };
 
+//FUNCIONES DE USUARIOS
 //funcion obtener perfil
 export async function getPerfil() {
   const token = localStorage.getItem("token");

@@ -3,6 +3,7 @@ import "../Estilos/stylesComponentes/DashboardHeader.css";
 import { LogOut, User, Flame, Trophy, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
+import Avatar from "../Componentes/Avatar";
 
 const frasesMotivacionales = [
   "Cada día es una nueva oportunidad para mejorar.",
@@ -127,6 +128,8 @@ export default function DashboardHeader() {
 )}
 
   </div>
+
+
         </div>
 
 

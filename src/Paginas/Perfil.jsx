@@ -5,6 +5,7 @@ import { useAuth } from "../Context/AuthContext";
 import { useNotificacion } from "../Hooks/useNotificacion";
 import { getUsuario } from "../Api/api";
 
+
 const Perfil = () => {
   const [habitos, setHabitos] = useState([]);
   const [modoEdicion, setModoEdicion] = useState(false);
@@ -130,6 +131,8 @@ const Perfil = () => {
                     {usuario.nombre?.slice(0, 2).toUpperCase() || "??"}
                   </div>
               </div>
+
+
 
               <div className="perfil-info">
                 <span className="etiqueta-rol">{usuario.rol}</span>

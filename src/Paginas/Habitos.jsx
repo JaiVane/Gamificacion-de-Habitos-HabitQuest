@@ -49,7 +49,7 @@ export const Habitos = () => {
   });
   const [categoriaEditando, setCategoriaEditando] = useState(null);
   
-  
+  //categorias useEffect
   useEffect(() => {
     const cargarCategorias = async () => {
       try {
@@ -70,11 +70,27 @@ export const Habitos = () => {
 
   
 //CRUd de habitos 
-  const alternarCompletado = (id) => {
-    const habito = habitos.find(h => h.id === id);
-    toggleHabitCompletion(id);
-    refrescarPerfil();   
-  };
+  // const toggleComplete = (id) => {
+  //   const habito = habitos.find(h => h.id === id);
+  //   toggleHabitCompletion(id);
+  //   refrescarPerfil();   
+  // };
+  const alternarCompletado = async (id) => {
+  try {
+    // 1. Marca el hábito como cumplido en el backend
+    await toggleHabitCompletion(id);
+
+    // 2. Refresca el perfil completo del usuario
+    await refrescarPerfil();
+
+    //  Ahora el estado global se actualiza en un solo clic
+  } catch (error) {
+    console.error("Error al alternar hábito:", error);
+  }
+};
+
+
+
   const eliminarHabito = (id) => {
     removeHabit(id);
      refrescarPerfil();   

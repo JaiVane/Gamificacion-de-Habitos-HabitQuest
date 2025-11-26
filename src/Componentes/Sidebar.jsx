@@ -18,7 +18,7 @@ export default function Sidebar() {
     <aside className="sidebar">
       <div className="sidebar-header">
         <div className="logo">
-          <div className="icono-logo">
+          <div className="iconologo">
             <Sparkles className="icono" />
           </div>
           <div className="titulo-logo">

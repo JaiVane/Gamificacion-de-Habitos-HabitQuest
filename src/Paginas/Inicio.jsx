@@ -11,7 +11,7 @@ const Inicio = () => {
   return (  
     <div className="pagina-inicio">
       {/* Encabezado */}
-      <header className="encabezado">
+      <header className="header-inicio">
         <div className="logo">
           <Sparkles size={46} className="logoIcon" />
           <h1 className="titulo-">HabitQuest</h1>

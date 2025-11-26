@@ -50,19 +50,20 @@
 }
 
 /* ÍCONO DEL LOGO */
-.icono-logo {
-  background: linear-gradient(135deg, #4caf50, #4caf50);
+.iconologo {
+  background: linear-gradient(135deg, #6feb74, #4caf8e);
   border-radius: 8px;
   width: 40px;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: 30px;
 }
 
 
 
-.icono-logo .icono {
+.iconologo .icono {
   color: white;
   width: 40px;
   height: 30px;

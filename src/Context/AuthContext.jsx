@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
   };
 // Function to update the user's profile 
 const actualizarUsuario = async (nuevosDatos) => { 
-try { // We call the API to save the data.s. 
+try { 
   await updatePerfil(nuevosDatos); 
 // We don't need to do anything with the response, as the 'user' status has already been updated in the frontend. // We just maintain the state we already have.s. 
 return nuevosDatos; // We return the data we already had.s.
