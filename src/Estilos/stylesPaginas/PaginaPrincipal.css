@@ -31,7 +31,7 @@
     width: calc(100% - 60px);
     max-width: calc(100% - 60px);
     padding: 0;
-    background-color: #f4f6f8;
+background: linear-gradient(to bottom, #e6f7ef 3%, #ffffff 97%);
     transition: margin-left 0.3s ease;
     min-height: 100vh; /* ✅ permite que el contenido crezca */
   }

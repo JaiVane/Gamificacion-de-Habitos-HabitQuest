@@ -29,7 +29,7 @@ const Inicio = () => {
         <div className="contenedor-principal">
           <div className="texto-principal">
               <div className="info">
-                <div class="hero-banner">
+                <div className="hero-banner">
                   <Rocket size={32} className="rocket-icon"/>
                   Tu vida es el juego más importante
                 </div>
@@ -42,23 +42,23 @@ const Inicio = () => {
                   <Button onClick={() => navegar("/autenticacion")} className="botones-principales boton-primario grande">
                     <Sparkles/>Empieza Tu Aventura  <ArrowRight/>
                   </Button>
-                  <section class="benefits-section">
-                    <div class="benefits-header">
+                  <section className="benefits-section">
+                    <div className="benefits-header">
                       <p>
                         <CheckCircle color="#02a513"/> <strong>En 10 segundos:  </strong>Crea hábitos, complétalos diariamente, gana XP, sube de nivel y desbloquea logros. <br />  <strong>Tu vida nunca fue tan divertida.</strong>
                       </p>
                     </div>
 
-                    <div class="stats-grid">
-                      <div class="stat-card">
+                    <div className="stats-grid">
+                      <div className="stat-card">
                         <h3>1,000+</h3>
                         <p>Jugadores activos</p>
                       </div>
-                      <div class="stat-card">
+                      <div className="stat-card">
                         <h3>50K+</h3>
                         <p>Hábitos conquistados</p>
                       </div>
-                      <div class="stat-card">
+                      <div className="stat-card">
                         <h3>95%</h3>
                         <p>Éxito en rachas</p>
                       </div>
@@ -76,40 +76,40 @@ const Inicio = () => {
       </section>
 
       {/* Sección de cómo funciona */}
-      <section class="como-funciona-seccion">
-            <div class="banner">
+      <section className="como-funciona-seccion">
+            <div className="banner">
                   <Target size={22} className=""/>
                   Simple y Poderoso
                 </div>
                 <div className="info-titulo">
-                  <h3 class="section-subtitle">Cómo funciona <span className="span-habit">HabitQuest</span> </h3>
-                  <p class="section-description">
+                  <h3 className="section-subtitle">Cómo funciona <span className="span-habit">HabitQuest</span> </h3>
+                  <p className="section-description">
                     Cuatro pasos para transformar tu vida en la aventura más emocionante
                   </p>
                 </div>
   
 
-  <div class="steps-grid">
-    <div class="step-card">
-      <div class="step-number">01</div><Target size={70} className="iconos"/>
+  <div className="steps-grid">
+    <div className="step-card">
+      <div className="step-number">01</div><Target size={70} className="iconos"/>
       <h4>Crea tus hábitos</h4>
       <p>Define los hábitos que quieres construir. Desde ejercicio hasta meditación, tú decides tu aventura.</p>
     </div>
 
-    <div class="step-card">
-      <div class="step-number">02</div><Zap size={70} className="iconos"/>
+    <div className="step-card">
+      <div className="step-number">02</div><Zap size={70} className="iconos"/>
       <h4>Completa misiones diarias</h4>
       <p>Cada hábito completado es una misión ganada. Acumula tu progreso día tras día.</p>
     </div>
 
-    <div class="step-card">
-      <div class="step-number">03</div><Trophy size={70} className="iconos"/>
+    <div className="step-card">
+      <div className="step-number">03</div><Trophy size={70} className="iconos"/>
       <h4>Gana XP y sube de nivel</h4>
       <p>Recibe puntos de experiencia por cada logro. Sube de nivel como en tu juego favorito.</p>
     </div>
 
-    <div class="step-card">
-      <div class="step-number">04</div><ChartBar size={70} className="iconos"/>
+    <div className="step-card">
+      <div className="step-number">04</div><ChartBar size={70} className="iconos"/>
       <h4>Observa tu transformación</h4>
       <p>Visualiza tu evolución con estadísticas detalladas y celebra cada victoria.</p>
     </div>
@@ -117,42 +117,42 @@ const Inicio = () => {
       </section>
 
       {/* Sección de beneficios reales */}
-      <section class="real-benefits">
+      <section className="real-benefits">
         <div className="header-beneficios">
-          <div class="star-banner">
+          <div className="star-banner">
                   <Star size={22} className=""/>
                   Ventajas Reales 
                 </div>
         </div>
 
-  <h2 class="benefits-title">Por qué te va a <span className="encantar">encantar</span></h2>
-  <p class="benefits-subtitle">No es solo una web. Es tu compañero de transformación personal</p>
+  <h2 className="benefits-title">Por qué te va a <span className="encantar">encantar</span></h2>
+  <p className="benefits-subtitle">No es solo una web. Es tu compañero de transformación personal</p>
 
-  <div class="benefits-grid">
-    <div class="benefit-card">
-      <Flame size={60} class="benefit-icon"/>
+  <div className="benefits-grid">
+    <div className="benefit-card">
+      <Flame size={60} className="benefit-icon"/>
       <div className="info-benefit"><h3>Mantén tu racha viva</h3>
       <p>Cada día cuenta. Construye rachas épicas y nunca pierdas tu momento.</p>
       </div>
       
     </div>
 
-    <div class="benefit-card">
-      <Medal size={60} class="benefit-icon"/>
+    <div className="benefit-card">
+      <Medal size={60} className="benefit-icon"/>
       <div className="info-benefit"><h3>Desbloquea logros épicos</h3>
       <p>Colecciona insignias y recompensas mientras conquistas nuevos desafíos.</p></div>
       
     </div>
 
-    <div class="benefit-card">
-      <Users size={60} class="benefit-icon"/>
+    <div className="benefit-card">
+      <Users size={60} className="benefit-icon"/>
       <div className="info-benefit"><h3>Compite con amigos</h3>
       <p>Únete a la tabla de clasificación y motívate con una comunidad ganadora.</p>
     </div>
     </div>
 
-    <div class="benefit-card">
-      <Star size={60} class="benefit-icon"/>
+    <div className="benefit-card">
+      <Star size={60} className="benefit-icon"/>
       <div className="info-benefit"><h3>Actual Rewards</h3>
       <p>Tu progreso virtual se traduce en cambios reales en tu vida diaria.</p>
     </div>
@@ -161,9 +161,9 @@ const Inicio = () => {
       </section>
 
       {/* Sección del sistema de juego */}
-      <section class="game-system">
-    <div class="system-header">
-      <div class="play-banner">
+      <section className="game-system">
+    <div className="system-header">
+      <div className="play-banner">
         <Trophy size={22} />
         Sistema de juego
       </div>
@@ -171,33 +171,33 @@ const Inicio = () => {
     <h2 className="titulo-play"> Gamificación que <span className="span-play">realmente funciona</span></h2>
     <p className="subtitulo-play">Inspirado en los mejores RPGs, diseñado para tu vida real</p>
 
-  <div class="system-grid">
-    <div class="system-card green">
-      <Zap size={60} class="zap play-icon"/>
+  <div className="system-grid">
+    <div className="system-card green">
+      <Zap size={60} className="zap play-icon"/>
       <div className="info-benefit">
         <h3>Sistema de XP</h3>
       <p>Gana 25 XP por cada hábito completado. Acumula experiencia y desbloquea nuevos niveles de poder.</p>
       </div>
     </div>
 
-    <div class="system-card red">
-      <Flame size={60} class="flame play-icon"/>
+    <div className="system-card red">
+      <Flame size={60} className="flame play-icon"/>
       <div className="info-benefit">
         <h3>Rachas de fuego</h3>
       <p>Mantén tu racha diaria activa. Cada día consecutivo multiplica tu poder y te acerca a la grandeza.</p>
       </div>
     </div>
 
-    <div class="system-card blue">
-      <Trophy size={60} class="trophy play-icon"/>
+    <div className="system-card blue">
+      <Trophy size={60} className="trophy play-icon"/>
       <div className="info-benefit">
         <h3>Logros legendarios</h3>
         <p>Desde común hasta legendario. Desbloquea insignias especiales y demuestra tu dedicación.</p>
       </div>
     </div>
 
-    <div class="system-card yellow">
-      <Star size={60} class="star play-icon"/>
+    <div className="system-card yellow">
+      <Star size={60} className="star play-icon"/>
       <div className="info-benefit">
         <h3>Niveles infinitos</h3>
         <p>Sin límites. Sube de nivel constantemente y demuestra que eres imparable.</p>
@@ -209,17 +209,17 @@ const Inicio = () => {
 
 
       {/* Sección final */}
-<section class="seccion-final">
-  <div class="final-cta">
+<section className="seccion-final">
+  <div className="final-cta">
     <div className="header-final">
-      <div class="banner">
+      <div className="banner">
         <Sparkles size={22} className=""/>
         Tu mejor versión te está esperando
       </div>
     </div>
     <div className="info-final">
-        <h2 class="cta-title">¿Listo para convertirte en el <span className="heroe">héroe de tu propia historia?</span></h2>
-      <p class="cta-description">
+        <h2 className="cta-title">¿Listo para convertirte en el <span className="heroe">héroe de tu propia historia?</span></h2>
+      <p className="cta-description">
         Únete a más de <strong>1,000 jugadores</strong> que ya están conquistando sus metas.<br />
         Empieza gratis hoy y transforma tu vida en la aventura que siempre soñaste.
       </p>
@@ -243,23 +243,23 @@ const Inicio = () => {
 
 
       {/* Pie de página */}
-      <footer class="hq-footer">
-  <div class="footer-logo">
+      <footer className="hq-footer">
+  <div className="footer-logo">
     <div className="i logo">
           <Sparkles size={46} className="logoIcon" />
           <h1 className="titulo-">HabitQuest</h1>
         </div>
-    <p class="footer-tagline">
+    <p className="footer-tagline">
       Transforma tu vida, un hábito a la vez.<br />
       <strong>Juega, Evoluciona y  Conquista.</strong>
     </p>
   </div>
 
-  <p class="footer-note">
+  <p className="footer-note">
     © 2025 HabitQuest. Hecho con ❤️  para personas que quieren más de la vida.
   </p>
 
-  <nav class="footer-links">
+  <nav className="footer-links">
     <a href="/terminos">Términos</a>
     <a href="/privacidad">Privacidad</a>
     <a href="/contacto">Contacto</a>

@@ -7,13 +7,12 @@ import { AuthProvider } from './Context/AuthContext.jsx';
 import { HabitProvider } from './Context/HabitosContext.jsx';
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  
     <BrowserRouter>
       <AuthProvider>
         <HabitProvider> 
           <App />
         </HabitProvider>
       </AuthProvider>
-    </BrowserRouter>
-  </StrictMode>,
+    </BrowserRouter>,
 )

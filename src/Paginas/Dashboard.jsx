@@ -10,10 +10,12 @@ import { getHistorialHabito } from "../Api/habitosApi";
 import { getCategorias } from "../Api/categoriaApi";
 import { toggleHabito, getUsuario } from "../Api/api";
 
+
 const Dashboard = () => {
   const { mostrarMensaje } = useNotificacion();
   const [usuario, setUsuario] = useState(null);
   const [categorias, setCategorias] = useState([]);
+
 
   useEffect(() => {
     const cargarUsuario = async () => {
@@ -31,8 +33,9 @@ const Dashboard = () => {
             return { ...h, historial, cumplido: fueCumplidoHoy };
           })
         );
-
+    
         setCategorias(categoriasData);
+        
         setUsuario({ ...data, habitos: habitosConHistorial });
       } catch (error) {
         console.error("Error cargando usuario:", error);
@@ -46,7 +49,7 @@ const Dashboard = () => {
       const usuarioActualizado = await toggleHabito(id);
       setUsuario(usuarioActualizado);
       mostrarMensaje({
-        title: "✅ ¡Hábito actualizado!",
+        title: " ¡Hábito actualizado!",
         description: "Tu progreso ha sido guardado",
         tipo: "success",
       });
@@ -175,6 +178,7 @@ const mejorRacha = usuario.racha; // racha global del usuario
             })}
           </div>
         </section>
+
 
         {/* Footer */}
         <footer className="pie-dashboard">

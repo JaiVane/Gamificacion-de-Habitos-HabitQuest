@@ -47,9 +47,9 @@ export const HabitProvider = ({ children }) => {
         descripcion: h.descripcion ?? h.Descripcion ?? "", 
         frecuencia: h.frecuencia,
         cumplido: h.cumplido,
-        diasConsecutivos: h.diasConsecutivos ?? h.DiasConsecutivos ?? 0,
+        consecutiveDays: h.consecutiveDays ?? h.consecutiveDays ?? 0,
         xp: h.xp || 0,
-        xpReward: h.xpReward || 0,      
+  //useEffect categoriesward || 0,      
         xpPenalty: h.xpPenalty || 0,     
         rareza: h.rareza || "Común",
         categoriaId: h.categoriaId, // <-- ✨ CORRECCIÓN AQUÍ

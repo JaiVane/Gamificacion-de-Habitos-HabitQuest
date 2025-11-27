@@ -10,19 +10,26 @@ import {  Routes, Route } from "react-router-dom";
 import "../Estilos/stylesPaginas/PaginaPrincipal.css";
 import Configuracion from "./Configuracion";
 import Logros from "./Logros";
+import LeaderBox from "../Componentes/LeaderBox";
+import { useState } from "react";
 
 function PaginaPrincipal() {
-
+const [leaderboard, setLeaderboard] = useState([]);
     return (
         <div className="pagina-container">
         <Sidebar/>
         <div className="pagina content">
             <DashboardHeader/>
+            {/* LeaderBox global: keeps the SignalR connection alive */}
+            <LeaderBox leaderboard={leaderboard} setLeaderboard={setLeaderboard} />
         <Routes>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/habitos" element={<Habitos />} />
             <Route path="/metas" element={<Metas />} />
-            <Route path="/tablaClasificacion" element={<TablaClasificacion />} />
+            <Route
+            path="/tablaClasificacion"
+            element={<TablaClasificacion leaderboard={leaderboard} />}
+            />
             <Route path="/estadisticas" element={<Estadisticas />} />
             <Route path="/perfil" element={<Perfil />} />
             <Route path="/logros" element={<Logros />} />

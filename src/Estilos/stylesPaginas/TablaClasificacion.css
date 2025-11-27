@@ -337,3 +337,13 @@ td {
   font-size: 1rem;
 }
 
+/* Highlight animation for real-time events */
+.row-highlight {
+  animation: highlight 1.2s ease;
+}
+
+@keyframes highlight {
+  0% { background: rgba(255, 235, 59, 0.25); transform: scale(1.01); }
+  50% { background: rgba(255, 235, 59, 0.12); transform: scale(1.005); }
+  100% { background: transparent; transform: scale(1); }
+}

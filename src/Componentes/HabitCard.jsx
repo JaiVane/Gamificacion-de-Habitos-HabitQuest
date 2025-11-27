@@ -92,11 +92,7 @@ const HabitCard = ({
 
 
             <div className="habit-top-badges">
-              {/* {streak > 0 && (
-                <span className="badge-streak">
-                  <Flame size={14} /> {streak}
-                </span>
-              )} */}
+
                {/* XP acumulado */}
                 <span className="badge-xp-top">
                   <Trophy size={14} /> {xp} XP

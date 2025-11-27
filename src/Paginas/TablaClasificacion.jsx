@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../Estilos/stylesPaginas/TablaClasificacion.css";
 import { Trophy, Medal, Award, TrendingUp } from "lucide-react";
 
-const TablaClasificacion = () => {
+ const TablaClasificacion = ({leaderboard }) => {
   const [datosClasificacion, setDatosClasificacion] = useState([]);
 
   useEffect(() => {
@@ -23,6 +23,10 @@ const TablaClasificacion = () => {
 
     fetchClasificacion();
   }, []);
+
+  //🔹If there is real-time data, prioritize it
+  //noconst rows = (leaderboard && leaderboard.length > 0) ? leaderboard : datosClasificacion;
+
 
   const obtenerIcono = (puesto) => {
     switch (puesto) {
@@ -129,3 +133,4 @@ const TablaClasificacion = () => {
 };
 
 export default TablaClasificacion;
+

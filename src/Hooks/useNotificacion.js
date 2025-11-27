@@ -37,7 +37,7 @@ const mostrarMensaje = ({ title, description, tipo = 'info' }) => {
         despachar();
       }, 200); // Coincide con la duración de la animación CSS
     }
-  }, 2000); // 3 segundos
+  }, 5000); // 5 segundos
 };
 
 export function useNotificacion() {
