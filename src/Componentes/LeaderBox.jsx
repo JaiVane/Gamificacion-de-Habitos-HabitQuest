@@ -59,13 +59,26 @@ const tresKey = `tresHabitosShown_${payload.UsuarioId}_${todayKey}`;
         const idx = prev.findIndex((r) => r.usuarioId === payload.UsuarioId);
         if (idx >= 0) {
           const updated = [...prev];
+          // updated[idx] = {
+          //   ...updated[idx],
+          //   nivel: payload.NivelDespues ?? updated[idx].nivel,
+          //   xpHoy: payload.XPGanadoHoy ?? updated[idx].xpHoy,
+          //   habitsToday: payload.HabitosCompletadosHoy ?? updated[idx].habitosHoy,
+          //   experiencia: payload.ExperienciaTotal ?? updated[idx].experiencia,
+          //   highlight: true,
+          // };
           updated[idx] = {
-            ...updated[idx],
-            nivel: payload.NivelDespues ?? updated[idx].nivel,
-            xpHoy: payload.XPGanadoHoy ?? updated[idx].xpHoy,
-            habitosHoy: payload.HabitosCompletadosHoy ?? updated[idx].habitosHoy,
-            highlight: true,
-          };
+  ...updated[idx],
+  nivel: payload.nivelDespues ?? updated[idx].nivel,
+  xpHoy: payload.xpGanadoHoy ?? updated[idx].xpHoy,
+  habitosCompletados: payload.habitosCompletadosHoy ?? updated[idx].habitosCompletados,
+  experiencia: payload.experienciaTotal ?? updated[idx].experiencia,
+  racha: payload.rachaActual ?? updated[idx].racha,
+  nombreUsuario: payload.usuarioNombre ?? updated[idx].nombreUsuario,
+  nombre: payload.usuarioNombre ?? updated[idx].nombre,
+  highlight: true,
+};
+
           setTimeout(() => {
             setLeaderboard((cur) =>
               cur.map((row, i) =>
@@ -75,17 +88,33 @@ const tresKey = `tresHabitosShown_${payload.UsuarioId}_${todayKey}`;
           }, 1200);
           return updated;
         } else {
-          return [
-            {
-              usuarioId: payload.UsuarioId,
-              nombre: payload.UsuarioNombre,
-              nivel: payload.NivelDespues ?? 0,
-              xpHoy: payload.XPGanadoHoy ?? 0,
-              habitosHoy: payload.HabitosCompletadosHoy ?? 0,
-              highlight: true,
-            },
-            ...prev,
-          ];
+          // return [
+          //   {
+          //     usuarioId: payload.UsuarioId,
+          //     nombre: payload.UsuarioNombre,
+          //     nivel: payload.NivelDespues ?? 0,
+          //     xpHoy: payload.XPGanadoHoy ?? 0,
+          //     habitosHoy: payload.HabitosCompletadosHoy ?? 0,
+          //     experiencia: payload.ExperienciaTotal ?? 0,
+          //     highlight: true,
+          //   },
+          //   ...prev,
+          // ];
+        return [
+  {
+    usuarioId: payload.usuarioId,
+    nombre: payload.usuarioNombre,
+    nombreUsuario: payload.usuarioNombre,
+    nivel: payload.nivelDespues ?? 0,
+    xpHoy: payload.xpGanadoHoy ?? 0,
+    habitosCompletados: payload.habitosCompletadosHoy ?? 0,
+    experiencia: payload.experienciaTotal ?? 0,
+    racha: payload.rachaActual ?? 0,
+    highlight: true,
+  },
+  ...prev,
+];
+
         }
       });
         //notificaciones

@@ -11,7 +11,8 @@ const despachar = () => {
 };
 
 const mostrarMensaje = ({ title, description, tipo = 'info' }) => {
-  const id = Date.now();
+  const id = crypto.randomUUID();
+
   const nuevaNotificacion = {
     id,
     title,
