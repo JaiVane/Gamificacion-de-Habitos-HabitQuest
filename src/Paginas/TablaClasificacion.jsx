@@ -293,15 +293,16 @@
                 <table>
                   <thead>
                     <tr>
-                      <th>Rank</th>
-                      <th>Usuario</th>
-                      <th>Nivel</th>
-                      <th>XP Total</th>
-                      <th>Hábitos</th>
-                      <th>Racha</th>
+<th className="columna-rank">Rank</th>
+<th className="columna-usuario">Usuario</th>
+<th className="columna-nivel">Nivel</th>
+<th className="columna-xp">XP Total</th>
+<th className="columna-habitos">Hábitos</th>
+<th className="columna-racha">Racha</th>
+
                     </tr>
                   </thead>
-                  <tbody>
+                  {/* <tbody>
                     {rowsOrdenados.map((jugador, index) => (
                       <tr key={`${jugador.usuarioId}-${jugador.puesto}`} className={index % 2 === 0 ? "fila-par" : "fila-impar"}>
                         <td className="columna-rank">{obtenerIcono(jugador.puesto)}</td>
@@ -324,7 +325,48 @@
                         <td className="columna-racha">{jugador.racha ?? 0} días</td>
                       </tr>
                     ))}
-                  </tbody>
+                  </tbody> */}
+                  <tbody>
+  {rowsOrdenados.map((jugador, index) => (
+    <tr
+      key={`${jugador.usuarioId}-${jugador.puesto}`}
+      className={index % 2 === 0 ? "fila-par" : "fila-impar"}
+    >
+      <td className="columna-rank">{obtenerIcono(jugador.puesto)}</td>
+
+      <td className="columna-usuario">
+        <div className="usuario-info">
+          <div className="avatar">{obtenerIniciales(jugador.nombre)}</div>
+          <div className="usuario-datos">
+            <p className="usuario-nombre">{jugador.nombre}</p>
+            <span className="usuario-username">@{jugador.nombreUsuario}</span>
+          </div>
+        </div>
+      </td>
+
+      <td className="columna-nivel">
+        <span
+          className={`badge-nivel-tabla nivel-${jugador.puesto <= 3 ? jugador.puesto : "normal"}`}
+        >
+          Nivel {jugador.nivel}
+        </span>
+      </td>
+
+      <td className="columna-xp">
+        {(jugador.experiencia ?? 0).toLocaleString()}
+      </td>
+
+      <td className="columna-habitos">
+        {jugador.habitosCompletados ?? 0}
+      </td>
+
+      <td className="columna-racha">
+        {jugador.racha ?? 0} días
+      </td>
+    </tr>
+  ))}
+</tbody>
+
                 </table>
               </div>
             </div>
