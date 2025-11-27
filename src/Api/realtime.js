@@ -1,8 +1,9 @@
 import * as signalR from "@microsoft/signalr";
-
+// Mantener una única instancia de la conexión
 let connection = null;
 let leaderboardHandler = null;
-
+let ascensoHandler = null;
+// Crear la conexión SignalR
 export function createConnection(token) {
   if (connection && connection.state !== signalR.HubConnectionState.Disconnected) {
     return connection;
@@ -22,7 +23,7 @@ export function createConnection(token) {
 
   return connection;
 }
-
+// Iniciar la conexión SignalR
 export async function startConnection() {
   if (!connection) throw new Error("Connection not created");
 
@@ -46,7 +47,7 @@ export async function startConnection() {
   }
 }
 
-
+// Registrar el manejador para eventos de leaderboard
 export function onLeaderboardEvent(handler) {
   if (!connection) throw new Error("Connection not created");
 
@@ -64,7 +65,25 @@ export function onLeaderboardEvent(handler) {
     }
   };
 }
+// ✅ Nuevo: listener para AscensoPuesto
+export function onAscensoPuesto(handler) {
+  if (!connection) throw new Error("Connection not created");
 
+  if (ascensoHandler) {
+    connection.off("AscensoPuesto", ascensoHandler);
+  }
+
+  ascensoHandler = handler;
+  connection.on("AscensoPuesto", ascensoHandler);
+
+  return () => {
+    if (connection && ascensoHandler) {
+      connection.off("AscensoPuesto", ascensoHandler);
+      ascensoHandler = null;
+    }
+  };
+}
+// Detener la conexión SignalR
 export async function stopConnection() {
   if (!connection) return;
 
@@ -78,13 +97,14 @@ export async function stopConnection() {
   } finally {
     connection = null;
     leaderboardHandler = null;
+    ascensoHandler = null;
   }
 }
-
+// Verificar si la conexión está activa
 export function getConnection() {
   return connection;
 }
-
+// Verificar si la conexión está activa
 export function isConnected() {
   return connection && connection.state === signalR.HubConnectionState.Connected;
 }

@@ -63,12 +63,24 @@ export async function actualizarHabito(id, data) {
   return { success: true }; // No esperamos contenido, solo confirmación.
 }
 
+// export async function eliminarHabito(id) {
+//   const res = await fetch(`${API_URL}/habitos/${id}`, {
+//     method: "DELETE",
+//     headers: { Authorization: `Bearer ${token()}` },
+//   });
+//   if (!res.ok) throw new Error("No se pudo eliminar el hábito");
+// }
 export async function eliminarHabito(id) {
   const res = await fetch(`${API_URL}/habitos/${id}`, {
     method: "DELETE",
     headers: { Authorization: `Bearer ${token()}` },
   });
-  if (!res.ok) throw new Error("No se pudo eliminar el hábito");
+
+  const data = await res.json(); // 👈 leer el mensaje del backend
+
+  if (!res.ok) throw new Error(data.mensaje || "No se pudo eliminar el hábito");
+
+  return data;
 }
 
 

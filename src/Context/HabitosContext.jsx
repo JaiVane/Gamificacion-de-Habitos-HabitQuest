@@ -122,7 +122,7 @@ export const HabitProvider = ({ children }) => {
       console.error("Error al eliminar hábito:", error);
       mostrarMensaje({
         title: "Error al eliminar hábito",
-        description: error.message || "No se pudo eliminar el hábito.",
+        description: error.message || "No se pudo eliminar el hábito. Esta relacionado con una Meta.",
         tipo: "error",
       });
     }
